@@ -102,11 +102,11 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             }).
             state('editmcq', {
                 url: '/challenges/edit/:challengeId/mcq',
-                templateUrl: 'modules/core/views/edit-mcq.client.view.html'
+                templateUrl: 'modules/core/views/edit-dnd.client.view.html'
             }).
             state('editdnd', {
                 url: '/challenges/edit/:challengeId/dnd',
-                templateUrl: 'modules/core/views/edit-dnd.client.view.html'
+                templateUrl: 'modules/core/views/edit-mcq.client.view.html'
             });
     }
 ]);
@@ -116,8 +116,8 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
 
 angular.module('core').controller('ChallengesController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http',
-    function ($scope, Challenges, $location, $mdDialog, QueryParams, $http) {
+    '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
+    function ($scope, Challenges, $location, $mdDialog, QueryParams, $http, sharedProperties) {
         // ChallengesController controller logic
         // ...
         function showDialog($event) {
@@ -206,7 +206,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
         $scope.challenge = new Challenges();
         $scope.challenge.type = $scope.types[0];
         $scope.go = function (challenge) {
-            console.log('go', challenge);
+            sharedProperties.setChallenge(challenge);
             $location.path('/challenges/edit/' + challenge._id + '/' + challenge.type);
         };
     }
@@ -215,10 +215,10 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
 'use strict';
 
 
-angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http',
+angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Challenges', '$location',
+    '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http) {
+              $mdDialog, QueryParams, $http, sharedProperties) {
 
         $scope.uploadFile = function () {
             var file = $scope.myFile;
@@ -253,6 +253,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                 }
             }).success(function () {
                 console.log('success!!');
+                $scope.challenge.$update();
             }).error(function () {
                 console.log('error!!');
             });
@@ -261,7 +262,19 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
         //-----------------------------
 
-        $scope.files = [ {
+        $scope.challenge = sharedProperties.getChallenge();
+        $scope.challenge.challengeFile = {
+            'class': 'es.eucm.cytochallenge.model.TextChallenge',
+            'imagePath': '',
+            'textControl': {
+                'class': 'es.eucm.cytochallenge.model.control.MultipleAnswerControl',
+                'text': '',
+                'answers': [ ],
+                'correctAnswer': 0
+            }
+        };
+
+        $scope.files = [{
             lfDataUrl: ''
         }];
 
@@ -269,17 +282,28 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
         var ctx = canv.getContext('2d');
 
 
-        $scope.$watchCollection('files', function(newValue, oldValue) {
-            if(newValue && newValue.length === 1) {
+        var imageObj = new Image();
+        $scope.$watchCollection('files', function (newValue, oldValue) {
+            if (newValue && newValue.length === 1) {
 
                 console.log(newValue);
 
-                var imageObj = new Image();
                 imageObj.src = newValue[0].lfDataUrl;
                 imageObj.onload = function () {
 
-                    console.log('image', imageObj.width);
-                    ctx.drawImage(this, 0, 0);
+                    var targetHeight = canv.height;
+                    var targetWidth = canv.width;
+                    var sourceHeight = imageObj.height;
+                    var sourceWidth = imageObj.width;
+
+                    var targetRatio = targetHeight / targetWidth;
+                    var sourceRatio = sourceHeight / sourceWidth;
+                    var scale = targetRatio > sourceRatio ? targetWidth / sourceWidth : targetHeight / sourceHeight;
+
+                    var width = sourceWidth * scale;
+                    var height = sourceHeight * scale;
+                    ctx.clearRect(0, 0, targetWidth, targetHeight);
+                    ctx.drawImage(this, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
                 };
             }
         });
@@ -380,30 +404,42 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 ]);
 'use strict';
 
-angular.module('core').factory('Challenges', ['$resource',
-    function ($resource) {
-        return $resource('/challenges', {
-            challengeId: '@_id'
-        }, {
-            update: {
-                method: 'PUT'
-            }
-        });
-    }
-]).factory('QueryParams', [
-    function () {
+angular.module('core')
+    .service('sharedProperties', function () {
+        var currentChallenge = {};
 
         return {
-            getQueryParam: function (param) {
-                var result = window.location.search.match(
-                    new RegExp('(\\?|&)' + param + '(\\[\\])?=([^&]*)')
-                );
-
-                return result ? result[3] : false;
+            getChallenge: function () {
+                return currentChallenge;
+            },
+            setChallenge: function (value) {
+                currentChallenge = value;
             }
         };
-    }
-]);
+    }).factory('Challenges', ['$resource',
+        function ($resource) {
+            return $resource('/challenges', {
+                challengeId: '@_id'
+            }, {
+                update: {
+                    method: 'PUT'
+                }
+            });
+        }
+    ]).factory('QueryParams', [
+        function () {
+
+            return {
+                getQueryParam: function (param) {
+                    var result = window.location.search.match(
+                        new RegExp('(\\?|&)' + param + '(\\[\\])?=([^&]*)')
+                    );
+
+                    return result ? result[3] : false;
+                }
+            };
+        }
+    ]);
 
 'use strict';
 

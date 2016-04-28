@@ -1,10 +1,10 @@
 'use strict';
 
 
-angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http',
+angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Challenges', '$location',
+    '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http) {
+              $mdDialog, QueryParams, $http, sharedProperties) {
 
         $scope.uploadFile = function () {
             var file = $scope.myFile;
@@ -39,6 +39,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                 }
             }).success(function () {
                 console.log('success!!');
+                $scope.challenge.$update();
             }).error(function () {
                 console.log('error!!');
             });
@@ -46,6 +47,18 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
 
         //-----------------------------
+
+        $scope.challenge = sharedProperties.getChallenge();
+        $scope.challenge.challengeFile = {
+            'class': 'es.eucm.cytochallenge.model.TextChallenge',
+            'imagePath': '',
+            'textControl': {
+                'class': 'es.eucm.cytochallenge.model.control.MultipleAnswerControl',
+                'text': '',
+                'answers': [ ],
+                'correctAnswer': 0
+            }
+        };
 
         $scope.files = [{
             lfDataUrl: ''
@@ -55,12 +68,12 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
         var ctx = canv.getContext('2d');
 
 
+        var imageObj = new Image();
         $scope.$watchCollection('files', function (newValue, oldValue) {
             if (newValue && newValue.length === 1) {
 
                 console.log(newValue);
 
-                var imageObj = new Image();
                 imageObj.src = newValue[0].lfDataUrl;
                 imageObj.onload = function () {
 
@@ -75,7 +88,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
                     var width = sourceWidth * scale;
                     var height = sourceHeight * scale;
-
+                    ctx.clearRect(0, 0, targetWidth, targetHeight);
                     ctx.drawImage(this, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
                 };
             }

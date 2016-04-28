@@ -3,8 +3,8 @@
 
 
 angular.module('core').controller('ChallengesController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http',
-    function ($scope, Challenges, $location, $mdDialog, QueryParams, $http) {
+    '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
+    function ($scope, Challenges, $location, $mdDialog, QueryParams, $http, sharedProperties) {
         // ChallengesController controller logic
         // ...
         function showDialog($event) {
@@ -93,7 +93,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
         $scope.challenge = new Challenges();
         $scope.challenge.type = $scope.types[0];
         $scope.go = function (challenge) {
-            console.log('go', challenge);
+            sharedProperties.setChallenge(challenge);
             $location.path('/challenges/edit/' + challenge._id + '/' + challenge.type);
         };
     }
