@@ -1,0 +1,111 @@
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Material Icons"), local("MaterialIcons-Regular"), url("https://fonts.gstatic.com/s/materialicons/v7/2fcrYFNaTjcS6g4U3t-Y5bbKic1PW3nceB3q24YFOMg.ttf") format("truetype"); }
+
+/* line 12, C:/MEANMaterial/public/modules/core/css/material.scss */
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  word-wrap: normal;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased; }
+
+/*Rules for sizing the icon.*/
+/* line 27, C:/MEANMaterial/public/modules/core/css/material.scss */
+.material-icons.md-18 {
+  font-size: 18px; }
+
+/* line 28, C:/MEANMaterial/public/modules/core/css/material.scss */
+.material-icons.md-24 {
+  font-size: 24px; }
+
+/* line 29, C:/MEANMaterial/public/modules/core/css/material.scss */
+.material-icons.md-36 {
+  font-size: 36px; }
+
+/* line 30, C:/MEANMaterial/public/modules/core/css/material.scss */
+.material-icons.md-48 {
+  font-size: 48px; }
+
+/*Rules for using icons as black on a light background.*/
+/* line 33, C:/MEANMaterial/public/modules/core/css/material.scss */
+.material-icons.md-dark {
+  color: black;
+  color: rgba(0, 0, 0, 0.54); }
+
+/* line 34, C:/MEANMaterial/public/modules/core/css/material.scss */
+.material-icons.md-dark.md-inactive {
+  color: black;
+  color: rgba(0, 0, 0, 0.26); }
+
+/*Rules for using icons as white on a dark background.*/
+/* line 37, C:/MEANMaterial/public/modules/core/css/material.scss */
+.material-icons.md-light {
+  color: white; }
+
+/* line 38, C:/MEANMaterial/public/modules/core/css/material.scss */
+.material-icons.md-light.md-inactive {
+  color: white;
+  color: rgba(255, 255, 255, 0.3); }
+
+/*Push <i> down inside material buttons for nice fit.*/
+/* line 41, C:/MEANMaterial/public/modules/core/css/material.scss */
+.md-toolbar-tools > .md-icon-button > i {
+  margin-top: 6px; }
+
+/*Push <i> down inside material buttons in md-menu for nice fit.*/
+/* line 44, C:/MEANMaterial/public/modules/core/css/material.scss */
+.md-menu > .md-icon-button > i {
+  margin-top: 6px; }
+
+/* line 46, C:/MEANMaterial/public/modules/core/css/material.scss */
+a {
+  color: #000; }
+
+/* line 50, C:/MEANMaterial/public/modules/core/css/material.scss */
+a:hover {
+  text-decoration: none;
+  color: #000; }
+
+/* line 55, C:/MEANMaterial/public/modules/core/css/material.scss */
+p > a, li > a {
+  color: #8bc34a; }
+
+/* line 59, C:/MEANMaterial/public/modules/core/css/material.scss */
+form > fieldset > div > a {
+  color: #8bc34a; }
+
+/* line 63, C:/MEANMaterial/public/modules/core/css/material.scss */
+fieldset {
+  border: 0; }
+
+/* line 65, C:/MEANMaterial/public/modules/core/css/material.scss */
+.md-button.md-fab md-icon {
+  margin-right: 8px;
+  margin-bottom: 10px; }
+
+/* line 70, C:/MEANMaterial/public/modules/core/css/material.scss */
+.md-list-item-custom {
+  border-top: 1px solid #EEE; }
+
+/* line 76, C:/MEANMaterial/public/modules/core/css/material.scss */
+.md-custom-menu {
+  margin-top: 20px; }
+
+/* line 80, C:/MEANMaterial/public/modules/core/css/material.scss */
+.md-icon-padding-left {
+  margin-left: 5px; }
+
+/* line 84, C:/MEANMaterial/public/modules/core/css/material.scss */
+.md-whiteframe-background {
+  background: #F6F6F6; }
+
+/*# sourceMappingURL=material.css.map */

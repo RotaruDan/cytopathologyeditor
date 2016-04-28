@@ -1,0 +1,39 @@
+<section data-ng-controller="SettingsController" data-ng-init="findOne()">
+    <div layout="column" layout-align="center center">
+        <md-content layout-padding>
+            <md-whiteframe class="md-whiteframe-z2 md-whiteframe-background" layout="column">
+                <div layout="column" layout-align="center center">
+                    <h3 class="md-headline">Reset {{selectedRow.username}}'s password</h3>
+                </div>
+                <md-divider></md-divider>
+                </br>
+                <form name="userForm" data-ng-submit="resetUserPassword()" class="signin form-horizontal white-text" autocomplete="off" novalidate>
+                    <fieldset>
+                        <div layout layout-sm="column">
+                            <div layout layout-sm="column">
+                                <md-input-container flex>
+                                    <md-icon>
+                                        <i class="material-icons">vpn_key</i>
+                                    </md-icon>
+                                    <input type="password" required id="newPassword" name="newPassword" data-ng-model="passwordDetails.newPassword" placeholder="New Password">
+                                </md-input-container>
+                            </div>
+                            <md-input-container flex>
+                                <md-icon>
+                                    <i class="material-icons">vpn_key</i>
+                                </md-icon>
+                                <input type="password" required id="verifyPassword" name="verifyPassword" data-ng-model="passwordDetails.verifyPassword" placeholder="Repeat Password">
+                            </md-input-container>
+                        </div>
+                        <div class="col-sm-4">
+						  <p ng-show="userForm.verifyPassword.$valid && !userForm.verifyPassword.$pristine && passwordDetails.newPassword!=passwordDetails.verifyPassword" class="help-block" style="color: red;">Passwords don't match.</p>
+					    </div>
+                        <div layout="column" layout-align="center end">
+                            <button type="submit" class="md-button md-raised md-primary">reset password</button>&nbsp;Or&nbsp;
+                    <a class="white-text" href="/#!/settings/accounts">Cancel</a>
+                    </fieldset>
+                </form>
+            </md-whiteframe>
+        </md-content>
+    </div>
+</section>

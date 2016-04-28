@@ -1,0 +1,29 @@
+@media (min-width: 992px) {
+  /* line 5, C:/MEANMaterial/public/modules/users/css/users.scss */
+  .nav-users {
+    position: fixed; } }
+
+/* line 9, C:/MEANMaterial/public/modules/users/css/users.scss */
+.remove-account-container {
+  display: inline-block;
+  position: relative; }
+
+/* line 13, C:/MEANMaterial/public/modules/users/css/users.scss */
+.btn-remove-account {
+  top: 10px;
+  right: 10px;
+  position: absolute; }
+
+/* line 18, C:/MEANMaterial/public/modules/users/css/users.scss */
+.user-list {
+  width: 100%; }
+
+/* line 21, C:/MEANMaterial/public/modules/users/css/users.scss */
+.user-filter {
+  max-width: 300px; }
+
+/* line 24, C:/MEANMaterial/public/modules/users/css/users.scss */
+.user-card-menu-item {
+  margin-right: 15px; }
+
+/*# sourceMappingURL=users.css.map */

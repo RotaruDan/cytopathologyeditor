@@ -1,0 +1,60 @@
+<section data-ng-controller="SettingsController" data-ng-init="findOne()">
+    <div layout="column" layout-align="center center">
+        <md-content layout-padding>
+            <md-whiteframe class="md-whiteframe-z2 md-whiteframe-background" layout="column">
+                <div layout="column" layout-align="center center">
+                    <h3 class="md-headline">Edit {{selectedRow.username}}'s profile</h3>
+                </div>
+                <md-divider></md-divider>
+                </br>
+                <form name="userForm" data-ng-submit="updateUserProfile(userForm.$valid)" class="signin form-horizontal" autocomplete="off">
+                    <fieldset>
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <md-icon>
+                                    <i class="material-icons">person</i>
+                                </md-icon>
+                                <input type="text" required id="firstName" name="firstName" data-ng-model="selectedRow.firstName" placeholder="First name">
+                            </md-input-container>
+                            <md-input-container flex>
+                                <md-icon>
+                                    <i class="material-icons">people</i>
+                                </md-icon>
+                                <input type="text" required id="lastName" name="lastName" data-ng-model="selectedRow.lastName" placeholder="Last name">
+                            </md-input-container>
+                        </div>
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <md-icon>
+                                    <i class="material-icons">email</i>
+                                </md-icon>
+                                <input type="email" required id="email" name="email" data-ng-model="selectedRow.email" placeholder="E-mail">
+                            </md-input-container>
+                            <md-select placeholder="Role" ng-model="selectedRow.role">
+                                <md-option value="user">User</md-option>
+                                <md-option value="admin">Admin</md-option>
+                            </md-select>
+                        </div>
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <md-icon>
+                                    <i class="material-icons">account_circle</i>
+                                </md-icon>
+                                <input type="text" required id="username" name="username" data-ng-model="selectedRow.username" placeholder="Username">
+                            </md-input-container>
+                        </div>
+                        <div layout="column" layout-align="center end">
+                            <button type="submit" class="md-button md-raised md-primary">save profile</button>
+                        </div>
+                        <div data-ng-show="success">
+                           <strong>Profile Saved Successfully</strong>
+                        </div>
+                        <div data-ng-show="error">
+                            <strong data-ng-bind="error"></strong>
+                        </div>
+                    </fieldset>
+                </form>
+            </md-whiteframe>
+        </md-content>
+    </div>
+</section>

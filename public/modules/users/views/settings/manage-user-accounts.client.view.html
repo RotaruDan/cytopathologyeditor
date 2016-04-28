@@ -1,0 +1,160 @@
+<section data-ng-controller="SettingsController" data-ng-init="find()">
+    
+        <div layout="row" layout-sm="column" layout-margin layout-padding>
+            <div class="user-filter" flex>
+                <md-whiteframe class="md-whiteframe-z2" layout layout-align="center center">
+                    <div layout="column" layout-sm="column">
+                        <h3 class="md-headline">Manage User Accounts</h3>
+                        <md-input-container flex>
+                            <input type="text" ng-model="searchText.username" placeholder="Search">
+                        </md-input-container>
+                        <md-checkbox class="md-warn" aria-label="Admin">
+                            Admin
+                        </md-checkbox>
+                        <md-checkbox class="md-warn" aria-label="User">
+                            User
+                        </md-checkbox>
+                        <md-checkbox class="md-warn" aria-label="Locked">
+                            Locked
+                        </md-checkbox>
+                    </div>
+                </md-whiteframe>
+            </div>
+            <div flex>
+                <div layout="column">
+                    <div flex>
+                        <md-whiteframe class="md-whiteframe-z2" layout>
+                            <md-list class="user-list">
+                                <div layout="row">
+                                    <md-subheader>Admins</md-subheader>
+                                    <span flex></span>
+                                    <md-menu>
+                                        <md-button class="md-icon-button" aria-label="Add" ng-click="$mdOpenMenu()">
+                                            <i class="material-icons">add</i>
+                                        </md-button>
+                                        <md-menu-content width="3">
+                                            <md-menu-item>
+                                                <md-button ng-click="go('/settings/accounts/create')">
+                                                    <md-icon>
+                                                        <i class="material-icons">person_add</i>
+                                                    </md-icon>
+                                                    Create new user
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </div>
+                                <md-list-item class="md-3-line md-list-item-custom" ng-repeat="user in users | filter:searchText" ng-if="user.role==='admin'">
+                                    <md-icon class="md-icon-padding-left">
+                                        <i class="material-icons md-48">account_circle</i>
+                                    </md-icon>
+                                    <div class="md-list-item-text">
+                                        <h3>{{ user.username }}</h3>
+                                        <p>{{ user.firstName }} {{ user.lastName }}</p>
+                                        <p>{{ user.email }}</p>
+                                    </div>
+                                    <md-menu class="md-custom-menu">
+                                        <md-button class="md-icon-button" aria-label="Add" ng-click="$mdOpenMenu()">
+                                            <i class="material-icons">more_vert</i>
+                                        </md-button>
+                                        <md-menu-content width="3">
+                                            <md-menu-item>
+                                                <md-button ng-click="go('/settings/accounts/{{user._id}}/edit/admin')">
+                                                    <md-icon>
+                                                        <i class="material-icons">mode_edit</i>
+                                                    </md-icon>
+                                                    Edit user
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item>
+                                                <md-button ng-click="go('/settings/accounts/reset/{{user._id}}')">
+                                                    <md-icon>
+                                                        <i class="material-icons">vpn_key</i>
+                                                    </md-icon>
+                                                    Reset password
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item>
+                                                <md-button ng-click="remove(user)">
+                                                    <md-icon>
+                                                        <i class="material-icons">delete</i>
+                                                    </md-icon>
+                                                    Delete user
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </md-list-item>
+                            </md-list>
+                        </md-whiteframe>
+                        </br>
+                        <md-whiteframe class="md-whiteframe-z2" layout>
+                            <md-list class="user-list">
+                                <div layout="row">
+                                    <md-subheader>Users</md-subheader>
+                                    <span flex></span>
+                                    <md-menu>
+                                        <md-button class="md-icon-button" aria-label="Add" ng-click="$mdOpenMenu()">
+                                            <i class="material-icons">add</i>
+                                        </md-button>
+                                        <md-menu-content width="3">
+                                            <md-menu-item>
+                                                <md-button ng-click="go('/settings/accounts/create')">
+                                                    <md-icon>
+                                                        <i class="material-icons">person_add</i>
+                                                    </md-icon>
+                                                    Create new user
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </div>
+                                <md-list-item class="md-3-line md-list-item-custom" ng-repeat="user in users | filter:searchText" ng-if="user.role==='user'">
+                                    <md-icon class="md-icon-padding-left">
+                                        <i class="material-icons md-48">account_circle</i>
+                                    </md-icon>
+                                    <div class="md-list-item-text">
+                                        <h3>{{ user.username }}</h3>
+                                        <p>{{ user.firstName }} {{ user.lastName }}</p>
+                                        <p>{{ user.email }}</p>
+                                    </div>
+                                    <md-menu class="md-custom-menu">
+                                        <md-button class="md-icon-button" aria-label="Add" ng-click="$mdOpenMenu()">
+                                            <i class="material-icons">more_vert</i>
+                                        </md-button>
+                                        <md-menu-content width="3">
+                                            <md-menu-item>
+                                                <md-button ng-click="go('/settings/accounts/{{user._id}}/edit/admin')">
+                                                    <md-icon>
+                                                        <i class="material-icons">mode_edit</i>
+                                                    </md-icon>
+                                                    Edit user
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item>
+                                                <md-button ng-click="go('/settings/accounts/reset/{{user._id}}')">
+                                                    <md-icon>
+                                                        <i class="material-icons">vpn_key</i>
+                                                    </md-icon>
+                                                    Reset password
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item>
+                                                <md-button ng-click="remove(user)">
+                                                    <md-icon>
+                                                        <i class="material-icons">delete</i>
+                                                    </md-icon>
+                                                    Delete user
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </md-list-item>
+                            </md-list>
+                        </md-whiteframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-content>
+</section>
