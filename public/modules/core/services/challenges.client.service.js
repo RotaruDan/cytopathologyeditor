@@ -14,7 +14,7 @@ angular.module('core')
         };
     }).factory('Challenges', ['$resource',
         function ($resource) {
-            return $resource('/challenges', {
+            return $resource('/challenges/:id', {
                 challengeId: '@_id'
             }, {
                 update: {

@@ -31,7 +31,7 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
             angular.forEach($scope.files, function (obj) {
                 formData.append('files[]', obj.lfFile);
             });
-            $http.post('/upload/571cd46c5d1f6d7c066d9bd7', formData, {
+            $http.post('/upload/571cd46c5d1f6d7c066d9bd9', formData, {
                 transformRequest: angular.identity,
                 headers: {
                     'Content-Type': undefined,
@@ -39,7 +39,22 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
                 }
             }).success(function () {
                 console.log('success!!');
-                $scope.challenge.$update();
+
+                var j = 0;
+                $scope.challenge.challengeFile.textControl.answers = [];
+                $scope.mcqs.forEach(function (question) {
+
+                    $scope.challenge.challengeFile.textControl.answers.
+                        push(question.string);
+                    if (question.isCorrect) {
+                        $scope.challenge.challengeFile.textControl.correctAnswer = j;
+                    }
+                    ++j;
+                });
+
+                Challenges.update({ id: '571cd46c5d1f6d7c066d9bd9' },
+                    $scope.challenge);
+
             }).error(function () {
                 console.log('error!!');
             });
@@ -55,7 +70,7 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
             'textControl': {
                 'class': 'es.eucm.cytochallenge.model.control.MultipleAnswerControl',
                 'text': '',
-                'answers': [ ],
+                'answers': [],
                 'correctAnswer': 0
             }
         };
@@ -66,7 +81,6 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
 
         var canv = document.getElementById('board');
         var ctx = canv.getContext('2d');
-
 
         var imageObj = new Image();
         $scope.$watchCollection('files', function (newValue, oldValue) {
@@ -96,8 +110,16 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
 
         //------------------
 
-        $scope.description = '';
         $scope.mcqs = [];
+        var i = 0;
+        $scope.challenge.challengeFile.textControl.answers.
+            forEach(function (answer) {
+                $scope.mcqs.push({
+                    string: answer,
+                    isCorrect: i === $scope.challenge.challengeFile.textControl.correctAnswer
+                });
+                ++i;
+            });
 
         $scope.addToList = function (list, object) {
             if (!$scope[list]) {

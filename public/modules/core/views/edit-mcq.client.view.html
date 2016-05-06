@@ -10,7 +10,7 @@
 
                 <md-input-container flex>
                     <label>Question</label>
-                    <textarea ng-model="description"></textarea>
+                    <textarea ng-model="challenge.challengeFile.textControl.text"></textarea>
                 </md-input-container>
                 <div flex>
                     <strong>Options</strong>
@@ -28,11 +28,14 @@
                                     <label>Option {{$index + 1}}</label>
                                     <input ng-model="option.string">
                                 </md-input-container>
+                                <md-checkbox ng-model="option.isCorrect" aria-label="Is a correct option">
+                                </md-checkbox>
                                 <md-button aria-label="Remove"
                                            ng-click="deleteFromList('mcqs', option)"
                                            class="md-icon-button">
                                     <md-icon md-font-set="material-icons">remove</md-icon>
                                 </md-button>
+
                             </div>
                         </li>
                     </ul>
@@ -42,7 +45,7 @@
                                      lf-files="files" lf-option="optoin08"
                                      lf-placeholder="Pick Image" lf-browse-label="Search"
                                      lf-remove-label="Delete"
-                                     lf-drag-and-drop-label="Drag & Drop an image here!"
+                                     lf-drag-and-drop-label="Drag & Drop an image (png or jpg) here!"
                                      drag preview></lf-ng-md-file-input>
                 <md-button ng-click="onSubmit()" class="md-raised md-primary">Save</md-button>
             </div>

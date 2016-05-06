@@ -45,14 +45,10 @@ module.exports = function (app) {
     //manage challenges -> new challenges
     app.route('/challenges').post(challenges.create);
 
-    //manage users -> unlock/delete account
-    app.route('/challenges/:challengeId')
-        .delete(challenges.delete);
-
     //manage users -> edit account
     app.route('/challenges/:challengeId')
-        .get(challenges.read);
-    app.route('/challenges/:challengeId')
-        .put(challenges.update);
+        .get(challenges.read)
+        .put(challenges.update)
+        .delete(challenges.delete);
 
 };

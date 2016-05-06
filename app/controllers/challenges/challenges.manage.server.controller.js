@@ -73,6 +73,8 @@ exports.create = function (req, res) {
 exports.update = function (req, res, next) {
     var newChallenge = req.body; //note: req.user is the person who is signed in! body is the value that was passed.
 
+    console.log('update', newChallenge);
+
     Challenge.findOne({
         _id: newChallenge._id
     }, function (err, challenge) {
