@@ -1,7 +1,7 @@
 'use strict';
 
 
-angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Challenges', '$location',
+angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 'Challenges', '$location',
     '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
     function ($scope, Challenges, $location,
               $mdDialog, QueryParams, $http, sharedProperties) {

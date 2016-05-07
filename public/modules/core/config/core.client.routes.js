@@ -23,6 +23,18 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
             state('editdnd', {
                 url: '/challenges/edit/:challengeId/dnd',
                 templateUrl: 'modules/core/views/edit-dnd.client.view.html'
+            }).
+            state('editmicq', {
+                url: '/challenges/edit/:challengeId/micq',
+                templateUrl: 'modules/core/views/edit-micq.client.view.html'
+            }).
+            state('editftb', {
+                url: '/challenges/edit/:challengeId/ftb',
+                templateUrl: 'modules/core/views/edit-ftb.client.view.html'
+            }).
+            state('editpolygon', {
+                url: '/challenges/edit/:challengeId/polygon',
+                templateUrl: 'modules/core/views/edit-polygon.client.view.html'
             });
     }
 ]);

@@ -2,7 +2,7 @@
     <div layout="row" layout-align="center" layout-margin layout-fill layout-padding>
         <md-whiteframe flex="66" class="md-whiteframe-z3" layout layout-align="center center">
 
-           <canvas flex layout-align="center center" class="col-md-8" id="board" width="1024" height="552"></canvas>
+            <canvas flex layout-align="center center" class="col-md-8" id="board" width="1024" height="552"></canvas>
 
         </md-whiteframe>
         <md-whiteframe class="md-whiteframe-z3" flex layout layout-align="center center">
@@ -20,25 +20,23 @@
                     </md-button>
                 </div>
                 <div layout="column" flex>
-                    <ul flex>
-                        <li ng-repeat="option in mcqs">
-                            <div layout="row" layout-align="center" flex>
+                    <div ng-repeat="option in mcqs">
+                        <div layout="row" layout-align="center" flex>
 
-                                <md-input-container flex>
-                                    <label>Option {{$index + 1}}</label>
-                                    <input ng-model="option.string">
-                                </md-input-container>
-                                <md-checkbox ng-model="option.isCorrect" aria-label="Is a correct option">
-                                </md-checkbox>
-                                <md-button aria-label="Remove"
-                                           ng-click="deleteFromList('mcqs', option)"
-                                           class="md-icon-button">
-                                    <md-icon md-font-set="material-icons">remove</md-icon>
-                                </md-button>
+                            <md-input-container flex>
+                                <label>Option {{$index + 1}}</label>
+                                <input ng-model="option.string">
+                            </md-input-container>
+                            <md-checkbox ng-model="option.isCorrect" aria-label="Is a correct option">
+                            </md-checkbox>
+                            <md-button aria-label="Remove"
+                                       ng-click="deleteFromList('mcqs', option)"
+                                       class="md-icon-button">
+                                <md-icon md-font-set="material-icons">remove</md-icon>
+                            </md-button>
 
-                            </div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <lf-ng-md-file-input flex accept="image/*"

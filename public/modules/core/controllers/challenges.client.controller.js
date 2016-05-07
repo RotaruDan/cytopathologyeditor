@@ -79,11 +79,13 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
 
         $scope.showDialog = showDialog;
 
-        $scope.types = ['mcq', 'dnd'];
-        $scope.readTypes = ['Multiple Choice Question', 'Drag And Drop'];
+        $scope.types = ['mcq', 'dnd', 'micq', 'ftb', 'polygon'];
+        $scope.readTypes = ['Multiple Choice Question', 'Drag And Drop',
+                            'Multiple Image Choice Question', 'Fill The Options',
+                            'Highlight Image Area'];
 
         function updateChallenges() {
-            $scope.challenges = Challenges.query(function () {
+            $scope.challenges = Challenges.get(function () {
                 console.log($scope.challenges[0]);
             });
         }

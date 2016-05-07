@@ -11,14 +11,19 @@ var _ = require('lodash'),
 /**
  * Challenge middleware
  */
-exports.challengeByID = function(req, res, next, id) {
+exports.challengeById = function(req, res) {
     Challenge.findOne({
-        _id: id
+        _id: req.params.challengeId
     }).exec(function(err, challenge) {
-        if (err) return next(err);
-        if (!challenge) return next(new Error('Failed to load Challenge ' + id));
-        req.challenge = challenge;
-        next();
+        if (err) {
+            return res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            if (!challenge) return res.status(404).json('No challenge found');
+
+            res.json(challenge);
+        }
     });
 };
 
@@ -35,16 +40,6 @@ exports.list = function (req, res) {
             res.json(challenges);
         }
     });
-};
-
-/**
- * Read a single challenge.
- */
-exports.read = function(req, res) {
-    // Expects an array, not an object - so...
-    var challenges = [];
-    challenges.push(req.challenge);
-    res.jsonp(challenges);
 };
 
 /**
@@ -76,7 +71,7 @@ exports.update = function (req, res, next) {
     console.log('update', newChallenge);
 
     Challenge.findOne({
-        _id: newChallenge._id
+        _id: req.params.challengeId
     }, function (err, challenge) {
         if (!err && challenge) {
             challenge.challengeFile = newChallenge.challengeFile;

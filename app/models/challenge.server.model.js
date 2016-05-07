@@ -11,7 +11,7 @@ var mongoose = require('mongoose'),
  */
 var ChallengeSchema = new Schema({
     challengeFile: {
-        type: String,
+        type: Schema.Types.Mixed,
         required: 'Please add a challenge file!'
     },
     name: {

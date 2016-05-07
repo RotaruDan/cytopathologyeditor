@@ -44,6 +44,7 @@
     "swig": "~1.4.1"
   },
   "devDependencies": {
+    "grunt": "*",
     "supertest": "~0.14.0",
     "should": "~4.1.0",
     "grunt-env": "~0.4.1",

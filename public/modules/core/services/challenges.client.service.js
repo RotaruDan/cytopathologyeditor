@@ -15,23 +15,24 @@ angular.module('core')
     }).factory('Challenges', ['$resource',
         function ($resource) {
             return $resource('/challenges/:id', {
-                challengeId: '@_id'
+                id: '@_id'
             }, {
                 update: {
                     method: 'PUT'
-                }
+                },
+                query: {method: 'GET', isArray: false},
+
+                get: {method: 'GET', isArray: true}
             });
         }
     ]).factory('QueryParams', [
         function () {
 
             return {
-                getQueryParam: function (param) {
-                    var result = window.location.search.match(
-                        new RegExp('(\\?|&)' + param + '(\\[\\])?=([^&]*)')
-                    );
+                getChallengeId: function () {
+                    var result = window.location.hash.substr(19, 24);
 
-                    return result ? result[3] : false;
+                    return result;
                 }
             };
         }
