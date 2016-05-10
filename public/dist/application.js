@@ -44,7 +44,7 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 
 //Set up the color theme for the application https://material.angularjs.org/latest/#/Theming/01_introduction
 angular.module(ApplicationConfiguration.applicationModuleName)
-    .config(["$mdThemingProvider", function ($mdThemingProvider) {
+    .config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             //Custom background palette
             .backgroundPalette('light-blue', {
@@ -52,7 +52,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
             })
             .primaryPalette('blue')
             .accentPalette('light-blue');
-    }]);
+    });
 
 //Then define the init function for starting up the application
 angular.element(document).ready(function () {
@@ -210,7 +210,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                             'Highlight Image Area'];
 
         function updateChallenges() {
-            $scope.challenges = Challenges.query(function () {
+            $scope.challenges = Challenges.get(function () {
                 console.log($scope.challenges[0]);
             });
         }
@@ -934,9 +934,10 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
         // Stores the 'Options' added by the user
         $scope.mcqs = [];
 
+        var imageObj = new Image();
         Challenges.query({id: challengeId}).
             $promise.then(function (res) {
-                console.log(JSON.stringify(res.challengeFile));
+                console.log('Current challenge'J, SON.stringify(res.challengeFile));
 
                 $scope.challenge = res;
 
@@ -956,6 +957,7 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                         }
                     };
                 }
+                imageObj.src = 'uploads/' + res._id +  res.challengeFile.imagePath;
                 var i = 0;
                 $scope.challenge.challengeFile.textControl.answers.
                     forEach(function (answer) {
@@ -979,7 +981,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
         var canv = document.getElementById('board');
         var ctx = canv.getContext('2d');
 
-        var imageObj = new Image();
         $scope.$watchCollection('files', function (newValue, oldValue) {
             if (newValue && newValue.length === 1) {
 
@@ -1075,22 +1076,22 @@ angular.module('core').controller('HeaderController', ['$scope', '$location', 'A
         $scope.toggleRight = buildToggler('right');
 	}
 ])
-.controller('LeftCtrl', ["$scope", "$timeout", "$mdSidenav", "$log", function ($scope, $timeout, $mdSidenav, $log) {
+.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     $scope.close = function () {
         $mdSidenav('left').close()
         .then(function () {
             $log.debug('close LEFT is done');
         });
     };
-}])
-.controller('RightCtrl', ["$scope", "$timeout", "$mdSidenav", "$log", function ($scope, $timeout, $mdSidenav, $log) {
+})
+.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
     $scope.close = function () {
         $mdSidenav('right').close()
         .then(function () {
             $log.debug('close RIGHT is done');
         });
     };
-}]);
+});
 'use strict';
 
 
@@ -1122,7 +1123,9 @@ angular.module('core')
                 update: {
                     method: 'PUT'
                 },
-                query: {method: 'GET', isArray: false}
+                query: {method: 'GET', isArray: false},
+
+                get: {method: 'GET', isArray: true}
             });
         }
     ]).factory('QueryParams', [

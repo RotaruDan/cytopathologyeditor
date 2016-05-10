@@ -9,7 +9,7 @@ module.exports = function (app) {
 
     var storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            var pathDir = './uploads/' + req.params.challengeId + '/';
+            var pathDir = './public/uploads/' + req.params.challengeId + '/';
             fs.mkdir(pathDir, function (e) {
                 if (!e || (e && e.code === 'EEXIST')) {
                     cb(null, pathDir);
