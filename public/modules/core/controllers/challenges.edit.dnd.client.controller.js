@@ -16,15 +16,15 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
         // Stores the 'Options' added by the user
         $scope.mcqs = [];
 
-        var updateCurrentChallengeModel = function() {
+        var updateCurrentChallengeModel = function () {
 
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
             var j = 0;
 
             // Copy into 'answers' the $scope.mcqs added by the user
-            if($scope.files && $scope.files.length > 0) {
-                if($scope.files[0].lfFileName) {
+            if ($scope.files && $scope.files.length > 0) {
+                if ($scope.files[0].lfFileName) {
                     $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
                 }
             }
@@ -40,6 +40,8 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             });
 
             $scope.challenge.$update();
+
+            queryChallenge();
         };
 
         var challengeId = QueryParams.getChallengeId();
@@ -47,10 +49,11 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
         $scope.onSubmit = function () {
             var formData = new FormData();
 
-
-            angular.forEach($scope.files, function (obj) {
-                formData.append('files', obj.lfFile);
-            });
+            if ($scope.files && $scope.files.length && $scope.files[0].lfFile) {
+                formData.append('files', $scope.files[0].lfFile);
+            } else {
+                return updateCurrentChallengeModel();
+            }
 
             // Upload the selected Photo
             $http.post('/upload/' + challengeId, formData, {
@@ -61,7 +64,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                 }
             }).success(function (res) {
                 console.log('success!!', res);
-
                 updateCurrentChallengeModel();
             }).error(function (err) {
                 console.log('error!!', err);
@@ -73,43 +75,52 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
         //-----------------------------
 
 
+        var thisFiles = $scope.files;
         var imageObj = new Image();
-        Challenges.query({id: challengeId}).
-            $promise.then(function (res) {
-                console.log(JSON.stringify(res.challengeFile));
+        console.log('before query', $scope.files);
+        var queryChallenge = function() {
+            Challenges.query({id: challengeId}).
+                $promise.then(function (res) {
+                    console.log(JSON.stringify(res.challengeFile));
 
-                $scope.challenge = res;
+                    $scope.challenge = res;
 
-                if (!$scope.challenge.challengeFile ||
-                    (typeof $scope.challenge.challengeFile === 'string' ||
-                    $scope.challenge.challengeFile instanceof String)) {
-                    // This is the initial Challenge Data model for a
-                    // Multiple Choice Question challenge
-                    $scope.challenge.challengeFile = {
-                        'class': 'es.eucm.cytochallenge.model.TextChallenge',   // Can be ignored (used by the client json parser)
-                        'imagePath': '',
-                        'textControl': {
-                            'class': 'es.eucm.cytochallenge.model.control.MultipleAnswerControl',   // Can be ignored (used by the client json parser)
-                            'text': '',
-                            'answers': [],
-                            'correctAnswer': 0
-                        }
-                    };
-                }
-                var i = 0;
-                imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
-                $scope.challenge.challengeFile.textControl.answers.
-                    forEach(function (answer) {
-                        $scope.mcqs.push({
-                            string: answer,
-                            isCorrect: i === $scope.challenge.challengeFile.textControl.correctAnswer
+                    if (!$scope.challenge.challengeFile ||
+                        (typeof $scope.challenge.challengeFile === 'string' ||
+                        $scope.challenge.challengeFile instanceof String)) {
+                        // This is the initial Challenge Data model for a
+                        // Multiple Choice Question challenge
+                        $scope.challenge.challengeFile = {
+                            'class': 'es.eucm.cytochallenge.model.TextChallenge',
+                            'imagePath': '',
+                            'textControl': {
+                                'class': 'es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl',
+                                'text': '',
+                                'answers': []
+                            }
+                        };
+                    }
+                    var i = 0;
+                    imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
+                    console.log(thisFiles);
+                    thisFiles[0].lfFileName = res.challengeFile.imagePath;
+
+
+                    $scope.challenge.challengeFile.textControl.answers.
+                        forEach(function (answer) {
+                            $scope.mcqs[i] = {
+                                string: answer,
+                                isCorrect: i === $scope.challenge.challengeFile.textControl.correctAnswer
+                            };
+                            ++i;
                         });
-                        ++i;
-                    });
-            }, function (error) {
-                console.log('error retrieving challenge', error);
+                }, function (error) {
+                    console.log('error retrieving challenge', error);
 
-            });
+                });
+        };
+
+        queryChallenge();
 
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');

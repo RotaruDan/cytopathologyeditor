@@ -1,12 +1,72 @@
 'use strict';
 
 
-
 angular.module('core').controller('ChallengesController', ['$scope', 'Challenges', '$location',
     '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
     function ($scope, Challenges, $location, $mdDialog, QueryParams, $http, sharedProperties) {
         // ChallengesController controller logic
         // ...
+
+
+        $scope.types = ['mcq', 'dnd', 'micq', 'ftb', 'polygon'];
+        $scope.readTypes = ['Multiple Choice Question', 'Drag And Drop',
+            'Multiple Image Choice Question', 'Fill The Options',
+            'Highlight Image Area'];
+        var challengesFiles = [
+            {
+                'class': 'es.eucm.cytochallenge.model.TextChallenge',   // Can be ignored (used by the client json parser)
+                'imagePath': '',
+                'textControl': {
+                    'class': 'es.eucm.cytochallenge.model.control.MultipleAnswerControl',   // Can be ignored (used by the client json parser)
+                    'text': '',
+                    'answers': [],
+                    'correctAnswer': 0
+                }
+            },
+
+            {
+                'class': 'es.eucm.cytochallenge.model.TextChallenge',
+                'imagePath': '',
+                'textControl': {
+                    'class': 'es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl',
+                    'text': '',
+                    'answers': []
+                }
+            },
+            {
+                class: 'es.eucm.cytochallenge.model.TextChallenge',
+                textControl: {
+                    class: 'es.eucm.cytochallenge.model.control.MultipleImageAnswerControl',
+                    text: '',
+                    answers: [],
+                    correctAnswers: []
+                }
+            },
+            {
+                'class': 'es.eucm.cytochallenge.model.TextChallenge',
+                'imagePath': '',
+                'textControl': {
+                    'class': 'es.eucm.cytochallenge.model.control.filltheblank.FillTheBlankControl',
+                    'text': '',
+                    'statements': [
+                    ]
+                }
+            },
+            {
+                'class': 'es.eucm.cytochallenge.model.TextChallenge',
+                'imagePath': '',
+                'textControl': {
+                    'class': 'es.eucm.cytochallenge.model.control.InteractiveZoneControl',
+                    'text': '',
+                    'canvasWidth': 1024,
+                    'canvasHeight': 552,
+                    'answers': [
+                    ],
+                    'correctAnswers': []
+                }
+            }
+        ];
+
         function showDialog($event) {
             var parentEl = angular.element(document.body);
 
@@ -19,7 +79,6 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                     $mdDialog.hide();
                 };
                 $scope.addChallenge = function () {
-                    $scope.challenge.challengeFile = 'test.zip';
                     $scope.challenge.$save(function (err) {
                         $scope.closeDialog();
                         updateChallenges();
@@ -34,6 +93,8 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                     }
                     $scope.selectedReadType = readTypes[index];
                     $scope.challenge.type = types[index];
+                    $scope.challenge.challengeFile =
+                        challengesFiles[index];
                 };
             }
 
@@ -79,10 +140,6 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
 
         $scope.showDialog = showDialog;
 
-        $scope.types = ['mcq', 'dnd', 'micq', 'ftb', 'polygon'];
-        $scope.readTypes = ['Multiple Choice Question', 'Drag And Drop',
-                            'Multiple Image Choice Question', 'Fill The Options',
-                            'Highlight Image Area'];
 
         function updateChallenges() {
             $scope.challenges = Challenges.get(function () {

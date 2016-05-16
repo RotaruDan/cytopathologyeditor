@@ -44,7 +44,7 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 
 //Set up the color theme for the application https://material.angularjs.org/latest/#/Theming/01_introduction
 angular.module(ApplicationConfiguration.applicationModuleName)
-    .config(function ($mdThemingProvider) {
+    .config(["$mdThemingProvider", function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             //Custom background palette
             .backgroundPalette('light-blue', {
@@ -52,7 +52,7 @@ angular.module(ApplicationConfiguration.applicationModuleName)
             })
             .primaryPalette('blue')
             .accentPalette('light-blue');
-    });
+    }]);
 
 //Then define the init function for starting up the application
 angular.element(document).ready(function () {
@@ -234,6 +234,42 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
     function ($scope, Challenges, $location,
               $mdDialog, QueryParams, $http, sharedProperties) {
 
+
+        // This 'files' var stores the uploaded images from the widget
+        $scope.files = [{
+            lfDataUrl: '',
+            lfFileName: ''
+        }];
+
+        // Stores the 'Options' added by the user
+        $scope.mcqs = [];
+
+        var updateCurrentChallengeModel = function() {
+
+            // If the photo was correctly uploaded
+            // Upload the challenge JSON Data Model
+            var j = 0;
+
+            // Copy into 'answers' the $scope.mcqs added by the user
+            if($scope.files && $scope.files.length > 0) {
+                if($scope.files[0].lfFileName) {
+                    $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
+                }
+            }
+            $scope.challenge.challengeFile.textControl.answers = [];
+            $scope.mcqs.forEach(function (question) {
+
+                $scope.challenge.challengeFile.textControl.answers.
+                    push(question.string);
+                if (question.isCorrect) {
+                    $scope.challenge.challengeFile.textControl.correctAnswer = j;
+                }
+                ++j;
+            });
+
+            $scope.challenge.$update();
+        };
+
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
         $scope.onSubmit = function () {
@@ -254,38 +290,18 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             }).success(function (res) {
                 console.log('success!!', res);
 
-                // If the photo was correctly uploaded
-                // Upload the challenge JSON Data Model
-                var j = 0;
-
-                // Copy into 'answers' the $scope.mcqs added by the user
-                $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
-                $scope.challenge.challengeFile.textControl.answers = [];
-                $scope.mcqs.forEach(function (question) {
-
-                    $scope.challenge.challengeFile.textControl.answers.
-                        push(question.string);
-                    if (question.isCorrect) {
-                        $scope.challenge.challengeFile.textControl.correctAnswer = j;
-                    }
-                    ++j;
-                });
-
-                // TODO this UPDATE method doesn't work...try $scope.challenge.$save()?
-                var challengeFile = $scope.challenge.challengeFile;
-                $scope.challenge.$update();
-
-            }).error(function () {
-                console.log('error!!');
+                updateCurrentChallengeModel();
+            }).error(function (err) {
+                console.log('error!!', err);
+                updateCurrentChallengeModel();
             });
         };
 
 
         //-----------------------------
 
-        // Stores the 'Options' added by the user
-        $scope.mcqs = [];
 
+        var imageObj = new Image();
         Challenges.query({id: challengeId}).
             $promise.then(function (res) {
                 console.log(JSON.stringify(res.challengeFile));
@@ -309,6 +325,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                     };
                 }
                 var i = 0;
+                imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
                 $scope.challenge.challengeFile.textControl.answers.
                     forEach(function (answer) {
                         $scope.mcqs.push({
@@ -322,16 +339,10 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
             });
 
-        // This 'files' var stores the uploaded images from the widget
-        $scope.files = [{
-            lfDataUrl: ''
-        }];
-
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');
         var ctx = canv.getContext('2d');
 
-        var imageObj = new Image();
         $scope.$watchCollection('files', function (newValue, oldValue) {
             if (newValue && newValue.length === 1) {
 
@@ -396,6 +407,42 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
     function ($scope, Challenges, $location,
               $mdDialog, QueryParams, $http, sharedProperties) {
 
+
+        // This 'files' var stores the uploaded images from the widget
+        $scope.files = [{
+            lfDataUrl: '',
+            lfFileName: ''
+        }];
+
+        // Stores the 'Options' added by the user
+        $scope.mcqs = [];
+
+        var updateCurrentChallengeModel = function() {
+
+            // If the photo was correctly uploaded
+            // Upload the challenge JSON Data Model
+            var j = 0;
+
+            // Copy into 'answers' the $scope.mcqs added by the user
+            if($scope.files && $scope.files.length > 0) {
+                if($scope.files[0].lfFileName) {
+                    $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
+                }
+            }
+            $scope.challenge.challengeFile.textControl.answers = [];
+            $scope.mcqs.forEach(function (question) {
+
+                $scope.challenge.challengeFile.textControl.answers.
+                    push(question.string);
+                if (question.isCorrect) {
+                    $scope.challenge.challengeFile.textControl.correctAnswer = j;
+                }
+                ++j;
+            });
+
+            $scope.challenge.$update();
+        };
+
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
         $scope.onSubmit = function () {
@@ -416,38 +463,18 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
             }).success(function (res) {
                 console.log('success!!', res);
 
-                // If the photo was correctly uploaded
-                // Upload the challenge JSON Data Model
-                var j = 0;
-
-                // Copy into 'answers' the $scope.mcqs added by the user
-                $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
-                $scope.challenge.challengeFile.textControl.answers = [];
-                $scope.mcqs.forEach(function (question) {
-
-                    $scope.challenge.challengeFile.textControl.answers.
-                        push(question.string);
-                    if (question.isCorrect) {
-                        $scope.challenge.challengeFile.textControl.correctAnswer = j;
-                    }
-                    ++j;
-                });
-
-                // TODO this UPDATE method doesn't work...try $scope.challenge.$save()?
-                var challengeFile = $scope.challenge.challengeFile;
-                $scope.challenge.$update();
-
-            }).error(function () {
-                console.log('error!!');
+                updateCurrentChallengeModel();
+            }).error(function (err) {
+                console.log('error!!', err);
+                updateCurrentChallengeModel();
             });
         };
 
 
         //-----------------------------
 
-        // Stores the 'Options' added by the user
-        $scope.mcqs = [];
 
+        var imageObj = new Image();
         Challenges.query({id: challengeId}).
             $promise.then(function (res) {
                 console.log(JSON.stringify(res.challengeFile));
@@ -471,6 +498,7 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                     };
                 }
                 var i = 0;
+                imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
                 $scope.challenge.challengeFile.textControl.answers.
                     forEach(function (answer) {
                         $scope.mcqs.push({
@@ -484,16 +512,10 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
 
             });
 
-        // This 'files' var stores the uploaded images from the widget
-        $scope.files = [{
-            lfDataUrl: ''
-        }];
-
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');
         var ctx = canv.getContext('2d');
 
-        var imageObj = new Image();
         $scope.$watchCollection('files', function (newValue, oldValue) {
             if (newValue && newValue.length === 1) {
 
@@ -558,6 +580,42 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
     function ($scope, Challenges, $location,
               $mdDialog, QueryParams, $http, sharedProperties) {
 
+
+        // This 'files' var stores the uploaded images from the widget
+        $scope.files = [{
+            lfDataUrl: '',
+            lfFileName: ''
+        }];
+
+        // Stores the 'Options' added by the user
+        $scope.mcqs = [];
+
+        var updateCurrentChallengeModel = function() {
+
+            // If the photo was correctly uploaded
+            // Upload the challenge JSON Data Model
+            var j = 0;
+
+            // Copy into 'answers' the $scope.mcqs added by the user
+            if($scope.files && $scope.files.length > 0) {
+                if($scope.files[0].lfFileName) {
+                    $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
+                }
+            }
+            $scope.challenge.challengeFile.textControl.answers = [];
+            $scope.mcqs.forEach(function (question) {
+
+                $scope.challenge.challengeFile.textControl.answers.
+                    push(question.string);
+                if (question.isCorrect) {
+                    $scope.challenge.challengeFile.textControl.correctAnswer = j;
+                }
+                ++j;
+            });
+
+            $scope.challenge.$update();
+        };
+
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
         $scope.onSubmit = function () {
@@ -578,38 +636,18 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
             }).success(function (res) {
                 console.log('success!!', res);
 
-                // If the photo was correctly uploaded
-                // Upload the challenge JSON Data Model
-                var j = 0;
-
-                // Copy into 'answers' the $scope.mcqs added by the user
-                $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
-                $scope.challenge.challengeFile.textControl.answers = [];
-                $scope.mcqs.forEach(function (question) {
-
-                    $scope.challenge.challengeFile.textControl.answers.
-                        push(question.string);
-                    if (question.isCorrect) {
-                        $scope.challenge.challengeFile.textControl.correctAnswer = j;
-                    }
-                    ++j;
-                });
-
-                // TODO this UPDATE method doesn't work...try $scope.challenge.$save()?
-                var challengeFile = $scope.challenge.challengeFile;
-                $scope.challenge.$update();
-
-            }).error(function () {
-                console.log('error!!');
+                updateCurrentChallengeModel();
+            }).error(function (err) {
+                console.log('error!!', err);
+                updateCurrentChallengeModel();
             });
         };
 
 
         //-----------------------------
 
-        // Stores the 'Options' added by the user
-        $scope.mcqs = [];
 
+        var imageObj = new Image();
         Challenges.query({id: challengeId}).
             $promise.then(function (res) {
                 console.log(JSON.stringify(res.challengeFile));
@@ -633,6 +671,7 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
                     };
                 }
                 var i = 0;
+                imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
                 $scope.challenge.challengeFile.textControl.answers.
                     forEach(function (answer) {
                         $scope.mcqs.push({
@@ -646,16 +685,10 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
 
             });
 
-        // This 'files' var stores the uploaded images from the widget
-        $scope.files = [{
-            lfDataUrl: ''
-        }];
-
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');
         var ctx = canv.getContext('2d');
 
-        var imageObj = new Image();
         $scope.$watchCollection('files', function (newValue, oldValue) {
             if (newValue && newValue.length === 1) {
 
@@ -720,6 +753,42 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
     function ($scope, Challenges, $location,
               $mdDialog, QueryParams, $http, sharedProperties) {
 
+
+        // This 'files' var stores the uploaded images from the widget
+        $scope.files = [{
+            lfDataUrl: '',
+            lfFileName: ''
+        }];
+
+        // Stores the 'Options' added by the user
+        $scope.mcqs = [];
+
+        var updateCurrentChallengeModel = function() {
+
+            // If the photo was correctly uploaded
+            // Upload the challenge JSON Data Model
+            var j = 0;
+
+            // Copy into 'answers' the $scope.mcqs added by the user
+            if($scope.files && $scope.files.length > 0) {
+                if($scope.files[0].lfFileName) {
+                    $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
+                }
+            }
+            $scope.challenge.challengeFile.textControl.answers = [];
+            $scope.mcqs.forEach(function (question) {
+
+                $scope.challenge.challengeFile.textControl.answers.
+                    push(question.string);
+                if (question.isCorrect) {
+                    $scope.challenge.challengeFile.textControl.correctAnswer = j;
+                }
+                ++j;
+            });
+
+            $scope.challenge.$update();
+        };
+
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
         $scope.onSubmit = function () {
@@ -740,38 +809,18 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
             }).success(function (res) {
                 console.log('success!!', res);
 
-                // If the photo was correctly uploaded
-                // Upload the challenge JSON Data Model
-                var j = 0;
-
-                // Copy into 'answers' the $scope.mcqs added by the user
-                $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
-                $scope.challenge.challengeFile.textControl.answers = [];
-                $scope.mcqs.forEach(function (question) {
-
-                    $scope.challenge.challengeFile.textControl.answers.
-                        push(question.string);
-                    if (question.isCorrect) {
-                        $scope.challenge.challengeFile.textControl.correctAnswer = j;
-                    }
-                    ++j;
-                });
-
-                // TODO this UPDATE method doesn't work...try $scope.challenge.$save()?
-                var challengeFile = $scope.challenge.challengeFile;
-                $scope.challenge.$update();
-
-            }).error(function () {
-                console.log('error!!');
+                updateCurrentChallengeModel();
+            }).error(function (err) {
+                console.log('error!!', err);
+                updateCurrentChallengeModel();
             });
         };
 
 
         //-----------------------------
 
-        // Stores the 'Options' added by the user
-        $scope.mcqs = [];
 
+        var imageObj = new Image();
         Challenges.query({id: challengeId}).
             $promise.then(function (res) {
                 console.log(JSON.stringify(res.challengeFile));
@@ -795,6 +844,7 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                     };
                 }
                 var i = 0;
+                imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
                 $scope.challenge.challengeFile.textControl.answers.
                     forEach(function (answer) {
                         $scope.mcqs.push({
@@ -808,16 +858,10 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
 
             });
 
-        // This 'files' var stores the uploaded images from the widget
-        $scope.files = [{
-            lfDataUrl: ''
-        }];
-
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');
         var ctx = canv.getContext('2d');
 
-        var imageObj = new Image();
         $scope.$watchCollection('files', function (newValue, oldValue) {
             if (newValue && newValue.length === 1) {
 
@@ -882,6 +926,42 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
     function ($scope, Challenges, $location,
               $mdDialog, QueryParams, $http, sharedProperties) {
 
+
+        // This 'files' var stores the uploaded images from the widget
+        $scope.files = [{
+            lfDataUrl: '',
+            lfFileName: ''
+        }];
+
+        // Stores the 'Options' added by the user
+        $scope.mcqs = [];
+
+        var updateCurrentChallengeModel = function() {
+
+            // If the photo was correctly uploaded
+            // Upload the challenge JSON Data Model
+            var j = 0;
+
+            // Copy into 'answers' the $scope.mcqs added by the user
+            if($scope.files && $scope.files.length > 0) {
+                if($scope.files[0].lfFileName) {
+                    $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
+                }
+            }
+            $scope.challenge.challengeFile.textControl.answers = [];
+            $scope.mcqs.forEach(function (question) {
+
+                $scope.challenge.challengeFile.textControl.answers.
+                    push(question.string);
+                if (question.isCorrect) {
+                    $scope.challenge.challengeFile.textControl.correctAnswer = j;
+                }
+                ++j;
+            });
+
+            $scope.challenge.$update();
+        };
+
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
         $scope.onSubmit = function () {
@@ -902,42 +982,21 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
             }).success(function (res) {
                 console.log('success!!', res);
 
-                // If the photo was correctly uploaded
-                // Upload the challenge JSON Data Model
-                var j = 0;
-
-                // Copy into 'answers' the $scope.mcqs added by the user
-                $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
-                $scope.challenge.challengeFile.textControl.answers = [];
-                $scope.mcqs.forEach(function (question) {
-
-                    $scope.challenge.challengeFile.textControl.answers.
-                        push(question.string);
-                    if (question.isCorrect) {
-                        $scope.challenge.challengeFile.textControl.correctAnswer = j;
-                    }
-                    ++j;
-                });
-
-                // TODO this UPDATE method doesn't work...try $scope.challenge.$save()?
-                var challengeFile = $scope.challenge.challengeFile;
-                $scope.challenge.$update();
-
-            }).error(function () {
-                console.log('error!!');
+                updateCurrentChallengeModel();
+            }).error(function (err) {
+                console.log('error!!', err);
+                updateCurrentChallengeModel();
             });
         };
 
 
         //-----------------------------
 
-        // Stores the 'Options' added by the user
-        $scope.mcqs = [];
 
         var imageObj = new Image();
         Challenges.query({id: challengeId}).
             $promise.then(function (res) {
-                console.log('Current challenge'J, SON.stringify(res.challengeFile));
+                console.log(JSON.stringify(res.challengeFile));
 
                 $scope.challenge = res;
 
@@ -957,8 +1016,8 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                         }
                     };
                 }
-                imageObj.src = 'uploads/' + res._id +  res.challengeFile.imagePath;
                 var i = 0;
+                imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
                 $scope.challenge.challengeFile.textControl.answers.
                     forEach(function (answer) {
                         $scope.mcqs.push({
@@ -971,11 +1030,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 console.log('error retrieving challenge', error);
 
             });
-
-        // This 'files' var stores the uploaded images from the widget
-        $scope.files = [{
-            lfDataUrl: ''
-        }];
 
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');
@@ -1076,22 +1130,22 @@ angular.module('core').controller('HeaderController', ['$scope', '$location', 'A
         $scope.toggleRight = buildToggler('right');
 	}
 ])
-.controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+.controller('LeftCtrl', ["$scope", "$timeout", "$mdSidenav", "$log", function ($scope, $timeout, $mdSidenav, $log) {
     $scope.close = function () {
         $mdSidenav('left').close()
         .then(function () {
             $log.debug('close LEFT is done');
         });
     };
-})
-.controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+}])
+.controller('RightCtrl', ["$scope", "$timeout", "$mdSidenav", "$log", function ($scope, $timeout, $mdSidenav, $log) {
     $scope.close = function () {
         $mdSidenav('right').close()
         .then(function () {
             $log.debug('close RIGHT is done');
         });
     };
-});
+}]);
 'use strict';
 
 
