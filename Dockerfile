@@ -1,22 +1,22 @@
 FROM node
 
-WORKDIR /home/mean
+WORKDIR /home/cytoeditor
 
-# Install Mean.JS Prerequisites
+# Install cytoeditor Prerequisites
 RUN npm install -g grunt-cli
 RUN npm install -g bower
 
-# Install Mean.JS packages
-ADD package.json /home/mean/package.json
+# Install cytoeditor packages
+ADD package.json /home/cytoeditor/package.json
 RUN npm install
 
 # Manually trigger bower. Why doesnt this work via npm install?
 ADD .bowerrc /home/mean/.bowerrc
-ADD bower.json /home/mean/bower.json
-RUN bower install --config.interactive=false --allow-root
+# ADD bower.json /home/mean/bower.json
+# RUN bower install --config.interactive=false --allow-root
 
 # Make everything available for start
-ADD . /home/mean
+ADD . /home/cytoeditor
 
 # currently only works for development
 ENV NODE_ENV development

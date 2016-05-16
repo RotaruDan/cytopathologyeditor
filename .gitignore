@@ -37,7 +37,7 @@ node_modules
 .sass-cache/
 npm-debug.log
 node_modules/
-public/lib
+# public/lib
 app/tests/coverage/
 .bower-*/
 .idea/

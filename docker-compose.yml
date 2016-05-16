@@ -1,0 +1,23 @@
+#
+# cytoeditor server-side infrastructure
+# This version requires the use of 
+#   docker v1.9+
+#   docker-compose v1.5+, running with --x-experimental-networking
+#
+
+# A scalable cache
+#     saves data to ./data/mongo
+mongo:
+    image: mongo:3.0
+    container_name: "mongo"
+    volumes:
+      - "./data/mongo:/data/db"
+
+
+# Cytopathology Editor
+editor:
+    image: rotarudan/cytopathologyeditor
+    container_name: "editor"
+    ports:
+      - "3000:3000"
+      - "35729:35729"
