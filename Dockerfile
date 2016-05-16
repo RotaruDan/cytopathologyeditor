@@ -1,4 +1,4 @@
-FROM dockerfile/nodejs
+FROM node
 
 WORKDIR /home/mean
 
