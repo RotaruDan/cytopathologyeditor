@@ -1,0 +1,58 @@
+<section data-ng-controller="HeaderController">
+    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+        <md-toolbar class="md-theme-light">
+            <h1 class="md-toolbar-tools">{{authentication.user.displayName}}</h1>
+        </md-toolbar>
+        <md-content ng-controller="RightCtrl" layout-padding>
+            <md-subheader class="md-no-sticky">User preferences</md-subheader>
+            <md-list-item ng-click="go('/signup')" data-ng-hide="authentication.user">
+                <md-icon>
+                    <i class="material-icons">assignment_ind</i>
+                </md-icon>
+                <p> Sign up </p>
+            </md-list-item>
+            <md-list-item ng-click="go('/settings/profile')" data-ng-show="authentication.user">
+                <md-icon>
+                    <i class="material-icons">mode_edit</i>
+                </md-icon>
+                <p> Edit profile </p>
+            </md-list-item>
+            <md-list-item ng-click="go('/settings/password')" data-ng-show="authentication.user">
+                <md-icon>
+                    <i class="material-icons">vpn_key</i>
+                </md-icon>
+                <p> Change password </p>
+            </md-list-item>
+            <md-list-item ng-click="go('/settings/accounts')" data-ng-show="authentication.user.role === 'admin'">
+                <md-icon>
+                    <i class="material-icons">settings</i>
+                </md-icon>
+                <p> Manage user accounts </p>
+            </md-list-item>
+            <md-list-item ng-click="go('/settings/accounts/social')" data-ng-show="authentication.user">
+                <md-icon>
+                    <i class="material-icons">group</i>
+                </md-icon>
+                <p> Manage social accounts </p>
+            </md-list-item>
+            <md-subheader class="md-no-sticky">Sign in/out</md-subheader>
+            <md-list-item ng-click="go('/signin')" data-ng-hide="authentication.user">
+                <md-icon>
+                    <i class="material-icons">lock_open</i>
+                </md-icon>
+                <p> Sign in </p>
+            </md-list-item>
+            <a href="/auth/signout">
+                <md-list-item data-ng-show="authentication.user">
+                    <md-icon>
+                        <i class="material-icons">cancel</i>
+                    </md-icon>
+                    <p> Sign out </p>
+                </md-list-item>
+            </a>
+            <md-button ng-click="close()" class="md-primary">
+                Close
+            </md-button>
+        </md-content>
+    </md-sidenav>
+</section>

@@ -1,0 +1,68 @@
+<section data-ng-controller="SettingsController">
+    <div layout="column" layout-align="center center">
+        <md-content layout-padding>
+            <md-whiteframe class="md-whiteframe-z2 md-whiteframe-background" layout="column">
+                <div layout="column" layout-align="center center">
+                    <h3 class="md-headline">Create new user account</h3>
+                </div>
+                <md-divider></md-divider>
+                </br>
+                <form name="userForm" data-ng-submit="createAccount()" novalidate autocomplete="off">
+                    <fieldset>
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <md-icon>
+                                    <i class="material-icons">person</i>
+                                </md-icon>
+                                <input type="text" required id="firstName" name="firstName" data-ng-model="credentials.firstName" placeholder="First name">
+                            </md-input-container>
+                            <md-input-container flex>
+                                <md-icon>
+                                    <i class="material-icons">people</i>
+                                </md-icon>
+                                <input type="text" required id="lastName" name="lastName" data-ng-model="credentials.lastName" placeholder="Last name">
+                            </md-input-container>
+                        </div>
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <md-icon>
+                                    <i class="material-icons">email</i>
+                                </md-icon>
+                                <input type="email" required id="email" name="email" data-ng-model="credentials.email" placeholder="E-mail">
+                            </md-input-container>
+                            <md-select placeholder="Role" ng-model="credentials.role">
+                                <md-option value="user">User</md-option>
+                                <md-option value="admin">Admin</md-option>
+                            </md-select>
+                        </div>
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <md-icon>
+                                    <i class="material-icons">account_circle</i>
+                                </md-icon>
+                                <input type="text" required id="username" name="username" data-ng-model="credentials.username" placeholder="Username">
+                            </md-input-container>
+                            <div layout layout-sm="column">
+                                <md-input-container flex>
+                                    <md-icon>
+                                        <i class="material-icons">vpn_key</i>
+                                    </md-icon>
+                                    <input type="password" required id="password" name="password" data-ng-model="credentials.password" placeholder="Password">
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div layout="column" layout-align="center end">
+                            <button type="submit" class="md-button md-raised md-primary">create</button><a href="/#!/settings/accounts">Or Cancel</a>
+                        </div>
+                        <div data-ng-show="error" class="md-warn">
+                            <strong data-ng-bind="error"></strong>
+                        </div>
+                        <div data-ng-show="success">
+                            <strong>Account Created.</strong>
+                        </div>
+                    </fieldset>
+                </form>
+            </md-whiteframe>
+        </md-content>
+    </div>
+</section>

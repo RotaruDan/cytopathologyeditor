@@ -1,0 +1,53 @@
+<section data-ng-controller="ChallengesEditMcqController">
+    <div layout="row" layout-align="center" layout-margin layout-fill layout-padding>
+        <md-whiteframe flex="66" class="md-whiteframe-z3" layout layout-align="center center">
+
+            <canvas flex layout-align="center center" class="col-md-8" id="board" width="1024" height="552"></canvas>
+
+        </md-whiteframe>
+        <md-whiteframe class="md-whiteframe-z3" flex layout layout-align="center center">
+            <div flex layout="column" layout-margin layout-fill layout-padding>
+
+                <md-input-container flex>
+                    <label>Question</label>
+                    <textarea ng-model="challenge.challengeFile.textControl.text"></textarea>
+                </md-input-container>
+                <div flex>
+                    <strong>Options</strong>
+                    <md-button ng-click="addOption()" class="md-icon-button"
+                               aria-label="Add option">
+                        <md-icon md-font-set="material-icons">add</md-icon>
+                    </md-button>
+                </div>
+                <div layout="column" flex>
+                    <div ng-repeat="option in mcqs">
+                        <div layout="row" layout-align="center" flex>
+
+                            <md-input-container flex>
+                                <label>Option {{$index + 1}}</label>
+                                <input ng-model="option.string">
+                            </md-input-container>
+                            <md-checkbox ng-model="option.isCorrect" aria-label="Is a correct option">
+                            </md-checkbox>
+                            <md-button aria-label="Remove"
+                                       ng-click="deleteFromList('mcqs', option)"
+                                       class="md-icon-button">
+                                <md-icon md-font-set="material-icons">remove</md-icon>
+                            </md-button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <lf-ng-md-file-input flex accept="image/*"
+                                     lf-files="files" lf-option="optoin08"
+                                     lf-placeholder="Pick Image" lf-browse-label="Search"
+                                     lf-remove-label="Delete"
+                                     lf-drag-and-drop-label="Drag & Drop an image (png or jpg) here!"
+                                     drag preview></lf-ng-md-file-input>
+                <md-button ng-click="onSubmit()" class="md-raised md-primary">Save</md-button>
+            </div>
+
+        </md-whiteframe>
+    </div>
+</section>

@@ -1,0 +1,21 @@
+<div data-ng-controller="HeaderController">
+    <md-content>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <md-button class="md-icon-button" aria-label="Views" ng-click="toggleLeft()" data-ng-show="authentication.user">
+                    <i class="material-icons md-36">menu</i>
+                </md-button>
+                <h2>
+                    <span>Cytopathology Challenge</span>
+                </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" aria-label="Account" ng-click="toggleRight()">
+                    <i class="material-icons md-36">account_circle</i>
+                </md-button>
+                <h4 data-ng-show="authentication.user">
+                    <span>{{authentication.user.displayName}}</span>
+                </h4>
+	       </div>
+        </md-toolbar>
+    </md-content>
+</div>

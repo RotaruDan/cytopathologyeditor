@@ -1,0 +1,53 @@
+/* line 4, C:/MEANMaterial/public/modules/core/css/core.scss */
+.content {
+  margin-top: 50px; }
+
+/* line 7, C:/MEANMaterial/public/modules/core/css/core.scss */
+.undecorated-link:hover {
+  text-decoration: none; }
+
+/* line 11, C:/MEANMaterial/public/modules/core/css/core.scss */
+.undecorated-link {
+  text-decoration: none; }
+
+/* line 14, C:/MEANMaterial/public/modules/core/css/core.scss */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important; }
+
+/* line 17, C:/MEANMaterial/public/modules/core/css/core.scss */
+.ng-invalid.ng-dirty {
+  border-color: #FA787E; }
+
+/* line 20, C:/MEANMaterial/public/modules/core/css/core.scss */
+.ng-valid.ng-dirty {
+  border-color: #78FA89; }
+
+/* line 27, C:/MEANMaterial/public/modules/core/css/core.scss */
+.core-main-image-container {
+  height: 360px; }
+
+/* line 31, C:/MEANMaterial/public/modules/core/css/core.scss */
+.core-main-image {
+  width: 360px; }
+
+/* line 37, C:/MEANMaterial/public/modules/core/css/core.scss */
+.kermit-green {
+  color: #8CD049; }
+
+/* line 41, C:/MEANMaterial/public/modules/core/css/core.scss */
+.deeper-red {
+  color: #E13138; }
+
+/* line 45, C:/MEANMaterial/public/modules/core/css/core.scss */
+.lightning-yellow {
+  color: #FFEA1D; }
+
+/* line 49, C:/MEANMaterial/public/modules/core/css/core.scss */
+.blue-sky-blue {
+  color: #35C6EA; }
+
+/* line 53, C:/MEANMaterial/public/modules/core/css/core.scss */
+.social-icons {
+  height: 60px; }
+
+/*# sourceMappingURL=core.css.map */

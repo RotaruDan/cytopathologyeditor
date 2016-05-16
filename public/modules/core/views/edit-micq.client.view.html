@@ -1,0 +1,80 @@
+<section data-ng-controller="ChallengesEditMicqController">
+    <div layout="column" layout-align="center" layout-margin layout-fill layout-padding>
+        <md-whiteframe layout="column" flex="66" class="md-whiteframe-z3" layout-align="center center">
+
+            <div layout="column" layout-align="center" layout-margin layout-fill layout-padding>
+                <md-input-container>
+                    <label>Question</label>
+                    <textarea ng-model="challenge.challengeFile.textControl.text"></textarea>
+                </md-input-container>
+            </div>
+            <canvas flex layout-align="center center" class="col-md-8" id="board" width="1024"
+                    height="552"></canvas>
+        </md-whiteframe>
+        <md-whiteframe class="md-whiteframe-z3" flex layout layout-align="center center">
+            <div flex layout="column" layout-margin layout-fill layout-padding>
+
+
+                <div flex>
+                    <strong>Options</strong>
+                </div>
+                <div layout="column" flex>
+                    <div layout="row" flex>
+                        <div layout="column" flex>
+                            <lf-ng-md-file-input flex accept="image/*"
+                                                 lf-files="files[0]" lf-option="optoin08"
+                                                 lf-placeholder="Pick Image" lf-browse-label="Search"
+                                                 lf-remove-label="Delete"
+                                                 lf-drag-and-drop-label="Drag & Drop an image (png or jpg) here!"
+                                                 drag preview></lf-ng-md-file-input>
+
+                            <md-checkbox ng-model="mcqs[0].isCorrect" aria-label="Is a correct option">
+                                Is a correct option
+                            </md-checkbox>
+                        </div>
+                        <div layout="column" flex>
+                            <lf-ng-md-file-input flex accept="image/*"
+                                                 lf-files="files[1]" lf-option="optoin08"
+                                                 lf-placeholder="Pick Image" lf-browse-label="Search"
+                                                 lf-remove-label="Delete"
+                                                 lf-drag-and-drop-label="Drag & Drop an image (png or jpg) here!"
+                                                 drag preview></lf-ng-md-file-input>
+
+                            <md-checkbox ng-model="mcqs[1].isCorrect" aria-label="Is a correct option">
+                                Is a correct option
+                            </md-checkbox>
+                        </div>
+                    </div>
+                    <div layout="row" flex>
+                        <div layout="column" flex>
+                            <lf-ng-md-file-input flex accept="image/*"
+                                                 lf-files="files[2]" lf-option="optoin08"
+                                                 lf-placeholder="Pick Image" lf-browse-label="Search"
+                                                 lf-remove-label="Delete"
+                                                 lf-drag-and-drop-label="Drag & Drop an image (png or jpg) here!"
+                                                 drag preview></lf-ng-md-file-input>
+
+                            <md-checkbox ng-model="mcqs[2].isCorrect" aria-label="Is a correct option">
+                                Is a correct option
+                            </md-checkbox>
+                        </div>
+                        <div layout="column" flex>
+                            <lf-ng-md-file-input flex accept="image/*"
+                                                 lf-files="files[3]" lf-option="optoin08"
+                                                 lf-placeholder="Pick Image" lf-browse-label="Search"
+                                                 lf-remove-label="Delete"
+                                                 lf-drag-and-drop-label="Drag & Drop an image (png or jpg) here!"
+                                                 drag preview></lf-ng-md-file-input>
+
+                            <md-checkbox ng-model="mcqs[3].isCorrect" aria-label="Is a correct option">
+                                Is a correct option
+                            </md-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <md-button ng-click="onSubmit()" class="md-raised md-primary">Save</md-button>
+            </div>
+
+        </md-whiteframe>
+    </div>
+</section>
