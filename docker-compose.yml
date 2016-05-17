@@ -18,6 +18,8 @@ mongo:
 editor:
     image: rotarudan/cytopathologyeditor
     container_name: "editor"
+    environment:
+      - MONGOHQ_URL=mongodb://mongo:27017/material-dev
     ports:
       - "3000:3000"
       - "35729:35729"
