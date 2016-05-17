@@ -234,7 +234,7 @@ function wait_for_service() {
   SERVICE_IP=$( docker inspect ${CONTAINERS[$1]} \
     | grep IPAddress | grep -oE '([0-9]{1,3}[.]*){4}' )
   echo -n "Waiting for $1 to be up at ${SERVICE_IP}:$2 ... "
-  T=0  
+  T=0
   until netcat -z ${SERVICE_IP} $2 ; do
       sleep 1s
       echo -n "."
@@ -308,7 +308,7 @@ function start() {
   wait_for_service mongo 27017 'MongoDB'
   
   launch_and_wait 5 editor
-  wait_for_service nimbus 3000 'Cytopathology Editor'
+  wait_for_service editor 3000 'Cytopathology Editor'
 
   
   recho " * use '$0 logs <service>' to inspect service logs"

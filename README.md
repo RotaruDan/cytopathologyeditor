@@ -43,23 +43,11 @@ Your application should run on the 3000 port so in your browser just go to [http
                             
 That's it! your application should be running by now, to proceed with your development check the other sections in this documentation.
 
-## Development and deployment With Docker
+## Simple usage
 
-* Install [Docker](http://www.docker.com/)
-* Install [Fig](https://github.com/orchardup/fig)
-
-* Local development and testing with fig: 
-```bash
-$ fig up
-```
-
-* Local development and testing with just Docker:
-```bash
-$ docker build -t mean .
-$ docker run -p 27017:27017 -d --name db mongo
-$ docker run -p 3000:3000 --link db:db_1 mean
-$
-```
+0. Open a shell in a recent linux (we use Ubuntu 14.04+). You must be root (`sudo su -`) unless you already have `docker` running and a compatible version of `docker-compose` installed
+1. Download the launch script: `wget https://raw.githubusercontent.com/rotarudan/cytopathologyeditor/master/cytoeditor.sh`
+2. Mark the script as executable, and launch it: `chmod +x cytoeditor.sh && ./cytoeditor.sh launch` (note that it requires `bash` to run). Besides `launch`, the scripts accepts several other commands - use `./cytoeditor.sh --help` to see their names and descriptions.
 
 * To enable live reload forward 35729 port and mount /app and /public as volumes:
 ```bash
