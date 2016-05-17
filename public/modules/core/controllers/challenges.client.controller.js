@@ -23,7 +23,6 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                     'correctAnswer': 0
                 }
             },
-
             {
                 'class': 'es.eucm.cytochallenge.model.TextChallenge',
                 'imagePath': '',
@@ -81,6 +80,8 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                     $mdDialog.hide();
                 };
                 $scope.addChallenge = function () {
+                    $scope.chooseType();
+                    console.log(JSON.stringify($scope.challenge, null, '  '));
                     $scope.challenge.$save(function (err) {
                         $scope.closeDialog();
                         updateChallenges();

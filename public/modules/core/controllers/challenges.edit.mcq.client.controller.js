@@ -6,7 +6,6 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
     function ($scope, Challenges, $location,
               $mdDialog, QueryParams, $http, sharedProperties) {
 
-
         // This 'files' var stores the uploaded images from the widget
         $scope.files = [{
             lfDataUrl: '',
@@ -78,7 +77,7 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
         var thisFiles = $scope.files;
         var imageObj = new Image();
         console.log('before query', $scope.files);
-        var queryChallenge = function() {
+        var queryChallenge = function () {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
                     console.log(JSON.stringify(res.challengeFile));
