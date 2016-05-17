@@ -30,6 +30,8 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                 'textControl': {
                     'class': 'es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl',
                     'text': '',
+                    'canvasWidth': 1024,
+                    'canvasHeight': 552,
                     'answers': []
                 }
             },

@@ -109,16 +109,17 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                                 'text': '',
                                 'canvasWidth': 1024,
                                 'canvasHeight': 552,
-                                'answers': [
-                                ],
+                                'answers': [],
                                 'correctAnswers': []
                             }
                         };
                     }
                     var i = 0;
-                    imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
-                    console.log(thisFiles);
-                    thisFiles[0].lfFileName = res.challengeFile.imagePath;
+                    if (res.challengeFile.imagePath) {
+                        imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
+                        console.log(thisFiles);
+                        thisFiles[0].lfFileName = res.challengeFile.imagePath;
+                    }
 
                     $scope.challenge.challengeFile.textControl.answers.
                         forEach(function (answer) {
@@ -146,6 +147,9 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
 
         var drawImageObj = function () {
+            if (!imageObj.isLoaded) {
+                return;
+            }
             var targetHeight = canv.height;
             var targetWidth = canv.width;
             var sourceHeight = imageObj.height;
@@ -157,10 +161,11 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
             var width = sourceWidth * scale;
             var height = sourceHeight * scale;
-            // ctx.clearRect(0, 0, targetWidth, targetHeight);
             ctx.drawImage(imageObj, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
 
         };
+
+        var draw, mousedown, stopdrag, move, rightclick;
 
         $scope.$watchCollection('files', function (newValue, oldValue) {
             if (newValue && newValue.length === 1) {
@@ -168,7 +173,8 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 // If a new image was uploaded, position it in the center of the canvas
                 imageObj.src = newValue[0].lfDataUrl;
                 imageObj.onload = function () {
-                    drawImageObj();
+                    imageObj.isLoaded = true;
+                    draw();
                 };
             }
         });
@@ -178,7 +184,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
 
         var activePoint;
-        var draw, mousedown, stopdrag, move, rightclick;
 
         move = function (e) {
             if (!e.offsetX) {
