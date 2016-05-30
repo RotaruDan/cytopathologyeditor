@@ -77,6 +77,7 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                         $scope.challenge.challengeFile = {
                             'class': 'es.eucm.cytochallenge.model.TextChallenge',
                             'imagePath': '',
+                            'difficulty': 'EASY',
                             'textControl': {
                                 'class': 'es.eucm.cytochallenge.model.control.filltheblank.FillTheBlankControl',
                                 'text': '',
@@ -258,6 +259,9 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                 showDialog(event, options, option);
             }
         };
+
+        $scope.chooseDifficulty = function (difficulty) {
+            $scope.challenge.challengeFile.difficulty = difficulty;
+        };
     }
-])
-;
+]);

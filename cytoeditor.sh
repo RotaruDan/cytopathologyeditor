@@ -302,7 +302,7 @@ function start() {
   recho "-------------------------------"
   
   # ensure data-dirs exist; 'purge' may have removed them
-  mkdir -p data/{mongo} >/dev/null 2>&1
+  mkdir -p data/{mongo,uploads} >/dev/null 2>&1
   
   launch_and_wait 5 mongo
   wait_for_service mongo 27017 'MongoDB'

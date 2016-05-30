@@ -1,0 +1,84 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "iud.jpg",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.InteractiveZoneControl",
+        "text": "The patient has an IUD in place; identify the items most associated with the IUD",
+        "canvasWidth": 1024,
+        "canvasHeight": 552,
+        "answers": [
+            [
+                327,
+                318,
+                308,
+                270,
+                331,
+                245,
+                375,
+                243,
+                405,
+                271,
+                394,
+                316,
+                365,
+                334
+            ],
+            [
+                355,
+                470,
+                358,
+                434,
+                374,
+                409,
+                417,
+                407,
+                427,
+                443,
+                405,
+                475
+            ],
+            [
+                616,
+                377,
+                716,
+                377,
+                714,
+                461,
+                689,
+                512,
+                640,
+                547,
+                576,
+                547,
+                560,
+                504,
+                577,
+                433
+            ],
+            [
+                475,
+                54,
+                447,
+                32,
+                468,
+                10,
+                482,
+                1,
+                543,
+                2,
+                553,
+                21,
+                549,
+                41,
+                520,
+                59
+            ]
+        ],
+        "correctAnswers": [
+            0,
+            1,
+            2,
+            3
+        ]
+    }
+}

@@ -119,6 +119,7 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                         // Multiple Choice Question challenge
                         $scope.challenge.challengeFile = {
                             class: 'es.eucm.cytochallenge.model.TextChallenge',
+                            difficulty: 'EASY',
                             textControl: {
                                 class: 'es.eucm.cytochallenge.model.control.MultipleImageAnswerControl',
                                 text: '',
@@ -237,6 +238,10 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
             $scope.addToList('mcqs', {
                 isCorrect: false
             });
+        };
+
+        $scope.chooseDifficulty = function (difficulty) {
+            $scope.challenge.challengeFile.difficulty = difficulty;
         };
     }
 ]);

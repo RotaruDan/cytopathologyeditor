@@ -20,6 +20,8 @@ editor:
     container_name: "editor"
     environment:
       - MONGOHQ_URL=mongodb://mongo:27017/material-dev
+    volumes:
+      - "./data/uploads:./public/uploads"
     ports:
       - "3000:3000"
       - "35729:35729"

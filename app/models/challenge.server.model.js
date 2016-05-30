@@ -10,6 +10,10 @@ var mongoose = require('mongoose'),
  * Challenge Schema
  */
 var ChallengeSchema = new Schema({
+    _course: {
+        type: Schema.Types.ObjectId,
+        required: '_course field is required'
+    },
     challengeFile: {
         type: Schema.Types.Mixed,
         required: 'Please add a challenge file!'

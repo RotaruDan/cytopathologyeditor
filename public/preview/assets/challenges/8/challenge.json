@@ -1,0 +1,45 @@
+{
+  "class": "es.eucm.cytochallenge.model.TextChallenge",
+  "imagePath": "epidermisCells.jpg",
+  "textControl": {
+    "class": "es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl",
+    "text": "Epidermis cells",
+    "answers": [
+      {
+        "text": "basal (basale)",
+        "x": 525,
+        "y": 80,
+        "width": 130,
+        "height": 40
+      },
+      {
+        "text": "prickle (spinosum)",
+        "x": 525,
+        "y": 220,
+        "width": 130,
+        "height": 40
+      },
+      {
+        "text": "granular (granulosum)",
+        "x": 525,
+        "y": 340,
+        "width": 130,
+        "height": 40
+      },
+      {
+        "text": "clear (lucidum)",
+        "x": 525,
+        "y": 420,
+        "width": 130,
+        "height": 40
+      },
+      {
+        "text": "horny (corneum)",
+        "x": 525,
+        "y": 460,
+        "width": 130,
+        "height": 40
+      }
+    ]
+  }
+}

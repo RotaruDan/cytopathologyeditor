@@ -1,0 +1,35 @@
+{
+  "class": "es.eucm.cytochallenge.model.TextChallenge",
+  "imagePath": "hsilAscusLsilHsv.jpg",
+  "hint": {
+    "infos": [
+      {
+        "class": "es.eucm.cytochallenge.model.hint.TextInfo",
+        "text": "LSIL (Low Grade Squamous Intraepithelial Lesion): changes in the squamous epithelium with an intact basement membrane. It includes lesions that show abnormal maturation and abnormal differentiation in relatively mature intermediate type cells. Caused by HPV, can spontaneously regress but can persist and progress to HSIL"
+      },
+      {
+        "class": "es.eucm.cytochallenge.model.hint.TextInfo",
+        "text": "HSIL (High Grade Intraepithelial Lesion) in The Bethesda System (TBS) 2001 includes: CIN II (Moderate Dysplasia) and CIN III (Severe Dysplasia and Carcinoma In Situ)"
+      },
+      {
+        "class": "es.eucm.cytochallenge.model.hint.ImageInfo",
+        "imagePath": "lessionsOfCervicalCarcinoma.jpg"
+      },
+      {
+        "class": "es.eucm.cytochallenge.model.hint.TextInfo",
+        "text": "ASC-US (Atypical Squamous Cells Undetermined Significance): cytologic changes that are suggestive of SIL but are qualitatively or quantitatively insufficient for a definitive interpretation (TBS)"
+      }
+    ]
+  },
+  "textControl": {
+    "class": "es.eucm.cytochallenge.model.control.MultipleAnswerControl",
+    "text": "What is the best interpretation?",
+    "answers": [
+      "HSIL",
+      "ASC-US",
+      "LSIL",
+      "HSV"
+    ],
+    "correctAnswer": "2"
+  }
+}

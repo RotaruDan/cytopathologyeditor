@@ -25,12 +25,30 @@ angular.module('core')
                 get: {method: 'GET', isArray: true}
             });
         }
+    ]).factory('Courses', ['$resource',
+        function ($resource) {
+            return $resource('/courses/:id', {
+                id: '@_id'
+            }, {
+                update: {
+                    method: 'PUT'
+                },
+                query: {method: 'GET', isArray: false},
+
+                get: {method: 'GET', isArray: true}
+            });
+        }
     ]).factory('QueryParams', [
         function () {
 
             return {
                 getChallengeId: function () {
                     var result = window.location.hash.substr(19, 24);
+
+                    return result;
+                },
+                getCourseId: function () {
+                    var result = window.location.hash.substr(14, 24);
 
                     return result;
                 }

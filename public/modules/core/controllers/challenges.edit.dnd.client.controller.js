@@ -102,6 +102,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                         $scope.challenge.challengeFile = {
                             'class': 'es.eucm.cytochallenge.model.TextChallenge',
                             'imagePath': '',
+                            'difficulty': 'EASY',
                             'textControl': {
                                 'class': 'es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl',
                                 'text': '',
@@ -301,6 +302,9 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             console.log(option.width);
             draw();
         };
+
+        $scope.chooseDifficulty = function (difficulty) {
+            $scope.challenge.challengeFile.difficulty = difficulty;
+        };
     }
-])
-;
+]);

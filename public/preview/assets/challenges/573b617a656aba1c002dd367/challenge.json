@@ -1,0 +1,101 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.filltheblank.FillTheBlankControl",
+        "text": "Cytologic criteria of endocervical columnar cells",
+        "statements": [
+            {
+                "text": "Cell shape -[0]",
+                "options": [
+                    [
+                        "squamous",
+                        "columnar",
+                        "cuboidal"
+                    ]
+                ],
+                "correctAnswers": [
+                    1
+                ]
+            },
+            {
+                "text": "Mean cell area -[0]square microns.",
+                "options": [
+                    [
+                        "118",
+                        "188",
+                        "208"
+                    ]
+                ],
+                "correctAnswers": [
+                    1
+                ]
+            },
+            {
+                "text": "Cytoplasmic staining -[0]",
+                "options": [
+                    [
+                        "variable",
+                        "constant"
+                    ]
+                ],
+                "correctAnswers": [
+                    0
+                ]
+            },
+            {
+                "text": "Nuclear position -[0]",
+                "options": [
+                    [
+                        "central",
+                        "peripheral"
+                    ]
+                ],
+                "correctAnswers": [
+                    1
+                ]
+            },
+            {
+                "text": "Mean nuclear area -[0]to[1]square microns.",
+                "options": [
+                    [
+                        "54",
+                        "66"
+                    ],
+                    [
+                        "98",
+                        "82"
+                    ]
+                ],
+                "correctAnswers": [
+                    0,
+                    1
+                ]
+            },
+            {
+                "text": "Nuclear chromasia -[0]",
+                "options": [
+                    [
+                        "variable",
+                        "constant"
+                    ]
+                ],
+                "correctAnswers": [
+                    0
+                ]
+            },
+            {
+                "text": "Nuclear degeneration is  -[0]",
+                "options": [
+                    [
+                        "common",
+                        "uncommon"
+                    ]
+                ],
+                "correctAnswers": [
+                    0
+                ]
+            }
+        ]
+    }
+}

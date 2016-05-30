@@ -1,0 +1,642 @@
+{
+    "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+        "default_font": {
+            "file": "Roboto-Regular-24.fnt"
+        }
+    },
+    "com.badlogic.gdx.graphics.Color": {
+        "transparent": {
+            "a": 0,
+            "r": 0,
+            "g": 0,
+            "b": 0
+        },
+        "semi_transparent": {
+            "a": 0.5,
+            "r": 0.5,
+            "g": 0.5,
+            "b": 0.5
+        },
+        "black_semi": {
+            "a": 0.5,
+            "r": 0.0,
+            "g": 0.0,
+            "b": 0.0
+        },
+        "white": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+        },
+        "semi_white": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.5
+        },
+        "white_semi6": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 0.6
+        },
+        "black": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1
+        },
+        "gray": {
+            "r": 0.6,
+            "g": 0.6,
+            "b": 0.6,
+            "a": 1
+        },
+        "dark_gray": {
+            "r": 0.196,
+            "g": 0.196,
+            "b": 0.196,
+            "a": 1
+        },
+        "light_gray": {
+            "r": 0.8627,
+            "g": 0.8627,
+            "b": 0.8627,
+            "a": 1.0
+        },
+        "gray_100": {
+            "r": 0.9607843,
+            "g": 0.9607843,
+            "b": 0.9607843,
+            "a": 1
+        },
+        "brown_moka": {
+            "r": 0.5245,
+            "g": 0.3333,
+            "b": 0.2823,
+            "a": 1
+        },
+        "dark_brown_moka": {
+            "r": 0.2431,
+            "g": 0.1529,
+            "b": 0.1372,
+            "a": 1
+        },
+        "light_brown_moka": {
+            "r": 0.7176,
+            "g": 0.3529,
+            "b": 0.2392,
+            "a": 1
+        },
+        "semi_light_brown_moka": {
+            "r": 0.7176,
+            "g": 0.3529,
+            "b": 0.2392,
+            "a": 0.5
+        },
+        "semi_dark_brown_moka": {
+          "r": 0.2431,
+          "g": 0.1529,
+          "b": 0.1372,
+          "a": 0.5
+        },
+        "blue": {
+            "r": 0.050980392,
+            "g": 0.35682745,
+            "b": 0.549019607,
+            "a": 1.0
+        },
+        "blue_900": {
+            "r": 0.010980392,
+            "g": 0.19682745,
+            "b": 0.309019607,
+            "a": 1.0
+        },
+        "light_blue": {
+            "r": 0.011764706,
+            "g": 0.6627451,
+            "b": 0.95686275,
+            "a": 1.0
+        },
+        "light_yellow": {
+            "r": 1,
+            "g": 1,
+            "b": 0.55294118,
+            "a": 1
+        },
+        "light_blue_semi": {
+            "r": 0.011764706,
+            "g": 0.6627451,
+            "b": 0.95686275,
+            "a": 0.5
+        },
+        "light_blue_900": {
+            "r": 0.003921569,
+            "g": 0.34117648,
+            "b": 0.60784316,
+            "a": 1
+        },
+        "light_yellow_semi": {
+            "r": 1,
+            "g": 1,
+            "b": 0.55294118,
+            "a": 0.5
+        },
+        "deep_orange_semi": {
+            "r": 1.0,
+            "g": 0.34117648,
+            "b": 0.13333334,
+            "a": 0.5
+        },
+        "purple": {
+            "r": 0.6117647,
+            "g": 0.15294118,
+            "b": 0.6901961,
+            "a": 1
+        }
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable": {
+        "black_bg": {
+            "name": "blank",
+            "color": "black"
+        },
+        "transparent_bg": {
+            "name": "blank",
+            "color": "transparent"
+        },
+        "while_semi_bg": {
+            "name": "blank",
+            "color": "semi_white"
+        },
+        "black_semi_bg": {
+            "name": "blank",
+            "color": "black_semi"
+        },
+        "semi_transparent_bg": {
+            "name": "blank",
+            "color": "semi_transparent"
+        },
+        "light_yellow_semi_bg": {
+            "name": "blank",
+            "color": "light_yellow_semi"
+        },
+        "light_gray_bg": {
+            "name": "blank",
+            "color": "light_gray"
+        },
+        "light_blue_semi_bg": {
+            "name": "blank",
+            "color": "light_blue_semi"
+        },
+        "transparent_48_bg": {
+            "name": "bg48",
+            "color": "transparent"
+        },
+        "pressed_48_bg": {
+            "name": "bg48",
+            "color": "blue"
+        },
+        "edition_pressed_48_bg": {
+            "name": "bg48",
+            "color": "semi_transparent"
+        },
+        "page_pressed": {
+            "name": "page",
+            "color": "gray"
+        },
+        "page_checked": {
+            "name": "page",
+            "color": "dark_brown_moka"
+        },
+        "page_semi_transparent": {
+            "name": "page",
+            "color": "semi_transparent"
+        },
+        "deep_orange_semi_bg": {
+            "name": "blank_grey_border",
+            "color": "deep_orange_semi"
+        },
+        "blue_background": {
+            "name": "page",
+            "color": "blue"
+        },
+        "blue_circle": {
+            "name": "circle",
+            "color": "blue"
+        },
+        "blue_900_circle": {
+            "name": "circle",
+            "color": "blue_900"
+        },
+        "blue_cell_with_receptors": {
+            "name": "ic_cell_with_receptors",
+            "color": "blue"
+        },
+        "blue_900_cell_with_receptors": {
+            "name": "ic_cell_with_receptors",
+            "color": "blue_900"
+        },
+        "semi_white_circle": {
+            "name": "circle",
+            "color": "semi_white"
+        },
+        "semi_transparent_circle": {
+            "name": "circle",
+            "color": "semi_transparent"
+        },
+        "light_yellow_semi_bg": {
+            "name": "blank",
+            "color": "light_yellow_semi"
+        },
+        "black_spinner": {
+            "name": "spinner_default",
+            "color": "black"
+        },
+        "blue_900_spinner": {
+            "name": "spinner_default",
+            "color": "blue_900"
+        },
+        "gray_100_bg": {
+            "name": "blank",
+            "color": "gray_100"
+        },
+        "button_up_blue": {
+            "name": "button_up",
+            "color": "blue"
+        },
+        "button_down_blue": {
+            "name": "button_down",
+            "color": "blue"
+        }
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+        "default": {
+            "font": "default_font",
+            "fontColor": "black"
+        },
+        "context": {
+            "font": "default_font",
+            "fontColor": "gray"
+        },
+        "toast": {
+            "font": "default_font",
+            "fontColor": "white"
+        },
+        "toolbar": {
+            "font": "default_font",
+            "fontColor": "white",
+            "background": "transparent_48_bg"
+        },
+        "edition": {
+            "font": "default_font",
+            "fontColor": "gray"
+        },
+        "toast_action": {
+            "font": "default_font",
+            "fontColor": "blue"
+        }
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle": {
+        "default": {
+
+        },
+        "context": {
+            "down": "light_gray_bg"
+        },
+        "circle": {
+            "up": "blue_circle",
+            "down": "blue_900_circle"
+        },
+        "cell_with_receptors": {
+            "up": "blue_cell_with_receptors",
+            "down": "blue_900_cell_with_receptors"
+        },
+        "secondary_circle": {
+            "up": "semi_transparent_circle",
+            "down": "semi_white_circle"
+        },
+        "check": {
+            "up": "button_up",
+            "down": "button_up",
+            "checked": "button_up_blue"
+        },
+        "challenge_list": {
+            "up": "button_up",
+            "down": "button_down_blue"
+        }
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
+        "default": {
+            "up": "button_up",
+            "down": "button_down_blue",
+            "font": "default_font",
+            "fontColor": "blue_900",
+            "downFontColor": "white",
+            "disabledFontColor": "gray"
+        },
+        "tab": {
+            "down": "light_yellow_semi_bg",
+            "font": "default_font",
+            "fontColor": "white"
+        },
+        "toolbar": {
+            "down": "pressed_48_bg",
+            "font": "default_font",
+            "fontColor": "white"
+        },
+        "multiple_choice": {
+            "down": "pressed_48_bg",
+            "font": "default_font",
+            "fontColor": "white",
+            "checked": "blue_background"
+        },
+        "drag-n-drop": {
+            "up": "button_up",
+            "down": "button_down",
+            "font": "default_font",
+            "fontColor": "blue"
+        },
+        "dialog": {
+            "up": "transparent_bg",
+            "down": "light_gray_bg",
+            "font": "default_font",
+            "fontColor": "blue_900"
+        },
+        "challenge_list": {
+            "font": "default_font",
+            "fontColor": "blue_900",
+            "downFontColor": "white"
+        }
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle": {
+        "default": {
+            "up": "page",
+            "down": "page_pressed"
+        },
+        "navigation_scene": {
+            "up": "page",
+            "down": "page_pressed",
+            "checked": "page_checked"
+        },
+        "check": {
+            "up": "blue_circle",
+            "down": "blue_900_circle",
+            "imageUp": "ic_check"
+        },
+        "marker": {
+            "up": "semi_transparent_bg"
+        },
+        "toolbar": {
+            "up": "transparent_48_bg",
+            "down": "pressed_48_bg"
+        },
+        "edition": {
+            "up": "transparent_48_bg",
+            "down": "edition_pressed_48_bg"
+        },
+        "component": {
+            "down": "edition_pressed_48_bg",
+            "up": "transparent_48_bg"
+        },
+        "drop_down": {
+            "up": "drop_down_bg",
+            "down": "pressed_48_bg"
+        },
+        "recent_color": {
+            "up": "transparent_48_bg",
+            "down": "pressed_48_bg"
+        },
+        "orange": {
+            "up": "transparent_48_bg",
+            "down": "edition_pressed_48_bg"
+        }
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle": {
+        "default": {
+            "font": "default_font",
+            "fontColor": "black",
+            "downFontColor": "black",
+            "overFontColor": "black",
+            "checkedFontColor": "black",
+            "checkedOverFontColor": "black",
+            "disabledFontColor": "gray",
+            "checkboxOn": "button_check_on",
+            "checkboxOff": "button_check_off",
+            "checkboxOver": "button_check_off_focused"
+        },
+        "default_radio": {
+            "font": "default_font",
+            "fontColor": "black",
+            "downFontColor": "black",
+            "overFontColor": "black",
+            "checkedFontColor": "black",
+            "checkedOverFontColor": "black",
+            "disabledFontColor": "gray",
+            "checkboxOn": "button_radio_on",
+            "checkboxOff": "button_radio_off",
+            "checkboxOver": "button_radio_off_focused"
+        },
+        "context_radio": {
+            "font": "default_font",
+            "fontColor": "gray",
+            "downFontColor": "gray",
+            "overFontColor": "gray",
+            "checkedFontColor": "gray",
+            "checkedOverFontColor": "gray",
+            "disabledFontColor": "gray",
+            "checkboxOn": "button_radio_on",
+            "checkboxOff": "button_radio_off",
+            "checkboxOver": "button_radio_off_focused"
+        }
+
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle": {
+        "default-horizontal": {
+            "background": "knob_after",
+            "knob": "knob",
+            "knobBefore": "knob_before"
+        }
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle": {
+        "default": {
+            "font": "default_font",
+            "fontColorSelected": "black",
+            "selection": "list_selection",
+            "fontColorUnselected": "dark_gray"
+        }
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle": {
+        "default": {
+
+        },
+        "navigation": {
+            "background": "page_left"
+        },
+        "pane": {
+            "background": "page"
+        },
+        "verticalScroll": {
+            "vScroll": "knob_after",
+            "vScrollKnob": "knob_after"
+        }
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle": {
+        "default": {
+            "background": "black_spinner",
+            "backgroundOver": "black_spinner",
+            "backgroundOpen": "black_spinner",
+            "font": "default_font",
+            "fontColor": "black",
+            "scrollStyle": "pane",
+            "listStyle": "default"
+        },
+        "toolbar": {
+            "background": "spinner_default",
+            "backgroundOver": "spinner_default",
+            "backgroundOpen": "spinner_default",
+            "font": "default_font",
+            "fontColor": "white",
+            "scrollStyle": "pane",
+            "listStyle": "default"
+        },
+        "context": {
+            "background": "black_spinner",
+            "backgroundOver": "black_spinner",
+            "backgroundOpen": "black_spinner",
+            "font": "default_font",
+            "fontColor": "gray",
+            "scrollStyle": "pane",
+            "listStyle": "default"
+        },
+        "fillTheBlank": {
+            "background": "blue_900_spinner",
+            "backgroundOver": "blue_900_spinner",
+            "backgroundOpen": "black_spinner",
+            "font": "default_font",
+            "fontColor": "blue_900",
+            "scrollStyle": "pane",
+            "listStyle": "default"
+        }
+    },
+    "com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle": {
+        "default": {
+            "selection": "while_semi_bg",
+            "background": "text_field",
+            "cursor": "text_field_cursor",
+            "font": "default_font",
+            "fontColor": "white"
+        },
+        "gray": {
+            "selection": "black_semi_bg",
+            "background": "text_field",
+            "cursor": "text_field_cursor",
+            "font": "default_font",
+            "fontColor": "gray"
+        }
+    },
+    "es.eucm.cytochallenge.view.widgets.IconButton$IconButtonStyle": {
+        "default": {
+            "disabledColor": "gray",
+            "color": "black"
+        },
+        "gray": {
+            "color": "gray",
+            "up": "transparent_48_bg"
+        },
+        "switch": {
+            "disabledColor": "white",
+            "color": "brown_moka"
+        },
+        "pages": {
+            "disabledColor": "black",
+            "color": "brown_moka",
+            "up": "transparent_48_bg"
+        },
+        "toolbar": {
+            "disabledColor": "gray",
+            "color": "white",
+            "up": "transparent_48_bg",
+            "down": "pressed_48_bg"
+        },
+        "edition": {
+            "color": "gray",
+            "up": "transparent_48_bg",
+            "down": "edition_pressed_48_bg"
+        },
+        "component": {
+            "color": "gray",
+            "checkedColor": "blue",
+            "down": "edition_pressed_48_bg",
+            "up": "transparent_48_bg"
+        },
+        "context": {
+            "color": "gray",
+            "up": "transparent_48_bg"
+        },
+        "drop_down": {
+            "color": "white",
+            "up": "drop_down_bg",
+            "down": "pressed_48_bg"
+        },
+        "recent_color": {
+            "color": "white",
+            "up": "transparent_48_bg",
+            "down": "pressed_48_bg"
+        },
+        "orange": {
+            "up": "transparent_48_bg",
+            "down": "edition_pressed_48_bg",
+            "color": "blue"
+        }
+    },
+    "es.eucm.cytochallenge.view.widgets.Toast$ToastStyle": {
+        "default": {
+            "background": "page",
+            "color": "dark_gray",
+            "label": "toast"
+        },
+        "tooltip": {
+            "background": "page",
+            "color": "dark_gray",
+            "label": "toast"
+        }
+    },
+    "es.eucm.cytochallenge.view.widgets.slide.SlideEditor$SlideEditorStyle": {
+        "default": {
+            "background": "light_gray_bg",
+            "slideBackground": "page_up",
+            "touch": "touch"
+        }
+    },
+    "es.eucm.cytochallenge.view.widgets.challenge.filltheblank.FillTheBlankText$FillTheBlankStyle": {
+        "default": {
+            "selectBoxStyle": "fillTheBlank",
+            "down": "transparent_48_bg",
+            "font": "default_font",
+            "fontColor": "white"
+        }
+    },
+    "es.eucm.cytochallenge.view.widgets.ChatDialog$ChatDialogStyle": {
+        "default": {
+            "background": "page_up",
+            "textStyle": "context"
+        }
+    },
+    "es.eucm.cytochallenge.view.widgets.Tabs$TabsStyle": {
+        "default": {
+            "textButtonStyle": "tab",
+            "selectedDrawable": "selected_tab",
+            "selectedDrawableColor": "light_yellow",
+            "disablexTextColor": "white_semi6",
+            "activeTextColor": "white"
+        }
+    },
+    "es.eucm.cytochallenge.view.widgets.HintDialog$HintDialogStyle": {
+        "default": {
+            "background": "page_up",
+            "textStyle": "edition",
+            "buttonStyle": "dialog"
+        }
+    }
+}

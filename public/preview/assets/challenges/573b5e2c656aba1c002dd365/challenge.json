@@ -1,0 +1,40 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "featuresOfEndocervix.png",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl",
+        "text": "Point out all the features of adenocarcinoma in situ of the endocervix",
+        "canvasWidth": 1024,
+        "canvasHeight": 552,
+        "answers": [
+            {
+                "text": "Apoptosis",
+                "x": 524.4599990844727,
+                "y": 495,
+                "width": 137.0800018310547,
+                "height": 40
+            },
+            {
+                "text": "Feathering",
+                "x": 156.27249145507812,
+                "y": 230,
+                "width": 147.45501708984375,
+                "height": 40
+            },
+            {
+                "text": "Mitosis",
+                "x": 678.5260314941406,
+                "y": 227,
+                "width": 102.94793701171875,
+                "height": 40
+            },
+            {
+                "text": "Rosette",
+                "x": 538.0609970092773,
+                "y": 103,
+                "width": 111.87800598144531,
+                "height": 40
+            }
+        ]
+    }
+}

@@ -1,0 +1,101 @@
+{
+  "class": "es.eucm.cytochallenge.model.TextChallenge",
+  "imagePath": "femaleAnatomy.png",
+  "textControl": {
+    "class": "es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl",
+    "text": "Name the different parts",
+    "answers": [
+      {
+        "text": "Ovary",
+        "x": 138,
+        "y": 429,
+        "width": 88,
+        "height": 34
+      },
+      {
+        "text": "Oviduct",
+        "x": 58,
+        "y": 401,
+        "width": 114,
+        "height": 35
+      },
+      {
+        "text": "Bladder",
+        "x": 90,
+        "y": 308,
+        "width": 114,
+        "height": 35
+      },
+      {
+        "text": "Urethra",
+        "x": 91,
+        "y": 235,
+        "width": 114,
+        "height": 50
+      },
+      {
+        "text": "Clitoris",
+        "x": 48,
+        "y": 185,
+        "width": 101,
+        "height": 34
+      },
+      {
+        "text": "Labia minor",
+        "x": 13,
+        "y": 99,
+        "width": 168,
+        "height": 35
+      },
+      {
+        "text": "Labia major",
+        "x": 24,
+        "y": 52,
+        "width": 169,
+        "height": 43
+      },
+      {
+        "text": "Uterus",
+        "x": 655,
+        "y": 375,
+        "width": 109,
+        "height": 43
+      },
+      {
+        "text": "Endometrium",
+        "x": 665,
+        "y": 348,
+        "width": 169,
+        "height": 43
+      },
+      {
+        "text": "Colon",
+        "x": 700,
+        "y": 303,
+        "width": 80,
+        "height": 43
+      },
+      {
+        "text": "Cervix",
+        "x": 700,
+        "y": 260,
+        "width": 82,
+        "height": 43
+      },
+      {
+        "text": "Rectum",
+        "x": 740,
+        "y": 155,
+        "width": 101,
+        "height": 43
+      },
+      {
+        "text": "Vagina",
+        "x": 655,
+        "y": 110,
+        "width": 100,
+        "height": 43
+      }
+    ]
+  }
+}

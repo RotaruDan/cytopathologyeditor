@@ -16,6 +16,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             {
                 'class': 'es.eucm.cytochallenge.model.TextChallenge',   // Can be ignored (used by the client json parser)
                 'imagePath': '',
+                'difficulty': 'EASY',
                 'textControl': {
                     'class': 'es.eucm.cytochallenge.model.control.MultipleAnswerControl',   // Can be ignored (used by the client json parser)
                     'text': '',
@@ -26,6 +27,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             {
                 'class': 'es.eucm.cytochallenge.model.TextChallenge',
                 'imagePath': '',
+                'difficulty': 'EASY',
                 'textControl': {
                     'class': 'es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl',
                     'text': '',
@@ -36,6 +38,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             },
             {
                 class: 'es.eucm.cytochallenge.model.TextChallenge',
+                difficulty: 'EASY',
                 textControl: {
                     class: 'es.eucm.cytochallenge.model.control.MultipleImageAnswerControl',
                     text: '',
@@ -45,6 +48,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             },
             {
                 'class': 'es.eucm.cytochallenge.model.TextChallenge',
+                'difficulty': 'EASY',
                 'imagePath': '',
                 'textControl': {
                     'class': 'es.eucm.cytochallenge.model.control.filltheblank.FillTheBlankControl',
@@ -56,6 +60,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             {
                 'class': 'es.eucm.cytochallenge.model.TextChallenge',
                 'imagePath': '',
+                'difficulty': 'EASY',
                 'textControl': {
                     'class': 'es.eucm.cytochallenge.model.control.InteractiveZoneControl',
                     'text': '',
@@ -82,6 +87,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                 $scope.addChallenge = function () {
                     $scope.chooseType();
                     console.log(JSON.stringify($scope.challenge, null, '  '));
+                    $scope.challenge._course = QueryParams.getCourseId();
                     $scope.challenge.$save(function (err) {
                         $scope.closeDialog();
                         updateChallenges();
@@ -145,9 +151,14 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
 
 
         function updateChallenges() {
-            $scope.challenges = Challenges.get(function () {
-                console.log($scope.challenges[0]);
-            });
+            $http.get('/courses/' + QueryParams.getCourseId() + '/challenges')
+                .success(function (res) {
+                    console.log('success!!', res);
+                    $scope.challenges = res;
+                }).error(function (err) {
+                    console.log('error!!', err);
+
+                });
         }
 
         updateChallenges();

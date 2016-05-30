@@ -92,6 +92,7 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
                         $scope.challenge.challengeFile = {
                             'class': 'es.eucm.cytochallenge.model.TextChallenge',   // Can be ignored (used by the client json parser)
                             'imagePath': '',
+                            'difficulty': 'EASY',
                             'textControl': {
                                 'class': 'es.eucm.cytochallenge.model.control.MultipleAnswerControl',   // Can be ignored (used by the client json parser)
                                 'text': '',
@@ -178,6 +179,14 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
                 string: '',
                 isCorrect: false
             });
+        };
+
+        $scope.chooseDifficulty = function (difficulty) {
+            $scope.challenge.challengeFile.difficulty = difficulty;
+        };
+
+        $scope.preview = function () {
+            $location.path('/challenges/preview/' + $scope.challenge._id);
         };
     }
 ]);

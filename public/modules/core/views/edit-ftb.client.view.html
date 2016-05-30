@@ -1,4 +1,29 @@
 <section data-ng-controller="ChallengesEditFtbController">
+    <div layout="row" layout-align="center" layout-margin layout-fill layout-padding>
+
+        <md-whiteframe class="md-whiteframe-z3" flex layout layout-align="left">
+            <md-input-container>
+                <label>Challenge name</label>
+                <input ng-model="challenge.name">
+            </md-input-container>
+            <h2>
+                <span>Type: Fill The Options</span>
+            </h2>
+            <md-menu>
+                <md-button aria-label="Difficulty" class="md-raised md-primary"
+                           ng-click="$mdOpenMenu($event)">
+                    Difficulty:{{challenge.challengeFile.difficulty}}
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item ng-repeat="difficulty in ['EASY', 'MEDIUM', 'HARD']">
+                        <md-button ng-click="chooseDifficulty(difficulty)"> {{difficulty}}
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-whiteframe>
+    </div>
+
     <md-whiteframe flex="66" class="md-whiteframe-z3" layout layout-align="center center">
         <div layout="column" layout-align="center" layout-margin layout-fill layout-padding>
 
