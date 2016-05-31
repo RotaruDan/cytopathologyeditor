@@ -85,11 +85,12 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                     $mdDialog.hide();
                 };
                 $scope.addChallenge = function () {
-                    $scope.chooseType();
                     console.log(JSON.stringify($scope.challenge, null, '  '));
                     $scope.challenge._course = QueryParams.getCourseId();
+                    console.log('saving challenge: ' + JSON.stringify($scope.challenge, null, '  '));
                     $scope.challenge.$save(function (err) {
                         $scope.closeDialog();
+                        console.log('saved challenge: ' + JSON.stringify($scope.challenge, null, '  '));
                         updateChallenges();
                     });
                 };
@@ -100,6 +101,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                     if (!index) {
                         index = 0;
                     }
+                    console.log('index ' + index);
                     $scope.selectedReadType = readTypes[index];
                     $scope.challenge.type = types[index];
                     $scope.challenge.challengeFile =
@@ -165,6 +167,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
 
         $scope.challenge = new Challenges();
         $scope.challenge.type = $scope.types[0];
+        $scope.challenge.challengeFile = challengesFiles[0];
         $scope.go = function (challenge) {
             sharedProperties.setChallenge(challenge);
             $location.path('/challenges/edit/' + challenge._id + '/' + challenge.type);

@@ -33,7 +33,7 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
             isCorrect: false
         }];
 
-        var updateCurrentChallengeModel = function () {
+        var updateCurrentChallengeModel = function (callback) {
 
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
@@ -62,12 +62,12 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
             });
 
             $scope.challenge.$update();
-            queryChallenge();
+            queryChallenge(callback);
         };
 
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
-        $scope.onSubmit = function () {
+        $scope.onSubmit = function (callback) {
             var formData = new FormData();
 
             if ($scope.files &&
@@ -80,7 +80,7 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                     formData.append('files[]', obj[0].lfFile);
                 });
             } else {
-                return updateCurrentChallengeModel();
+                return updateCurrentChallengeModel(callback);
             }
 
             // Upload the selected Photo
@@ -92,10 +92,10 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                 }
             }).success(function (res) {
                 console.log('success!!', res);
-                updateCurrentChallengeModel();
+                updateCurrentChallengeModel(callback);
             }).error(function (err) {
                 console.log('error!!', err);
-                updateCurrentChallengeModel();
+                updateCurrentChallengeModel(callback);
             });
         };
 
@@ -105,7 +105,7 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
 
         var thisFiles = $scope.files;
         var imageObj = new Image();
-        var queryChallenge = function() {
+        var queryChallenge = function(callback) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
                     console.log(JSON.stringify(res.challengeFile));
@@ -149,9 +149,16 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                             ++i;
                         });
                     }
+
+                    if(callback) {
+                        callback();
+                    }
                 }, function (error) {
                     console.log('error retrieving challenge', error);
 
+                    if(callback) {
+                        callback();
+                    }
                 });
         };
 
@@ -242,6 +249,41 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
 
         $scope.chooseDifficulty = function (difficulty) {
             $scope.challenge.challengeFile.difficulty = difficulty;
+        };
+
+
+        // Preview Dialog Controller
+        function DialogController($scope, $mdDialog, challenge) {
+
+            $scope.challenge = challenge;
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+                $mdDialog.hide(answer);
+            };
+            $scope.getPreviewSrc = function() {
+                return '/preview/preview.html?challenge=' + challenge._id;
+            };
+        }
+
+        $scope.showAdvanced = function (ev) {
+            $scope.onSubmit(function() {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge
+                    },
+                    controller: DialogController,
+                    templateUrl: 'modules/core/views/challenge.preview.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
         };
     }
 ]);

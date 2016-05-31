@@ -47,11 +47,6 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
                 toolbarName: 'Challenge',
                 url: '/challenges/edit/:challengeId/polygon',
                 templateUrl: 'modules/core/views/edit-polygon.client.view.html'
-            }).
-            state('preview', {
-                toolbarName: 'Challenge',
-                url: '/challenges/preview/:challengeId',
-                templateUrl: 'preview/index.html'
             });
     }
 ]);

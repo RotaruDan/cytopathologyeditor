@@ -12,6 +12,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
         var ctx = canv.getContext('2d');
         var textHeight = 20;
 
+        var imageObj = new Image();
         // This 'files' var stores the uploaded images from the widget
         $scope.files = [{
             lfDataUrl: '',
@@ -21,7 +22,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
         // Stores the 'Options' added by the user
         $scope.mcqs = [];
 
-        var updateCurrentChallengeModel = function () {
+        var updateCurrentChallengeModel = function (callback) {
 
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
@@ -36,11 +37,21 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             $scope.challenge.challengeFile.textControl.answers = [];
             $scope.mcqs.forEach(function (question) {
 
+                var canvasX = question.x;
+                var canvasY = canv.height - question.y;
+
+                var playW = imageObj.width;
+                var playH = imageObj.height;
+                console.log('image size ' + playW + ', ' + playH);
+
+                var playX = (canvasX * playW ) / canv.width;
+                var playY = (canvasY * playH) / canv.height;
+
                 $scope.challenge.challengeFile.textControl.answers.
                     push({
                         text: question.string,
-                        x: question.x,
-                        y: canv.height - question.y,
+                        x: playX,
+                        y: playY,
                         width: question.width,
                         height: question.height
                     });
@@ -50,18 +61,18 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
             $scope.challenge.$update();
 
-            queryChallenge();
+            queryChallenge(callback);
         };
 
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
-        $scope.onSubmit = function () {
+        $scope.onSubmit = function (callback) {
             var formData = new FormData();
 
             if ($scope.files && $scope.files.length && $scope.files[0].lfFile) {
                 formData.append('files', $scope.files[0].lfFile);
             } else {
-                return updateCurrentChallengeModel();
+                return updateCurrentChallengeModel(callback);
             }
 
             // Upload the selected Photo
@@ -73,10 +84,10 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                 }
             }).success(function (res) {
                 console.log('success!!', res);
-                updateCurrentChallengeModel();
+                updateCurrentChallengeModel(callback);
             }).error(function (err) {
                 console.log('error!!', err);
-                updateCurrentChallengeModel();
+                updateCurrentChallengeModel(callback);
             });
         };
 
@@ -85,9 +96,8 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
 
         var thisFiles = $scope.files;
-        var imageObj = new Image();
         console.log('before query', $scope.files);
-        var queryChallenge = function () {
+        var queryChallenge = function (callback) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
                     console.log(JSON.stringify(res.challengeFile));
@@ -120,23 +130,42 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                         thisFiles[0].lfFileName = res.challengeFile.imagePath;
                     }
 
-                    $scope.mcqs[i] = [];
+                    $scope.mcqs = [];
                     $scope.challenge.challengeFile.textControl.answers.
                         forEach(function (answer) {
+
+                            var playY = answer.y;
+                            var playX = answer.x;
+
+                            var playW = $scope.challenge.challengeFile.textControl.canvasWidth;
+                            var playH = $scope.challenge.challengeFile.textControl.canvasHeight;
+
+                            var canvasX = (playX * canv.width) / playW;
+                            var canvasY = (playY * canv.height) / playH;
+                            canvasY = canv.height - canvasY;
+
+
                             $scope.mcqs[i] = {
                                 string: answer.text,
-                                x: answer.x,
-                                y: canv.height - answer.y,
+                                x: canvasX,
+                                y: canvasY,
                                 width: answer.width,
                                 height: answer.height
                             };
                             ++i;
                         });
                     draw();
+
+                    if(callback) {
+                        callback();
+                    }
                 }, function
                     (error) {
                     console.log('error retrieving challenge', error);
 
+                    if(callback) {
+                        callback();
+                    }
                 }
             )
             ;
@@ -305,6 +334,41 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
         $scope.chooseDifficulty = function (difficulty) {
             $scope.challenge.challengeFile.difficulty = difficulty;
+        };
+
+
+        // Preview Dialog Controller
+        function DialogController($scope, $mdDialog, challenge) {
+
+            $scope.challenge = challenge;
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+                $mdDialog.hide(answer);
+            };
+            $scope.getPreviewSrc = function() {
+                return '/preview/preview.html?challenge=' + challenge._id;
+            };
+        }
+
+        $scope.showAdvanced = function (ev) {
+            $scope.onSubmit(function() {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge
+                    },
+                    controller: DialogController,
+                    templateUrl: 'modules/core/views/challenge.preview.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
         };
     }
 ]);

@@ -2,17 +2,20 @@
     <div layout="row" layout-align="center" layout-margin layout-fill layout-padding>
 
         <md-whiteframe class="md-whiteframe-z3" flex layout layout-align="left">
+
             <md-input-container>
                 <label>Challenge name</label>
                 <input ng-model="challenge.name">
             </md-input-container>
-            <h2>
-                <span>Type: Highlight Image Area</span>
-            </h2>
+            <md-button ng-disabled="true" class="md-primary">Highlight Image Area</md-button>
+            <span flex></span>
             <md-menu>
                 <md-button aria-label="Difficulty" class="md-raised md-primary"
                            ng-click="$mdOpenMenu($event)">
-                    Difficulty:{{challenge.challengeFile.difficulty}}
+                    {{challenge.challengeFile.difficulty}}
+                    <md-tooltip>
+                        DIFFICULTY
+                    </md-tooltip>
                 </md-button>
                 <md-menu-content width="4">
                     <md-menu-item ng-repeat="difficulty in ['EASY', 'MEDIUM', 'HARD']">
@@ -21,6 +24,12 @@
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
+            <md-button class="md-icon-button" aria-label="Preview" ng-click="showAdvanced($event)">
+                <md-icon md-font-set="material-icons">play_arrow</md-icon>
+                <md-tooltip>
+                    PREVIEW
+                </md-tooltip>
+            </md-button>
         </md-whiteframe>
     </div>
 
