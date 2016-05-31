@@ -15,48 +15,6 @@ module.exports = function(grunt) {
 	// Project Configuration
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		watch: {
-			serverViews: {
-				files: watchFiles.serverViews,
-				options: {
-					livereload: true
-				}
-			},
-			serverJS: {
-				files: watchFiles.serverJS,
-				tasks: ['jshint'],
-				options: {
-					livereload: true
-				}
-			},
-			clientViews: {
-				files: watchFiles.clientViews,
-				options: {
-					livereload: true,
-				}
-			},
-			clientJS: {
-				files: watchFiles.clientJS,
-				tasks: ['jshint'],
-				options: {
-					livereload: true
-				}
-			},
-			clientCSS: {
-				files: watchFiles.clientCSS,
-				tasks: ['csslint'],
-				options: {
-					livereload: true
-				}
-			},
-            sass: {
-                files: watchFiles.sass,
-                tasks: ['sass:dev'],
-			    options: {
-					livereload: true
-				}
-            }
-		},
 		jshint: {
 			all: {
 				src: watchFiles.clientJS.concat(watchFiles.serverJS),
@@ -95,8 +53,7 @@ module.exports = function(grunt) {
 				script: 'server.js',
 				options: {
 					nodeArgs: ['--debug'],
-					ext: 'js,html',
-					watch: watchFiles.serverViews.concat(watchFiles.serverJS)
+					ext: 'js,html'
 				}
 			}
 		},
@@ -122,7 +79,7 @@ module.exports = function(grunt) {
 		},
 		concurrent: {
 			default: ['nodemon'],
-			debug: ['nodemon', 'watch', 'node-inspector'],
+			debug: ['nodemon', 'node-inspector'],
 			options: {
 				logConcurrentOutput: true,
 				limit: 10
