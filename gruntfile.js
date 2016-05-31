@@ -121,7 +121,7 @@ module.exports = function(grunt) {
 			}
 		},
 		concurrent: {
-			default: ['nodemon', 'watch'],
+			default: ['nodemon'],
 			debug: ['nodemon', 'watch', 'node-inspector'],
 			options: {
 				logConcurrentOutput: true,
@@ -152,7 +152,7 @@ module.exports = function(grunt) {
 		 * Sass
 		 */
 		sass: {
-		  dev: {		    
+		  dev: {
 		    files: {
 		      'public/style/main.css': 'public/style/main.scss',
 		    }
