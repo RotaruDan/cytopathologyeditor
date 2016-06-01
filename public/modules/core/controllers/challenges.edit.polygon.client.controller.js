@@ -6,6 +6,9 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
     function ($scope, Challenges, $location,
               $mdDialog, QueryParams, $http, sharedProperties) {
 
+        var offsetX = 0, offsetY = 0;
+        var canvasW = 0, canvasH = 0;
+
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');
         var ctx = canv.getContext('2d');
@@ -37,8 +40,18 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 if (question.points.length > 5) {
                     var polygon = [];
                     for (var i = 0; i < question.points.length; i += 2) {
-                        polygon.push(question.points[i]);
-                        polygon.push(canv.height - question.points[i + 1]);
+
+                        var canvasX = question.points[i] - offsetX;
+                        var canvasY = canv.height - question.points[i + 1] - offsetY;
+
+                        var playW = imageObj.width;
+                        var playH = imageObj.height;
+
+                        var playX = (canvasX * playW ) / canvasW;
+                        var playY = (canvasY * playH) / canvasH;
+
+                        polygon.push(playX);
+                        polygon.push(playY);
                     }
                     $scope.challenge.challengeFile.textControl.answers.push(polygon);
 
@@ -88,7 +101,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
         var thisFiles = $scope.files;
         var imageObj = new Image();
-        console.log('before query', $scope.files);
         var queryChallenge = function (callback) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
@@ -115,24 +127,16 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                             }
                         };
                     }
-                    var i = 0;
                     if (res.challengeFile.imagePath) {
                         imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
-                        console.log(thisFiles);
+                        imageObj.computePositions = true;
                         thisFiles[0].lfFileName = res.challengeFile.imagePath;
                     }
-
+                    var i = 0;
                     $scope.challenge.challengeFile.textControl.answers.
                         forEach(function (answer) {
-                            var pointsPoly = [];
-
-                            for (var j = 0; j < answer.length; j += 2) {
-                                pointsPoly.push(answer[j]);
-                                pointsPoly.push(canv.height - answer[j + 1]);
-                            }
-
                             $scope.mcqs[i] = {
-                                points: pointsPoly,
+                                points: [- 100, -100, -100, -100, -100, -100],
                                 isCorrect: $scope.challenge.challengeFile.textControl.correctAnswers.indexOf(i) !== -1
                             };
                             ++i;
@@ -150,8 +154,37 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 });
         };
 
-        queryChallenge();
+        var computePositions = function() {
+            var i = 0;
+            $scope.challenge.challengeFile.textControl.answers.
+                forEach(function (answer) {
+                    var pointsPoly = [];
 
+                    for (var j = 0; j < answer.length; j += 2) {
+
+                        var playX = answer[j];
+                        var playY = answer[j + 1];
+
+                        var playW = imageObj.width;
+                        var playH = imageObj.height;
+
+                        var canvasX = ((playX * canvasW) / playW) + offsetX;
+                        var canvasY = (playY * canvasH) / playH;
+                        canvasY = canvasH - (canvasY) + offsetY;
+
+                        pointsPoly.push(canvasX);
+                        pointsPoly.push(canvasY);
+                    }
+
+                    $scope.mcqs[i] = {
+                        points: pointsPoly,
+                        isCorrect: $scope.challenge.challengeFile.textControl.correctAnswers.indexOf(i) !== -1
+                    };
+                    ++i;
+                });
+        };
+
+        queryChallenge();
 
         var drawImageObj = function () {
             if (!imageObj.isLoaded) {
@@ -168,7 +201,17 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
             var width = sourceWidth * scale;
             var height = sourceHeight * scale;
-            ctx.drawImage(imageObj, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
+
+            console.log('drawinggggg');
+
+            offsetX = (targetWidth - width) * 0.5;
+            offsetY = (targetHeight - height) * 0.5;
+
+            canvasW = width;
+            canvasH = height;
+            console.log('offsetX', offsetX, 'offsetY', offsetY, 'width', width, 'height', height);
+
+            ctx.drawImage(imageObj, offsetX, offsetY, width, height);
 
         };
 
@@ -181,6 +224,7 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 imageObj.src = newValue[0].lfDataUrl;
                 imageObj.onload = function () {
                     imageObj.isLoaded = true;
+                    console.log('loadeddddddd');
                     draw();
                 };
             }
@@ -188,7 +232,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
         //-----------------
         // CANVAS LOGIC
-
 
         var activePoint;
 
@@ -214,7 +257,11 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 e.offsetX = (e.pageX - $(e.target).offset().left);
                 e.offsetY = (e.pageY - $(e.target).offset().top);
             }
-            var points = $scope.mcqs[$scope.mcqs.length - 1].points;
+            var pointsObj = $scope.mcqs[$scope.mcqs.length - 1];
+            if(!pointsObj) {
+                return false;
+            }
+            var points = pointsObj.points;
             var x = e.offsetX, y = e.offsetY;
             for (var i = 0; i < points.length; i += 2) {
                 var dis = Math.sqrt(Math.pow(x - points[i], 2) + Math.pow(y - points[i + 1], 2));
@@ -229,7 +276,11 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
         var i;
         mousedown = function (e) {
-            var points = $scope.mcqs[$scope.mcqs.length - 1].points;
+            var pointsObj = $scope.mcqs[$scope.mcqs.length - 1];
+            if(!pointsObj) {
+                return false;
+            }
+            var points = pointsObj.points;
             var x, y, dis, lineDis, insertAt = points.length;
 
             if (e.which === 3) {
@@ -277,7 +328,14 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
         };
 
         draw = function () {
-            ctx.canvas.width = ctx.canvas.width;
+
+            ctx.clearRect(0, 0, canv.width, canv.height);
+            drawImageObj();
+
+            if(imageObj.isLoaded && imageObj.computePositions) {
+                imageObj.computePositions = false;
+                computePositions();
+            }
 
             if(!$scope.mcqs) {
                 return false;
@@ -293,7 +351,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
             $scope.mcqs.forEach(function (polygon) {
                 var points = polygon.points;
-                ctx.globalCompositeOperation = 'destination-over';
                 ctx.fillStyle = 'rgb(255,255,255)';
                 ctx.strokeStyle = polygon.isCorrect ? 'rgb(20, 255, 20)' : 'rgb(255,20,20)';
                 ctx.lineWidth = 1;
@@ -311,9 +368,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 ctx.fill();
                 ctx.stroke();
             });
-
-
-            drawImageObj();
 
             console.log(JSON.stringify(points, null, '   '));
         };
