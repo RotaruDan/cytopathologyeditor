@@ -6,6 +6,8 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
     function ($scope, Challenges, $location,
               $mdDialog, QueryParams, $http, sharedProperties) {
 
+        var offsetX = 0, offsetY = 0;
+        var canvasW = 0, canvasH = 0;
 
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');
@@ -37,15 +39,15 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             $scope.challenge.challengeFile.textControl.answers = [];
             $scope.mcqs.forEach(function (question) {
 
-                var canvasX = question.x;
-                var canvasY = canv.height - question.y;
+                var canvasX = question.x - offsetX;
+                var canvasY = canv.height - (question.y + question.height) - offsetY;
 
                 var playW = imageObj.width;
                 var playH = imageObj.height;
                 console.log('image size ' + playW + ', ' + playH);
 
-                var playX = (canvasX * playW ) / canv.width;
-                var playY = (canvasY * playH) / canv.height;
+                var playX = (canvasX * playW ) / canvasW;
+                var playY = (canvasY * playH) / canvasH;
 
                 $scope.challenge.challengeFile.textControl.answers.
                     push({
@@ -96,7 +98,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
 
         var thisFiles = $scope.files;
-        console.log('before query', $scope.files);
         var queryChallenge = function (callback) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
@@ -123,52 +124,77 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                         }
                         ;
                     }
-                    var i = 0;
                     if (res.challengeFile.imagePath) {
+                        imageObj.isLoaded = false;
+                        imageObj.computePositions = true;
                         imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
-                        console.log(thisFiles);
                         thisFiles[0].lfFileName = res.challengeFile.imagePath;
                     }
 
                     $scope.mcqs = [];
+                    var i = 0;
                     $scope.challenge.challengeFile.textControl.answers.
                         forEach(function (answer) {
 
-                            var playY = answer.y;
-                            var playX = answer.x;
-
-                            var playW = $scope.challenge.challengeFile.textControl.canvasWidth;
-                            var playH = $scope.challenge.challengeFile.textControl.canvasHeight;
-
-                            var canvasX = (playX * canv.width) / playW;
-                            var canvasY = (playY * canv.height) / playH;
-                            canvasY = canv.height - canvasY;
-
-
                             $scope.mcqs[i] = {
                                 string: answer.text,
-                                x: canvasX,
-                                y: canvasY,
+                                x: -500,
+                                y: -500,
                                 width: answer.width,
                                 height: answer.height
                             };
+
+                            console.log(JSON.stringify($scope.mcqs[i], null, '  '));
                             ++i;
                         });
                     draw();
 
-                    if(callback) {
+                    if (callback) {
                         callback();
                     }
                 }, function
                     (error) {
                     console.log('error retrieving challenge', error);
 
-                    if(callback) {
+                    if (callback) {
                         callback();
                     }
                 }
             )
             ;
+        };
+
+        var computePositions = function() {
+            var i = 0;
+            $scope.challenge.challengeFile.textControl.answers.
+                forEach(function (answer) {
+
+                    var playY = answer.y;
+                    var playX = answer.x;
+
+                    var playW = imageObj.width;
+                    var playH = imageObj.height;
+
+                    var canvasX = ((playX * canvasW) / playW) + offsetX;
+                    var canvasY = (playY * canvasH) / playH;
+                    canvasY = canvasH - (canvasY + answer.height) + offsetY;
+
+                    console.log('playW', playW);
+                    console.log('canvasW', canvasW);
+                    console.log('offsetX', offsetX);
+                    console.log('canvasX', canvasX);
+
+                    $scope.mcqs[i] = {
+                        string: answer.text,
+                        x: canvasX,
+                        y: canvasY,
+                        width: answer.width,
+                        height: answer.height
+                    };
+
+                    console.log(JSON.stringify($scope.mcqs[i], null, '  '));
+                    ++i;
+                });
         };
 
         queryChallenge();
@@ -188,11 +214,16 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
             var width = sourceWidth * scale;
             var height = sourceHeight * scale;
-            ctx.drawImage(imageObj, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
 
+            offsetX = (targetWidth - width) * 0.5;
+            offsetY = (targetHeight - height) * 0.5;
+
+            canvasW = width;
+            canvasH = height;
+            ctx.drawImage(imageObj, offsetX, offsetY, width, height);
         };
 
-// ----canvas
+        // ----canvas
         var draw, mousedown, stopdrag, move, activeText;
 
         $scope.$watchCollection('files', function (newValue, oldValue) {
@@ -216,18 +247,15 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             var textObj = $scope.mcqs[activeText];
             textObj.x = Math.round(e.offsetX) - textObj.width / 2;
             textObj.y = Math.round(e.offsetY) - textObj.height / 2;
-            console.log('move', JSON.stringify(textObj, null, '  '));
             draw();
         };
 
         stopdrag = function () {
-            console.log('stopdrag');
             canv.onmousemove = null;
             activeText = null;
         };
 
         var contains = function (obj, x, y) {
-            console.log('contains', JSON.stringify(obj, null, '  '), x, y);
             return x >= obj.x &&
                 x < obj.x + obj.width &&
                 y >= obj.y &&
@@ -236,7 +264,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
         var i;
         mousedown = function (e) {
-            console.log('mousedown');
             var x, y;
 
             if (e.which === 3) {
@@ -252,9 +279,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             y = e.offsetY;
 
             for (i = 0; i < $scope.mcqs.length; i++) {
-                console.log('looping', i);
                 if (contains($scope.mcqs[i], x, y)) {
-                    console.log('contains');
                     activeText = i;
                     canv.onmousemove = move;
                     return false;
@@ -268,6 +293,10 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
             ctx.clearRect(0, 0, canv.width, canv.height);
             drawImageObj();
+            if(imageObj.isLoaded && imageObj.computePositions) {
+                imageObj.computePositions = false;
+                computePositions();
+            }
             drawText();
         };
 
@@ -351,13 +380,13 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             $scope.answer = function (answer) {
                 $mdDialog.hide(answer);
             };
-            $scope.getPreviewSrc = function() {
+            $scope.getPreviewSrc = function () {
                 return '/preview/preview.html?challenge=' + challenge._id;
             };
         }
 
         $scope.showAdvanced = function (ev) {
-            $scope.onSubmit(function() {
+            $scope.onSubmit(function () {
                 $mdDialog.show({
                     locals: {
                         challenge: $scope.challenge
