@@ -140,6 +140,7 @@ angular.module('core').controller('ChallengesEditMcqController', [
                 imageObj.src = newValue[0].lfDataUrl;
                 imageObj.onload = function () {
 
+
                     var targetHeight = canv.height;
                     var targetWidth = canv.width;
                     var sourceHeight = imageObj.height;
@@ -152,7 +153,7 @@ angular.module('core').controller('ChallengesEditMcqController', [
                     var width = sourceWidth * scale;
                     var height = sourceHeight * scale;
                     ctx.clearRect(0, 0, targetWidth, targetHeight);
-                    ctx.drawImage(this, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
+                    ctx.drawImage(imageObj, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
                 };
             }
         });
