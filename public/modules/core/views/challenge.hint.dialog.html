@@ -1,0 +1,69 @@
+<md-dialog aria-label="Hint {{challenge.name}} Challenge">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Hint {{challenge.name}} Challenge</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="hide()">
+                    <md-icon md-font-set="material-icons">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+
+            <div flex>
+                <strong>Hints</strong>
+                <md-menu md-offset="0 -7">
+                    <md-button aria-label="Open hints menu"
+                               class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                        <md-icon md-font-set="material-icons">add circle outline</md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item ng-repeat="item in ['Text', 'Image']">
+                            <md-button ng-click="addHint($index)"><span
+                                    md-menu-align-target>{{item}}</span></md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+            <div ng-repeat="option in hints">
+                <div layout="row" layout-align="center" flex>
+
+                    <div flex ng-if="option.type === 'text' ">
+
+                        <md-input-container flex>
+                            <label>Text</label>
+                            <input flex ng-model="option.string">
+                        </md-input-container>
+                    </div>
+                    <div ng-if="option.type === 'image' ">
+                        <md-card flex>
+                            <img class="md-card-image"
+                                 ng-src="{{getHintImageSrc(option)}}"
+                                 alt="Hint Image"/>
+                            <md-card-content>
+                                <lf-ng-md-file-input lf-files="files[$index]"
+                                                     lf-api="api01"
+                                                     accept="image/*" preview></lf-ng-md-file-input>
+                            </md-card-content>
+                        </md-card>
+                    </div>
+                    <md-button aria-label="Remove"
+                               ng-click="delete(option)"
+                               class="md-icon-button">
+                        <md-icon md-font-set="material-icons">remove</md-icon>
+                    </md-button>
+                </div>
+            </div>
+            <div class="md-actions" layout="row">
+                <span flex></span>
+                <md-button ng-click="hide()">
+                    Cancel
+                </md-button>
+                <md-button ng-click="save()" style="margin-right:20px;">
+                    Save
+                </md-button>
+            </div>
+        </md-dialog-content>
+    </form>
+</md-dialog>

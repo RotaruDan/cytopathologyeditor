@@ -124,7 +124,11 @@ function challengeHasHintImage(challenge, image) {
 function removeUnusedHintImages(challenge, next) {
     var pathDir = uploadsPath + challenge._id + '/hints/';
     fs.readdir(pathDir, function (err, files) {
+        if(err || !files) {
+            return next();
+        }
         async.each(files, function (file, cb) {
+
             if (challengeHasHintImage(challenge, file)) {
                 return cb();
             }

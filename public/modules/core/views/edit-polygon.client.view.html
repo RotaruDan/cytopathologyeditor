@@ -9,6 +9,12 @@
             </md-input-container>
             <md-button ng-disabled="true" class="md-primary">Highlight Image Area</md-button>
             <span flex></span>
+            <md-button class="md-icon-button" aria-label="Hint" ng-click="showHint($event)">
+                <md-icon md-font-set="material-icons">info</md-icon>
+                <md-tooltip>
+                    HINT
+                </md-tooltip>
+            </md-button>
             <md-menu>
                 <md-button aria-label="Difficulty" class="md-raised md-primary"
                            ng-click="$mdOpenMenu($event)">
