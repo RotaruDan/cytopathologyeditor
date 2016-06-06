@@ -41,6 +41,30 @@ var multerMiddleware = multer({ //multer settings
 var upload = multerMiddleware.single('files');
 var uploadFiles = multerMiddleware.array('files[]', 4);
 
+var hintsStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        var pathDir = uploadsPath + req.params.challengeId + '/hints/';
+        mkdirp(pathDir, function (err) {
+            if (!err) {
+                cb(null, pathDir);
+            } else {
+                //debug
+                console.log(err);
+                cb(err);
+            }
+        });
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+
+
+var multerHintsMiddleware = multer({ //multer hints settings
+    storage: hintsStorage
+});
+var uploadHintFiles = multerHintsMiddleware.array('files[]');
+
 
 /**
  * Removes a folder recursively
@@ -55,24 +79,76 @@ function removeFolder(location, next) {
                 if (err) {
                     return cb(err);
                 }
-                if (stat.isDirectory()) {
-                    removeFolder(file, cb);
-                } else {
+                if (!stat.isDirectory()) {
                     fs.unlink(file, function (err) {
                         if (err) {
                             return cb(err);
                         }
                         return cb();
                     });
+                } else {
+                    cb();
                 }
             });
         }, function (err) {
             if (err) {
                 return next(err);
             }
-            fs.rmdir(location, function (err) {
-                return next(err);
+            return next();
+        });
+    });
+}
+
+
+function challengeHasHintImage(challenge, image) {
+    var hint = challenge.challengeFile.hint;
+    if (hint) {
+        var infos = hint.infos;
+        if (infos) {
+            infos.forEach(function (info) {
+                if (info.imagePath &&
+                    info.imagePath.indexOf(image) !== -1) {
+                    return true;
+                }
             });
+        }
+    }
+    return true;
+}
+
+/**
+ * Removes the unused hint images from the /hints folder
+ * @param location
+ * @param next
+ */
+function removeUnusedHintImages(challenge, next) {
+    var pathDir = uploadsPath + challenge._id + '/hints/';
+    fs.readdir(pathDir, function (err, files) {
+        async.each(files, function (file, cb) {
+            if (challengeHasHintImage(challenge, file)) {
+                return cb();
+            }
+            file = pathDir + file;
+            fs.stat(file, function (err, stat) {
+                if (err) {
+                    return cb(err);
+                }
+                if (!stat.isDirectory()) {
+                    fs.unlink(file, function (err) {
+                        if (err) {
+                            return cb(err);
+                        }
+                        return cb();
+                    });
+                } else {
+                    cb();
+                }
+            });
+        }, function (err) {
+            if (err) {
+                return next(err);
+            }
+            return next();
         });
     });
 }
@@ -108,6 +184,16 @@ exports.uploadImages = function (req, res) {
             }
             res.json({error_code: 100, err_desc: null});
         });
+    });
+};
+
+exports.uploadHintImages = function (req, res) {
+    uploadHintFiles(req, res, function (err) {
+        if (err) {
+            res.status(400).json({error_code: 1, err_desc: err});
+            return;
+        }
+        res.json({error_code: 100, err_desc: null});
     });
 };
 
@@ -229,6 +315,12 @@ var addImagesToZip = function (location, archiver, next) {
                             }
                             cb();
                         });
+                    } else if (stat.isDirectory()) {
+                        archiver.directory(file, fileName, {
+                            name: fileName
+                        });
+
+                        cb();
                     } else {
                         cb();
                     }
@@ -271,48 +363,55 @@ exports.update = function (req, res, next) {
 
                     var location = uploadsPath + newChallenge._id + '/';
 
-                    mkdirp(location, function (err) {
+                    removeUnusedHintImages(challenge, function (err) {
                         if (err) {
                             return res.status(400).send({
                                 message: errorHandler.getErrorMessage(err)
                             });
                         }
-                        var zipPath = location + 'challenge.zip';
-
-                        // Create .zip package
-                        var archive = archiver('zip');
-
-                        var output = fs.createWriteStream(zipPath);
-
-                        output.on('close', function () {
-                            console.log(archive.pointer() + ' total bytes');
-                            console.log('archiver has been finalized ' +
-                                'and the output file descriptor has closed.');
-                        });
-
-                        archive.on('error', function (err) {
-                            throw err;
-                        });
-
-                        archive.pipe(output);
-
-                        // Add file directly
-                        var s = new Readable();
-                        s.push(JSON.stringify(newChallenge.challengeFile, null, '    '));    // the string you want
-                        s.push(null);
-                        archive.append(s, {name: 'challenge.json'});
-
-                        addImagesToZip(location, archive, function (err) {
+                        mkdirp(location, function (err) {
                             if (err) {
                                 return res.status(400).send({
                                     message: errorHandler.getErrorMessage(err)
                                 });
                             }
+                            var zipPath = location + 'challenge.zip';
 
-                            // Write everything to disk
-                            archive.finalize();
-                            res.send({
-                                message: 'Challenge updated.'
+                            // Create .zip package
+                            var archive = archiver('zip');
+
+                            var output = fs.createWriteStream(zipPath);
+
+                            output.on('close', function () {
+                                console.log(archive.pointer() + ' total bytes');
+                                console.log('archiver has been finalized ' +
+                                    'and the output file descriptor has closed.');
+                            });
+
+                            archive.on('error', function (err) {
+                                throw err;
+                            });
+
+                            archive.pipe(output);
+
+                            // Add file directly
+                            var s = new Readable();
+                            s.push(JSON.stringify(newChallenge.challengeFile, null, '    '));    // the string you want
+                            s.push(null);
+                            archive.append(s, {name: 'challenge.json'});
+
+                            addImagesToZip(location, archive, function (err) {
+                                if (err) {
+                                    return res.status(400).send({
+                                        message: errorHandler.getErrorMessage(err)
+                                    });
+                                }
+
+                                // Write everything to disk
+                                archive.finalize();
+                                res.send({
+                                    message: 'Challenge updated.'
+                                });
                             });
                         });
                     });

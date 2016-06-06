@@ -11,6 +11,8 @@ module.exports = function (app) {
     /** API path that will upload the files */
     app.post('/uploads/:challengeId', challenges.uploadImages);
 
+    app.post('/hints/:challengeId', challenges.uploadHintImages);
+
     //List challenges
     app.route('/challenges')
         .get(challenges.list);
