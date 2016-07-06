@@ -5,7 +5,25 @@
         </div>
         <div layout="column" layout-align="center center"> 
             <p class="md-headline">
-                Cytopathology Challenge Editor
+                Cytopathology Challenge Editor Quickstart
             </p>
+            <md-list-item ng-click="go('/signup')" data-ng-show="!authentication.user">
+                <md-icon>
+                    <i class="material-icons">assignment_ind</i>
+                </md-icon>
+                <p> Sign up </p>
+            </md-list-item>
+            <md-list-item ng-click="go('/signin')" data-ng-show="!authentication.user">
+                <md-icon>
+                    <i class="material-icons">lock_open</i>
+                </md-icon>
+                <p> Sign in </p>
+            </md-list-item>
+            <md-list-item ng-click="go('/courses')" data-ng-show="authentication.user">
+                <md-icon>
+                    <i class="material-icons">arrow_forward</i>
+                </md-icon>
+                <p> Courses </p>
+            </md-list-item>
         </div>
 </section>
