@@ -1,5 +1,4 @@
 <section data-ng-controller="ChallengesController">
-
     <md-grid-list
             md-cols-sm="1" md-cols-md="2" md-cols-gt-md="6"
             md-row-height-gt-md="1:1" md-row-height="2:2"
@@ -11,9 +10,10 @@
             </md-grid-tile-footer>
         </md-grid-tile>
     </md-grid-list>
-        <md-button class="md-fab md-primary" aria-label="Add challenge"
-                   ng-click="showDialog($event)">
-                <md-icon md-font-set="material-icons" style="width: 2.7rem; height: 1.15rem">add</md-icon>
 
-        </md-button>
+    <md-button class="md-fab md-primary md-fab-bottom-right" aria-label="Add challenge"
+               ng-click="showDialog($event)">
+        <md-icon md-font-set="material-icons" style="width: 2.7rem; height: 1.15rem">add</md-icon>
+
+    </md-button>
 </section>

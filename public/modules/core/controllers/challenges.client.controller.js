@@ -112,33 +112,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             $mdDialog.show({
                 parent: parentEl,
                 targetEvent: $event,
-                template: '<md-dialog aria-label="Challenge dialog">' +
-                '  <md-dialog-content>' +
-                '   <md-menu>' +
-                '       <md-button aria-label="Challenge type" class="md-raised md-primary" ng-click="openMenu($mdOpenMenu, $event)">' +
-                '           Type:{{selectedReadType}}' +
-                '       </md-button>' +
-                '       <md-menu-content width="4">' +
-                '           <md-menu-item ng-repeat="readType in readTypes">' +
-                '               <md-button ng-click="chooseType($index)"> {{readType}}' +
-                '              </md-button>' +
-                '           </md-menu-item>' +
-                '       </md-menu-content>' +
-                '   </md-menu>' +
-                '    <md-input-container>' +
-                '       <label>Challenge name</label>' +
-                '       <input type="text" ng-model="challenge.name">' +
-                '   </md-input-container>' +
-                '  </md-dialog-content>' +
-                '  <md-dialog-actions>' +
-                '    <md-button ng-click="closeDialog()" class="md-primary">' +
-                '      Close Dialog' +
-                '    </md-button>' +
-                '    <md-button ng-click="addChallenge()" class="md-primary">' +
-                '     Add Challenge' +
-                '    </md-button>' +
-                '  </md-dialog-actions>' +
-                '</md-dialog>',
+                templateUrl: 'modules/core/views/challenge.add.dialog.html',
 
                 locals: {
                     challenge: $scope.challenge,

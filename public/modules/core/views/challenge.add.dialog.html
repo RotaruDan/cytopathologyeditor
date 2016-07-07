@@ -1,0 +1,40 @@
+<md-dialog aria-label="Course dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Add a Challenge</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="closeDialog()">
+                <md-icon md-font-set="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <div layout>
+        <md-dialog-content>
+            <md-input-container>
+                <label>Challenge name</label>
+                <input type="text" ng-model="challenge.name">
+            </md-input-container>
+            <md-menu>
+                <md-button aria-label="Challenge type" class="md-raised md-primary" ng-click="openMenu($mdOpenMenu, $event)">
+                    Type:{{selectedReadType}}
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item ng-repeat="readType in readTypes">
+                        <md-button ng-click="chooseType($index)"> {{readType}}
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-dialog-content>
+    </div>
+    <div>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button aria-label="Add Challenge" ng-show="challenge.name.length > 0"
+                       ng-click="addChallenge()"
+                       class="md-primary">
+                Add Challenge
+            </md-button>
+        </div>
+    </div>
+</md-dialog>

@@ -28,22 +28,7 @@ angular.module('core').controller('CoursesController', ['$scope', 'Courses', '$l
             $mdDialog.show({
                 parent: parentEl,
                 targetEvent: $event,
-                template: '<md-dialog aria-label="Course dialog">' +
-                '  <md-dialog-content>' +
-                '    <md-input-container>' +
-                '       <label>Course name</label>' +
-                '       <input type="text" ng-model="course.name">' +
-                '   </md-input-container>' +
-                '  </md-dialog-content>' +
-                '  <md-dialog-actions>' +
-                '    <md-button ng-click="closeDialog()" class="md-primary">' +
-                '      Close Dialog' +
-                '    </md-button>' +
-                '    <md-button ng-click="addCourse()" class="md-primary">' +
-                '     Add Course' +
-                '    </md-button>' +
-                '  </md-dialog-actions>' +
-                '</md-dialog>',
+                templateUrl: 'modules/core/views/course.add.dialog.html',
 
                 locals: {
                     course: $scope.course,

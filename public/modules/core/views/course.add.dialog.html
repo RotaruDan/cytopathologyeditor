@@ -1,0 +1,29 @@
+<md-dialog aria-label="Course dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Add a Course</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="closeDialog()">
+                <md-icon md-font-set="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <div layout>
+        <md-dialog-content layout>
+            <md-input-container>
+                <label>Course name</label>
+                <input type="text" ng-model="course.name">
+            </md-input-container>
+        </md-dialog-content>
+    </div>
+    <div>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button aria-label="Add Course" ng-show="course.name.length > 0"
+                       ng-click="addCourse()"
+                       class="md-primary">
+                Add Course
+            </md-button>
+        </div>
+    </div>
+</md-dialog>
