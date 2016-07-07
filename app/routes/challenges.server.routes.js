@@ -4,27 +4,28 @@ module.exports = function (app) {
 
     // Challenges Routes
     var challenges = require('../../app/controllers/challenges.server.controller');
+    var auth = require('../../app/controllers/users/users.authorization.server.controller');
 
     /** API path that will upload the files */
-    app.post('/upload/:challengeId', challenges.uploadImage);
+    app.post('/upload/:challengeId', auth.requiresLogin, challenges.uploadImage);
 
     /** API path that will upload the files */
-    app.post('/uploads/:challengeId', challenges.uploadImages);
+    app.post('/uploads/:challengeId', auth.requiresLogin, challenges.uploadImages);
 
-    app.post('/hints/:challengeId', challenges.uploadHintImages);
+    app.post('/hints/:challengeId', auth.requiresLogin, challenges.uploadHintImages);
 
     //List challenges
     app.route('/challenges')
-        .get(challenges.list);
+        .get(auth.requiresLogin, challenges.list);
 
     //manage challenges -> new challenges
     app.route('/challenges')
-        .post(challenges.create);
+        .post(auth.requiresLogin, challenges.create);
 
     //manage users -> edit account
     app.route('/challenges/:challengeId')
-        .get(challenges.challengeById)
-        .put(challenges.update)
-        .delete(challenges.delete);
+        .get(auth.requiresLogin, challenges.challengeById)
+        .put(auth.requiresLogin, challenges.update)
+        .delete(auth.requiresLogin, challenges.delete);
 
 };

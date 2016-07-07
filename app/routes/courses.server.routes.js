@@ -3,20 +3,21 @@
 module.exports = function (app) {
 
     var courses = require('../../app/controllers/courses.server.controller');
+    var auth = require('../../app/controllers/users/users.authorization.server.controller');
 
     app.route('/courses')
-        .get(courses.list);
+        .get(auth.requiresLogin, courses.list);
 
     app.route('/courses')
-        .post(courses.create);
+        .post(auth.requiresLogin, courses.create);
 
     app.route('/courses/:courseId')
-        .get(courses.courseById)
-        .put(courses.update)
-        .delete(courses.delete);
+        .get(auth.requiresLogin, courses.courseById)
+        .put(auth.requiresLogin, courses.update)
+        .delete(auth.requiresLogin, courses.delete);
 
 
     app.route('/courses/:courseId/challenges')
-        .get(courses.listChallenges);
+        .get(auth.requiresLogin, courses.listChallenges);
 
 };
