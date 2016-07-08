@@ -3,10 +3,27 @@
 
 angular.module('core').controller('ChallengesEditMcqController', [
     '$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http) {
-
+              $mdDialog, QueryParams, $http, $mdToast) {
+        var toastPosition = {
+            bottom: true,
+            top: false,
+            left: true,
+            right: false
+        };
+        $scope.showSimpleToast = function (message) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .content(message)
+                    .position(Object.keys(toastPosition)
+                        .filter(function (pos) {
+                            return toastPosition[pos];
+                        })
+                        .join(' '))
+                    .hideDelay(3000)
+            );
+        };
         // This 'files' var stores the uploaded images from the widget
         $scope.files = [{
             lfDataUrl: '',
@@ -17,7 +34,7 @@ angular.module('core').controller('ChallengesEditMcqController', [
         $scope.mcqs = [];
         $scope.hintFiles = [];
 
-        var updateCurrentChallengeModel = function (callback) {
+        var updateCurrentChallengeModel = function (callback, showToast) {
 
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
@@ -42,18 +59,18 @@ angular.module('core').controller('ChallengesEditMcqController', [
 
             $scope.challenge.$update();
 
-            queryChallenge(callback);
+            queryChallenge(callback, showToast);
         };
 
 
-        var addHintFiles = function (callback) {
+        var addHintFiles = function (callback, showToast) {
             var formData = new FormData();
             if ($scope.hintFiles && $scope.hintFiles.length > 0) {
                 angular.forEach($scope.hintFiles, function (obj) {
                     formData.append('files[]', obj.lfFile);
                 });
             } else {
-                return updateCurrentChallengeModel(callback);
+                return updateCurrentChallengeModel(callback, showToast);
             }
             // Upload the selected Photo
             $http.post('/hints/' + challengeId, formData, {
@@ -64,22 +81,22 @@ angular.module('core').controller('ChallengesEditMcqController', [
                 }
             }).success(function (res) {
                 console.log('hints success!!', res);
-                updateCurrentChallengeModel(callback);
+                updateCurrentChallengeModel(callback, showToast);
             }).error(function (err) {
                 console.log('hints error!!', err);
-                updateCurrentChallengeModel(callback);
+                updateCurrentChallengeModel(callback, showToast);
             });
         };
 
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
-        $scope.onSubmit = function (callback) {
+        $scope.onSubmit = function (callback, showToast) {
             var formData = new FormData();
 
             if ($scope.files && $scope.files.length && $scope.files[0].lfFile) {
                 formData.append('files', $scope.files[0].lfFile);
             } else {
-                return addHintFiles(callback);
+                return addHintFiles(callback, showToast);
             }
 
             // Upload the selected Photo
@@ -91,21 +108,19 @@ angular.module('core').controller('ChallengesEditMcqController', [
                 }
             }).success(function (res) {
                 console.log('success!!', res);
-                addHintFiles(callback);
+                addHintFiles(callback, showToast);
             }).error(function (err) {
                 console.log('error!!', err);
-                addHintFiles(callback);
+                addHintFiles(callback, showToast);
             });
         };
 
-
         //-----------------------------
-
 
         var thisFiles = $scope.files;
         var imageObj = new Image();
         console.log('before query', $scope.files);
-        var queryChallenge = function (callback) {
+        var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
                     console.log(JSON.stringify(res.challengeFile));
@@ -146,10 +161,16 @@ angular.module('core').controller('ChallengesEditMcqController', [
                     if (callback) {
                         callback();
                     }
+                    if(showToast) {
+                        $scope.showSimpleToast('Challenge updated successfully!');
+                    }
                 }, function (error) {
                     console.log('error retrieving challenge', error);
                     if (callback) {
                         callback();
+                    }
+                    if(showToast) {
+                        $scope.showSimpleToast('An error occurred, please try again!');
                     }
                 });
         };
@@ -166,7 +187,6 @@ angular.module('core').controller('ChallengesEditMcqController', [
                 // If a new image was uploaded, position it in the center of the canvas
                 imageObj.src = newValue[0].lfDataUrl;
                 imageObj.onload = function () {
-
 
                     var targetHeight = canv.height;
                     var targetWidth = canv.width;
@@ -186,7 +206,6 @@ angular.module('core').controller('ChallengesEditMcqController', [
         });
 
         //------------------
-
 
         // Simple helper method to add to a given list
         $scope.addToList = function (list, object) {

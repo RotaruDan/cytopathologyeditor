@@ -2,9 +2,27 @@
 
 
 angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http, sharedProperties) {
+              $mdDialog, QueryParams, $http, $mdToast) {
+        var toastPosition = {
+            bottom: true,
+            top: false,
+            left: true,
+            right: false
+        };
+        $scope.showSimpleToast = function (message) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .content(message)
+                    .position(Object.keys(toastPosition)
+                        .filter(function (pos) {
+                            return toastPosition[pos];
+                        })
+                        .join(' '))
+                    .hideDelay(3000)
+            );
+        };
 
         var offsetX = 0, offsetY = 0;
         var canvasW = 0, canvasH = 0;
@@ -26,7 +44,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
         // Stores the 'Options' added by the user
         $scope.mcqs = [];
 
-        var updateCurrentChallengeModel = function (callback) {
+        var updateCurrentChallengeModel = function (callback, showToast) {
 
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
@@ -65,17 +83,17 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
             $scope.challenge.$update();
 
-            queryChallenge(callback);
+            queryChallenge(callback, showToast);
         };
 
-        var addHintFiles = function (callback) {
+        var addHintFiles = function (callback, showToast) {
             var formData = new FormData();
             if ($scope.hintFiles && $scope.hintFiles.length > 0) {
                 angular.forEach($scope.hintFiles, function (obj) {
                     formData.append('files[]', obj.lfFile);
                 });
             } else {
-                return updateCurrentChallengeModel(callback);
+                return updateCurrentChallengeModel(callback, showToast);
             }
             // Upload the selected Photo
             $http.post('/hints/' + challengeId, formData, {
@@ -86,23 +104,23 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                 }
             }).success(function (res) {
                 console.log('hints success!!', res);
-                updateCurrentChallengeModel(callback);
+                updateCurrentChallengeModel(callback, showToast);
             }).error(function (err) {
                 console.log('hints error!!', err);
-                updateCurrentChallengeModel(callback);
+                updateCurrentChallengeModel(callback, showToast);
             });
         };
 
 
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
-        $scope.onSubmit = function (callback) {
+        $scope.onSubmit = function (callback, showToast) {
             var formData = new FormData();
 
             if ($scope.files && $scope.files.length && $scope.files[0].lfFile) {
                 formData.append('files', $scope.files[0].lfFile);
             } else {
-                return addHintFiles(callback);
+                return addHintFiles(callback, showToast);
             }
 
             // Upload the selected Photo
@@ -114,10 +132,10 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                 }
             }).success(function (res) {
                 console.log('success!!', res);
-                addHintFiles(callback);
+                addHintFiles(callback, showToast);
             }).error(function (err) {
                 console.log('error!!', err);
-                addHintFiles(callback);
+                addHintFiles(callback, showToast);
             });
         };
 
@@ -126,7 +144,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
 
         var thisFiles = $scope.files;
-        var queryChallenge = function (callback) {
+        var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
                     console.log(JSON.stringify(res.challengeFile));
@@ -180,6 +198,9 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                     if (callback) {
                         callback();
                     }
+                    if(showToast) {
+                        $scope.showSimpleToast('Challenge updated successfully!');
+                    }
                 }, function
                     (error) {
                     console.log('error retrieving challenge', error);
@@ -187,9 +208,11 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                     if (callback) {
                         callback();
                     }
+                    if(showToast) {
+                        $scope.showSimpleToast('An error occurred, please try again!');
+                    }
                 }
-            )
-            ;
+            );
         };
 
         var computePositions = function () {

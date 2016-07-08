@@ -9,11 +9,7 @@
             </md-input-container>
             <md-button ng-disabled="true" class="md-primary">Highlight Image Area</md-button>
             <span flex></span>
-            <md-button class="md-icon-button" aria-label="Hint" ng-click="showHint($event)">
-                <md-icon md-font-set="material-icons">info</md-icon>
-                <md-tooltip>
-                    HINT
-                </md-tooltip>
+            <md-button aria-label="Explanation" ng-click="showHint($event)" md-no-ink class="md-primary">Explanation
             </md-button>
             <md-menu>
                 <md-button aria-label="Difficulty" class="md-raised md-primary"
@@ -30,12 +26,8 @@
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
-            <md-button class="md-icon-button" aria-label="Preview" ng-click="showAdvanced($event)">
-                <md-icon md-font-set="material-icons">play_arrow</md-icon>
-                <md-tooltip>
-                    PREVIEW
-                </md-tooltip>
-            </md-button>
+            <md-button ng-click="showAdvanced($event)" md-no-ink class="md-primary">Preview</md-button>
+
         </md-whiteframe>
     </div>
 
@@ -80,7 +72,7 @@
                                      lf-remove-label="Delete"
                                      lf-drag-and-drop-label="Drag & Drop an image (png or jpg) here!"
                                      drag preview></lf-ng-md-file-input>
-                <md-button ng-click="onSubmit()" class="md-raised md-primary">Save</md-button>
+                <md-button ng-click="onSubmit(null, true)" class="md-raised md-primary">Save</md-button>
             </div>
 
         </md-whiteframe>
