@@ -1,8 +1,8 @@
-<md-dialog aria-label="Ecplanation {{challenge.name}} Challenge">
+<md-dialog aria-label="Explanation {{challenge.name}} Challenge">
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <h2>Ecplanation {{challenge.name}} Challenge</h2>
+                <h2>Explanation {{challenge.name}} Challenge</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="hide()">
                     <md-icon md-font-set="material-icons">close</md-icon>
@@ -13,18 +13,6 @@
 
             <div flex>
                 <strong>Data</strong>
-                <md-menu md-offset="0 -7">
-                    <md-button aria-label="Open hints menu"
-                               class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                        <md-icon md-font-set="material-icons">add circle outline</md-icon>
-                    </md-button>
-                    <md-menu-content width="2">
-                        <md-menu-item ng-repeat="item in ['Text', 'Image']">
-                            <md-button ng-click="addHint($index)"><span
-                                    md-menu-align-target>{{item}}</span></md-button>
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
             </div>
             <div ng-repeat="option in hints">
                 <div layout="row" layout-align="center" flex>
@@ -54,6 +42,21 @@
                         <md-icon md-font-set="material-icons">remove</md-icon>
                     </md-button>
                 </div>
+            </div>
+            <div layout="row">
+                <span flex></span>
+                <md-menu md-offset="0 -7">
+                    <md-button aria-label="Open hints menu"
+                               class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                        <md-icon md-font-set="material-icons">add circle outline</md-icon>
+                    </md-button>
+                    <md-menu-content width="2">
+                        <md-menu-item ng-repeat="item in ['Text', 'Image']">
+                            <md-button ng-click="addHint($index)"><span
+                                    md-menu-align-target>{{item}}</span></md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
             <div class="md-actions" layout="row">
                 <span flex></span>
