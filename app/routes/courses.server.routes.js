@@ -20,4 +20,7 @@ module.exports = function (app) {
     app.route('/courses/:courseId/challenges')
         .get(auth.requiresLogin, courses.listChallenges);
 
+    var passport = require('passport');
+    app.route('/api/courses')
+        .get(passport.authenticate('basic', { session: false }), courses.list);
 };

@@ -28,4 +28,8 @@ module.exports = function (app) {
         .put(auth.requiresLogin, challenges.update)
         .delete(auth.requiresLogin, challenges.delete);
 
+    var passport = require('passport');
+    app.route('/api/challenges')
+        .get(passport.authenticate('basic', { session: false }), challenges.list);
+
 };
