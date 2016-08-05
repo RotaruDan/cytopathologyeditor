@@ -42,6 +42,7 @@
     "passport-google-oauth": "~0.1.5",
     "passport-linkedin": "~0.1.3",
     "passport-local": "~1.0.0",
+    "passport-http": "*",
     "passport-twitter": "~1.0.2",
     "swig": "~1.4.1"
   },
