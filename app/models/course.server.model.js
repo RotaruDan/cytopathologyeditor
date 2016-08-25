@@ -22,6 +22,11 @@ var CourseSchema = new Schema({
     created: {
         type: Date,
         default: Date.now
+    },
+    difficulty: {
+        type: String,
+        enum: ['EASY', 'MEDIUM', 'HARD'],
+        required: 'Please add a course difficulty!'
     }
 });
 

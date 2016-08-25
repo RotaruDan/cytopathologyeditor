@@ -49,6 +49,7 @@ angular.module('core').controller('CoursesController', ['$scope', 'Courses', '$l
         updateCourses();
 
         $scope.course = new Courses();
+        $scope.course.difficulty = 'EASY';
         $scope.go = function (course) {
             sharedProperties.setChallenge(course);
             $location.path('/challenges/' + course._id);
