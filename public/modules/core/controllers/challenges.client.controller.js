@@ -1,9 +1,9 @@
 'use strict';
 
 
-angular.module('core').controller('ChallengesController', ['$scope', 'Challenges', '$location',
+angular.module('core').controller('ChallengesController', ['$rootScope', '$scope', 'Challenges', '$location',
     '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
-    function ($scope, Challenges, $location, $mdDialog, QueryParams, $http, sharedProperties) {
+    function ($rootScope, $scope, Challenges, $location, $mdDialog, QueryParams, $http, sharedProperties) {
         // ChallengesController controller logic
         // ...
 
@@ -53,8 +53,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                 'textControl': {
                     'class': 'es.eucm.cytochallenge.model.control.filltheblank.FillTheBlankControl',
                     'text': '',
-                    'statements': [
-                    ]
+                    'statements': []
                 }
             },
             {
@@ -66,12 +65,18 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                     'text': '',
                     'canvasWidth': 1024,
                     'canvasHeight': 552,
-                    'answers': [
-                    ],
+                    'answers': [],
                     'correctAnswers': []
                 }
             }
         ];
+
+
+        var go = function (challenge) {
+            $rootScope.challenge = challenge;
+            sharedProperties.setChallenge(challenge);
+            $location.path('/challenges/edit/' + challenge._id + '/' + challenge.type);
+        };
 
         function showDialog($event) {
             var parentEl = angular.element(document.body);
@@ -84,14 +89,13 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                 $scope.closeDialog = function () {
                     $mdDialog.hide();
                 };
+
                 $scope.addChallenge = function () {
-                    console.log(JSON.stringify($scope.challenge, null, '  '));
                     $scope.challenge._course = QueryParams.getCourseId();
-                    console.log('saving challenge: ' + JSON.stringify($scope.challenge, null, '  '));
-                    $scope.challenge.$save(function (err) {
+                    var challenge = $scope.challenge;
+                    $scope.challenge.$save(function (err, res) {
                         $scope.closeDialog();
-                        console.log('saved challenge: ' + JSON.stringify($scope.challenge, null, '  '));
-                        updateChallenges();
+                        go(challenge);
                     });
                 };
                 $scope.openMenu = function ($mdOpenMenu, ev) {
@@ -101,7 +105,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                     if (!index) {
                         index = 0;
                     }
-                    console.log('index ' + index);
+
                     $scope.selectedReadType = readTypes[index];
                     $scope.challenge.type = types[index];
                     $scope.challenge.challengeFile =
@@ -129,11 +133,9 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
         function updateChallenges() {
             $http.get('/courses/' + QueryParams.getCourseId() + '/challenges')
                 .success(function (res) {
-                    console.log('success!!', res);
                     $scope.challenges = res;
                 }).error(function (err) {
-                    console.log('error!!', err);
-
+                    console.log('Error updating challenges', err);
                 });
         }
 
@@ -142,9 +144,6 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
         $scope.challenge = new Challenges();
         $scope.challenge.type = $scope.types[0];
         $scope.challenge.challengeFile = challengesFiles[0];
-        $scope.go = function (challenge) {
-            sharedProperties.setChallenge(challenge);
-            $location.path('/challenges/edit/' + challenge._id + '/' + challenge.type);
-        };
+        $scope.go = go;
     }
 ]);

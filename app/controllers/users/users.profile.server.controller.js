@@ -21,6 +21,7 @@ exports.updateProfile = function(req, res) {
 
 	if (user) {
 		// Merge existing user
+		delete req.body.username;
 		user = _.extend(user, req.body);
 		user.updated = Date.now();
 		user.displayName = user.firstName + ' ' + user.lastName;

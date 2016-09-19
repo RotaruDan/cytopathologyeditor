@@ -74,7 +74,7 @@ exports.create = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            res.send({message: 'Course Created.'});
+            res.json(course);
         }
     });
 };

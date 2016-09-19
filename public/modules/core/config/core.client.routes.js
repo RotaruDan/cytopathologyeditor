@@ -8,7 +8,7 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
         // Home state routing
         $stateProvider.
-            state('home', {
+           state('home', {
                 toolbarName: 'Cytopathology Challenge',
                 url: '/',
                 templateUrl: 'modules/core/views/home.client.view.html'

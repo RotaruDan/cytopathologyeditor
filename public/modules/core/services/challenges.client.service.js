@@ -10,6 +10,12 @@ angular.module('core')
             },
             setChallenge: function (value) {
                 currentChallenge = value;
+            },
+            getCourse: function () {
+                return currentChallenge;
+            },
+            setCourse: function (value) {
+                currentChallenge = value;
             }
         };
     }).factory('Challenges', ['$resource',

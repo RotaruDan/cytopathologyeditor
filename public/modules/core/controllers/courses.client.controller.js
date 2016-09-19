@@ -1,11 +1,17 @@
 'use strict';
 
 
-angular.module('core').controller('CoursesController', ['$scope', 'Courses', '$location',
+angular.module('core').controller('CoursesController', ['$rootScope', '$scope', 'Courses', '$location',
     '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
-    function ($scope, Courses, $location, $mdDialog, QueryParams, $http, sharedProperties) {
+    function ($rootScope, $scope, Courses, $location, $mdDialog, QueryParams, $http, sharedProperties) {
         // ChallengesController controller logic
         // ...
+
+        var go = go = function (course) {
+            sharedProperties.setCourse(course);
+            $rootScope.course = course;
+            $location.path('/challenges/' + course._id);
+        };
 
         function showDialog($event) {
             var parentEl = angular.element(document.body);
@@ -17,10 +23,9 @@ angular.module('core').controller('CoursesController', ['$scope', 'Courses', '$l
                     $mdDialog.hide();
                 };
                 $scope.addCourse = function () {
-                    console.log(JSON.stringify($scope.course, null, '  '));
                     $scope.course.$save(function (err) {
                         $scope.closeDialog();
-                        updateCourses();
+                        go($scope.course);
                     });
                 };
             }
@@ -50,9 +55,6 @@ angular.module('core').controller('CoursesController', ['$scope', 'Courses', '$l
 
         $scope.course = new Courses();
         $scope.course.difficulty = 'EASY';
-        $scope.go = function (course) {
-            sharedProperties.setChallenge(course);
-            $location.path('/challenges/' + course._id);
-        };
+        $scope.go = go;
     }
 ]);

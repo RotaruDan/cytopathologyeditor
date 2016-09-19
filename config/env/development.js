@@ -6,28 +6,28 @@ module.exports = {
 		title: 'Cytopathology Challenge Editor - Development Environment'
 	},
 	facebook: {
-		clientID: process.env.FACEBOOK_ID || 'APP_ID',
-		clientSecret: process.env.FACEBOOK_SECRET || 'APP_SECRET',
+		clientID: process.env.FACEBOOK_ID || '141394759618805',
+		clientSecret: process.env.FACEBOOK_SECRET || '7330c2a8cbca1e91a6d78d6453a98685',
 		callbackURL: '/auth/facebook/callback'
 	},
 	twitter: {
-		clientID: process.env.TWITTER_KEY || 'CONSUMER_KEY',
-		clientSecret: process.env.TWITTER_SECRET || 'CONSUMER_SECRET',
+		clientID: process.env.TWITTER_KEY || 'ChixF9mwNggIXdTCwcOd5E9xg',
+		clientSecret: process.env.TWITTER_SECRET || '8hygxojZymO0wNQoWQZqXjAHlBi64fa8W5HcyQ2aI0hpWmK2xd',
 		callbackURL: '/auth/twitter/callback'
 	},
 	google: {
-		clientID: process.env.GOOGLE_ID || 'APP_ID',
-		clientSecret: process.env.GOOGLE_SECRET || 'APP_SECRET',
+		clientID: process.env.GOOGLE_ID || '459803909132-6i1remlhqo4pavlol8cit4gnmi4gaq65.apps.googleusercontent.com',
+		clientSecret: process.env.GOOGLE_SECRET || 'WojzOoblIKpFrQXBZFLK77f7',
 		callbackURL: '/auth/google/callback'
 	},
 	linkedin: {
-		clientID: process.env.LINKEDIN_ID || 'APP_ID',
-		clientSecret: process.env.LINKEDIN_SECRET || 'APP_SECRET',
+		clientID: process.env.LINKEDIN_ID || '77zg1azp6i4a9d',
+		clientSecret: process.env.LINKEDIN_SECRET || '65d8Ej5kyl08psPJ',
 		callbackURL: '/auth/linkedin/callback'
 	},
 	github: {
-		clientID: process.env.GITHUB_ID || 'APP_ID',
-		clientSecret: process.env.GITHUB_SECRET || 'APP_SECRET',
+		clientID: process.env.GITHUB_ID || 'd2c8f03e640be18d9f2f',
+		clientSecret: process.env.GITHUB_SECRET || '1e4dd36ad46afb99bbe055cda96fc867524deb7b',
 		callbackURL: '/auth/github/callback'
 	},
 	mailer: {

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$rootScope', '$scope', '$location', 'Authentication', 'Menus', '$timeout', '$mdSidenav', '$mdUtil', '$log', 'QueryParams',
-    function ($rootScope, $scope, $location, Authentication, Menus, $timeout, $mdSidenav, $mdUtil, $log, QueryParams) {
+angular.module('core').controller('HeaderController', ['$rootScope', '$scope', '$location', 'Authentication', 'Menus', '$timeout', '$mdSidenav', '$mdUtil', '$log',
+    function ($rootScope, $scope, $location, Authentication, Menus, $timeout, $mdSidenav, $mdUtil, $log) {
         $scope.authentication = Authentication;
         $scope.isCollapsed = false;
         $scope.menu = Menus.getMenu('topbar');
@@ -9,14 +9,28 @@ angular.module('core').controller('HeaderController', ['$rootScope', '$scope', '
         $scope.value = 'Cytopathology Challenge';
 
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            console.log('toState', JSON.stringify(toState, null, '  '));
+          /*  console.log('toState', JSON.stringify(toState, null, '  '));
             console.log('toParams', JSON.stringify(toParams, null, '  '));
             console.log('fromState', JSON.stringify(fromState, null, '  '));
             console.log('fromParams', JSON.stringify(fromParams, null, '  '));
-
+*/
             $scope.value = toState.toolbarName;
 
+            if($rootScope.course) {
+                $scope.course = $rootScope.course;
+            }
+            if($rootScope.challenge) {
+                $scope.challenge = $rootScope.challenge;
+            }
         });
+
+        $scope.goCourse = function() {
+
+        };
+
+        $scope.goChallenge = function() {
+
+        };
 
         $scope.toggleCollapsibleMenu = function () {
             $scope.isCollapsed = !$scope.isCollapsed;

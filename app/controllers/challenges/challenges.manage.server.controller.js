@@ -294,7 +294,7 @@ exports.create = function (req, res) {
 
                 archive.finalize();
 
-                res.send({message: 'Challenge Created.'});
+                res.json(challenge);
             });
         }
     });

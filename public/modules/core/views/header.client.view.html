@@ -8,13 +8,19 @@
                 <h2>
                     <span>{{value}}</span>
                 </h2>
+                <a href="#" ng-click="goCCourse()" >
+                    <span>{{(course ? course.name : 'Courses').toUpperCase()}}</span>
+                </a>
+                <a href="#" ng-click="goChallenge()" >
+                    <span>{{(challenge ? '>' + challenge.name : 'Challenges').toUpperCase()}}</span>
+                </a>
                 <span flex></span>
                 <md-button class="md-icon-button" aria-label="Account" ng-click="toggleRight()">
                     <i class="material-icons md-36">account_circle</i>
                 </md-button>
-                <h4 data-ng-show="authentication.user">
-                    <span>{{authentication.user.displayName}}</span>
-                </h4>
+                <a href="#" ng-click="toggleRight()" data-ng-show="authentication.user">
+                    <span>{{authentication.user.displayName.toUpperCase()}}</span>
+                </a>
 	       </div>
         </md-toolbar>
     </md-content>

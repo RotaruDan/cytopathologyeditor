@@ -4,14 +4,19 @@
             md-row-height-gt-md="1:1" md-row-height="2:2"
             md-gutter="12px" md-gutter-gt-sm="8px">
         <md-grid-tile ng-repeat="challenge in challenges"
-                      class="green" md-rowspan="1" md-colspan="2" ng-click="go(challenge)">
+                      class="blue" md-rowspan="1" md-colspan="2" ng-click="go(challenge)">
             <md-grid-tile-footer>
-                <h3>{{challenge.name}}</h3>
+                <div layout="row">
+                    <h3>{{challenge.name}}</h3>
+                    <span flex></span>
+                        <md-icon md-font-set="material-icons">info</md-icon>
+                </div>
             </md-grid-tile-footer>
         </md-grid-tile>
+
     </md-grid-list>
 
-    <md-button class="md-fab md-primary md-fab-bottom-right" aria-label="Add challenge"
+    <md-button class="md-fab md-primary" aria-label="Add challenge"
                ng-click="showDialog($event)">
         <md-icon md-font-set="material-icons" style="width: 2.7rem; height: 1.15rem">add</md-icon>
 
