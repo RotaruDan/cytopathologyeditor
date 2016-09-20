@@ -105,10 +105,9 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('hints success!!', res);
                 updateCurrentChallengeModel(callback, showToast);
             }).error(function (err) {
-                console.log('hints error!!', err);
+                console.log('Hints error!', err);
                 updateCurrentChallengeModel(callback, showToast);
             });
         };
@@ -132,10 +131,9 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('success!!', res);
                 addHintFiles(callback, showToast);
             }).error(function (err) {
-                console.log('error!!', err);
+                console.log('Uploads error!', err);
                 addHintFiles(callback, showToast);
             });
         };
@@ -149,7 +147,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
         var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
-                    console.log(JSON.stringify(res.challengeFile));
 
                     $scope.challenge = res;
 
@@ -194,7 +191,7 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                         $scope.showSimpleToast('Challenge updated successfully!');
                     }
                 }, function (error) {
-                    console.log('error retrieving challenge', error);
+                    console.log('Error retrieving challenge', error);
 
                     if (callback) {
                         callback();
@@ -253,14 +250,11 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
             var width = sourceWidth * scale;
             var height = sourceHeight * scale;
 
-            console.log('drawinggggg');
-
             offsetX = (targetWidth - width) * 0.5;
             offsetY = (targetHeight - height) * 0.5;
 
             canvasW = width;
             canvasH = height;
-            console.log('offsetX', offsetX, 'offsetY', offsetY, 'width', width, 'height', height);
 
             ctx.drawImage(imageObj, offsetX, offsetY, width, height);
 
@@ -275,7 +269,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 imageObj.src = newValue[0].lfDataUrl;
                 imageObj.onload = function () {
                     imageObj.isLoaded = true;
-                    console.log('loadeddddddd');
                     draw();
                 };
             }
@@ -391,12 +384,9 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
             if (!$scope.mcqs) {
                 return false;
             }
+
             var pointsOpt = $scope.mcqs[$scope.mcqs.length - 1];
             if (!pointsOpt) {
-                return false;
-            }
-            var points = pointsOpt.points;
-            if (points && points.length < 2) {
                 return false;
             }
 
@@ -419,8 +409,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 ctx.fill();
                 ctx.stroke();
             });
-
-            console.log(JSON.stringify(points, null, '   '));
         };
 
         canv.onmousedown = mousedown;
@@ -576,7 +564,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                         });
                     } else if (hint.type === 'image') {
                         var i = hint.index;
-                        console.log('toChallengeModel', i, $scope.files[i]);
                         if ($scope.files[i] &&
                             $scope.files[i].length === 1 &&
                             $scope.files[i][0].lfFileName) {

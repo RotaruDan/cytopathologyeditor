@@ -105,10 +105,9 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('hints success!!', res);
                 updateCurrentChallengeModel(callback, showToast);
             }).error(function (err) {
-                console.log('hints error!!', err);
+                console.log('Hints error!', err);
                 updateCurrentChallengeModel(callback, showToast);
             });
         };
@@ -138,10 +137,9 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('success!!', res);
                 addHintFiles(callback, showToast);
             }).error(function (err) {
-                console.log('error!!', err);
+                console.log('Uploads error!', err);
                 addHintFiles(callback, showToast);
             });
         };
@@ -154,7 +152,6 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
         var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
-                    console.log(JSON.stringify(res.challengeFile));
 
                     $scope.challenge = res;
 
@@ -386,7 +383,6 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                         });
                     } else if (hint.type === 'image') {
                         var i = hint.index;
-                        console.log('toChallengeModel', i, $scope.files[i]);
                         if ($scope.files[i] &&
                             $scope.files[i].length === 1 &&
                             $scope.files[i][0].lfFileName) {

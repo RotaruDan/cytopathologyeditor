@@ -44,8 +44,10 @@
                     <label>Question</label>
                     <textarea ng-model="challenge.challengeFile.textControl.text"></textarea>
                 </md-input-container>
-                <div flex>
+                <div flex layout="row">
                     <strong>Options</strong>
+                    <div flex></div>
+                    <strong data-ng-show="mcqs.length > 0">Correct / Delete</strong>
                 </div>
                 <div layout="column" flex>
                     <div ng-repeat="option in mcqs">
@@ -61,7 +63,7 @@
                             <md-button aria-label="Remove"
                                        ng-click="deleteFromList('mcqs', option)"
                                        class="md-icon-button">
-                                <md-icon md-font-set="material-icons">remove</md-icon>
+                                <md-icon md-font-set="material-icons">delete</md-icon>
                             </md-button>
 
                         </div>

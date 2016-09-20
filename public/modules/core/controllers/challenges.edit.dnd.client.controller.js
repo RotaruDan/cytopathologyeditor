@@ -64,7 +64,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
                 var playW = imageObj.width;
                 var playH = imageObj.height;
-                console.log('image size ' + playW + ', ' + playH);
 
                 var playX = (canvasX * playW ) / canvasW;
                 var playY = (canvasY * playH) / canvasH;
@@ -103,10 +102,9 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('hints success!!', res);
                 updateCurrentChallengeModel(callback, showToast);
             }).error(function (err) {
-                console.log('hints error!!', err);
+                console.error('Hints error!!', err);
                 updateCurrentChallengeModel(callback, showToast);
             });
         };
@@ -131,10 +129,9 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('success!!', res);
                 addHintFiles(callback, showToast);
             }).error(function (err) {
-                console.log('error!!', err);
+                console.error('Upload error!', err);
                 addHintFiles(callback, showToast);
             });
         };
@@ -147,8 +144,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
         var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
-                    console.log(JSON.stringify(res.challengeFile));
-
                     $scope.challenge = res;
 
                     if (!$scope.challenge.challengeFile ||
@@ -201,9 +196,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                     if(showToast) {
                         $scope.showSimpleToast('Challenge updated successfully!');
                     }
-                }, function
-                    (error) {
-                    console.log('error retrieving challenge', error);
+                }, function (error) {
 
                     if (callback) {
                         callback();
@@ -229,11 +222,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                     var canvasX = ((playX * canvasW) / playW) + offsetX;
                     var canvasY = (playY * canvasH) / playH;
                     canvasY = canvasH - (canvasY + answer.height) + offsetY;
-
-                    console.log('playW', playW);
-                    console.log('canvasW', canvasW);
-                    console.log('offsetX', offsetX);
-                    console.log('canvasX', canvasX);
 
                     $scope.mcqs[i] = {
                         string: answer.text,
@@ -408,7 +396,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
         $scope.textChanged = function (option) {
             option.width = ctx.measureText(option.string).width + textHeight;
-            console.log(option.width);
             draw();
         };
 

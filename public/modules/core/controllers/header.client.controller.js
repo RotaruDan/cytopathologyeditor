@@ -1,35 +1,66 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$rootScope', '$scope', '$location', 'Authentication', 'Menus', '$timeout', '$mdSidenav', '$mdUtil', '$log',
-    function ($rootScope, $scope, $location, Authentication, Menus, $timeout, $mdSidenav, $mdUtil, $log) {
+angular.module('core').controller('HeaderController', ['$rootScope', '$scope', '$location', 'Authentication',
+    'Menus', '$timeout', '$mdSidenav', '$mdUtil', '$log', 'Courses', 'Challenges',
+    function ($rootScope, $scope, $location, Authentication, Menus, $timeout, $mdSidenav, $mdUtil, $log, Courses, Challenges) {
         $scope.authentication = Authentication;
         $scope.isCollapsed = false;
         $scope.menu = Menus.getMenu('topbar');
 
         $scope.value = 'Cytopathology Challenge';
 
-        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-          /*  console.log('toState', JSON.stringify(toState, null, '  '));
-            console.log('toParams', JSON.stringify(toParams, null, '  '));
-            console.log('fromState', JSON.stringify(fromState, null, '  '));
-            console.log('fromParams', JSON.stringify(fromParams, null, '  '));
-*/
-            $scope.value = toState.toolbarName;
+        var setupChallenge = function(challengeId, callback) {
+            Challenges.query({id: challengeId}).
+                $promise.then(function (res) {
+                    $scope.challenge = res;
+                    if(callback) {
+                        callback();
+                    }
+                }, function (error) {
+                    console.error('Error retrieving challenge', error);
+                }
+            );
+        };
 
-            if($rootScope.course) {
-                $scope.course = $rootScope.course;
+        var setupCourse = function(courseId, callback) {
+            Courses.query({id: courseId}).
+                $promise.then(function (res) {
+                    $scope.course = res;
+                    if(callback) {
+                        callback();
+                    }
+                }, function (error) {
+                    console.error('Error retrieving course', error);
+                }
+            );
+        };
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (!toParams) {
+                $scope.challenge = null;
+                $scope.course = null;
+                return;
             }
-            if($rootScope.challenge) {
-                $scope.challenge = $rootScope.challenge;
+            if (toParams.courseId) {
+                $scope.challenge = null;
+                setupCourse(toParams.courseId);
+            } else if (toParams.challengeId) {
+                setupChallenge(toParams.challengeId, function() {
+                    setupCourse($scope.challenge._course);
+                });
+            } else {
+                $scope.challenge = null;
+                $scope.course = null;
             }
         });
 
-        $scope.goCourse = function() {
-
+        $scope.goCourse = function () {
+            $location.path('/challenges/' + $scope.course._id);
         };
 
-        $scope.goChallenge = function() {
-
+        $scope.goChallenge = function () {
+            var challenge = $scope.challenge;
+            $location.path('/challenges/edit/' + challenge._id + '/' + challenge.type);
         };
 
         $scope.toggleCollapsibleMenu = function () {

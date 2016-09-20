@@ -80,10 +80,9 @@ angular.module('core').controller('ChallengesEditMcqController', [
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('hints success!!', res);
                 updateCurrentChallengeModel(callback, showToast);
             }).error(function (err) {
-                console.log('hints error!!', err);
+                console.log('Hints error!', err);
                 updateCurrentChallengeModel(callback, showToast);
             });
         };
@@ -107,10 +106,9 @@ angular.module('core').controller('ChallengesEditMcqController', [
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('success!!', res);
                 addHintFiles(callback, showToast);
             }).error(function (err) {
-                console.log('error!!', err);
+                console.log('Uplaod error!', err);
                 addHintFiles(callback, showToast);
             });
         };
@@ -119,7 +117,6 @@ angular.module('core').controller('ChallengesEditMcqController', [
 
         var thisFiles = $scope.files;
         var imageObj = new Image();
-        console.log('before query', $scope.files);
         var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
@@ -146,7 +143,6 @@ angular.module('core').controller('ChallengesEditMcqController', [
                     }
                     var i = 0;
                     imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
-                    console.log(thisFiles);
                     thisFiles[0].lfFileName = res.challengeFile.imagePath;
 
 
@@ -235,7 +231,6 @@ angular.module('core').controller('ChallengesEditMcqController', [
         };
 
         $scope.checkCorrect = function (option) {
-            console.log('changed');
             if (option.isCorrect) {
                 $scope.mcqs.forEach(function (question) {
                     if (question !== option) {

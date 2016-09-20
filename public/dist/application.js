@@ -825,7 +825,7 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                     '<input ng-model="option.string">' +
                     '    </md-input-container>' +
                     '    <md-button aria-label="Remove" ng-click="removeChoice(option)" class="md-icon-button">' +
-                    '       <md-icon md-font-set="material-icons">remove</md-icon>' +
+                    '       <md-icon md-font-set="material-icons">delete</md-icon>' +
                     '    </md-button>' +
                     '<md-checkbox ng-model="option.isCorrect" ng-change="checkCorrect(opt, option)" aria-label="Is a correct option">' +
                     '    </md-checkbox>' +

@@ -47,7 +47,6 @@ angular.module('core').controller('CoursesController', ['$rootScope', '$scope', 
 
         function updateCourses() {
             $scope.courses = Courses.get(function () {
-                console.log($scope.courses);
             });
         }
 

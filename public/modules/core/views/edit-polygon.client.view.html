@@ -43,29 +43,36 @@
                     <label>Question</label>
                     <textarea ng-model="challenge.challengeFile.textControl.text"></textarea>
                 </md-input-container>
-                <div flex>
+                <div flex layout="row">
                     <strong>Polygons</strong>
-                    <md-button ng-click="addOption()" class="md-icon-button"
-                               aria-label="Add option">
-                        <md-icon md-font-set="material-icons">add</md-icon>
-                    </md-button>
+
+                    <div flex></div>
+                    <strong data-ng-show="mcqs.length > 0">Correct / Delete</strong>
                 </div>
-                <div layout="row" flex>
+                <div layout="column" flex>
                     <div ng-repeat="option in mcqs">
                         <div layout="row" layout-align="center" flex>
-
-                            <md-checkbox ng-model="option.isCorrect" ng-change="draw()" aria-label="Is a correct option">
+                            <label flex>Polygon {{$index + 1}}</label>
+                            <md-checkbox ng-model="option.isCorrect" ng-change="draw()"
+                                         aria-label="Is a correct option">
                             </md-checkbox>
                             <md-button aria-label="Remove"
                                        ng-click="deleteFromList('mcqs', option)"
                                        class="md-icon-button">
-                                <md-icon md-font-set="material-icons">remove</md-icon>
+                                <md-icon md-font-set="material-icons">delete</md-icon>
                             </md-button>
 
                         </div>
                     </div>
                 </div>
 
+                <div layout="row">
+                    <span flex></span>
+                    <md-button ng-click="addOption()" class="md-icon-button"
+                               aria-label="Add option">
+                        <md-icon md-font-set="material-icons">add</md-icon>
+                    </md-button>
+                </div>
                 <lf-ng-md-file-input flex accept="image/*"
                                      lf-files="files" lf-option="optoin08"
                                      lf-placeholder="Pick Image" lf-browse-label="Search"

@@ -34,7 +34,6 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
             $scope.challenge.challengeFile.textControl.statements = [];
-            console.log(JSON.stringify($scope.mcqs, null, '  '));
             $scope.mcqs.forEach(function (statements) {
                 var statement = {
                     text: '',
@@ -88,10 +87,9 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('hints success!!', res);
                 updateCurrentChallengeModel(callback, showToast);
             }).error(function (err) {
-                console.log('hints error!!', err);
+                console.log('Hints error!', err);
                 updateCurrentChallengeModel(callback, showToast);
             });
         };
@@ -109,8 +107,6 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
         var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
-                    console.log(JSON.stringify(res.challengeFile));
-
                     $scope.challenge = res;
 
                     if (!$scope.challenge.challengeFile ||
@@ -170,7 +166,6 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                             }
                             ++i;
                         });
-                    console.log('query', JSON.stringify($scope.mcqs, null, '  '));
                     if (callback) {
                         callback();
                     }
@@ -178,7 +173,6 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                         $scope.showSimpleToast('Challenge updated successfully!');
                     }
                 }, function (error) {
-                    console.log('error retrieving challenge', error);
                     if (callback) {
                         callback();
                     }
@@ -271,7 +265,7 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                     '<input ng-model="option.string">' +
                     '    </md-input-container>' +
                     '    <md-button aria-label="Remove" ng-click="removeChoice(option)" class="md-icon-button">' +
-                    '       <md-icon md-font-set="material-icons">remove</md-icon>' +
+                    '       <md-icon md-font-set="material-icons">delete</md-icon>' +
                     '    </md-button>' +
                     '<md-checkbox ng-model="option.isCorrect" ng-change="checkCorrect(opt, option)" aria-label="Is a correct option">' +
                     '    </md-checkbox>' +
@@ -401,7 +395,6 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                         });
                     } else if (hint.type === 'image') {
                         var i = hint.index;
-                        console.log('toChallengeModel', i, $scope.files[i]);
                         if ($scope.files[i] &&
                             $scope.files[i].length === 1 &&
                             $scope.files[i][0].lfFileName) {

@@ -2,18 +2,26 @@
     <md-content>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <md-button class="md-icon-button" aria-label="Views" ng-click="toggleLeft()" data-ng-show="authentication.user">
+                <md-button class="md-icon-button" aria-label="Views" ng-click="toggleLeft()"
+                           data-ng-show="authentication.user">
                     <i class="material-icons md-36">menu</i>
                 </md-button>
-                <h2>
-                    <span>{{value}}</span>
-                </h2>
-                <a href="#" ng-click="goCCourse()" >
-                    <span>{{(course ? course.name : 'Courses').toUpperCase()}}</span>
+                <a href="" ng-click="go('/home')" data-ng-show="!authentication.user">
+                    <span> Cytopathology Challenge</span>
                 </a>
-                <a href="#" ng-click="goChallenge()" >
-                    <span>{{(challenge ? '>' + challenge.name : 'Challenges').toUpperCase()}}</span>
+
+                <a href="" ng-click="go('/courses')" data-ng-show="authentication.user">
+                    <span> Cytopathology Challenge </span>
                 </a>
+
+                <a href="" ng-click="goCourse()" data-ng-show="authentication.user && course">
+                    <span>{{'&nbsp;>&nbsp;' + course.name}}</span>
+                </a>
+
+                <a href="" ng-click="goChallenge()" data-ng-show="authentication.user && course && challenge">
+                    <span>{{'&nbsp;>&nbsp;' + challenge.name}}</span>
+                </a>
+
                 <span flex></span>
                 <md-button class="md-icon-button" aria-label="Account" ng-click="toggleRight()">
                     <i class="material-icons md-36">account_circle</i>
@@ -21,7 +29,7 @@
                 <a href="#" ng-click="toggleRight()" data-ng-show="authentication.user">
                     <span>{{authentication.user.displayName.toUpperCase()}}</span>
                 </a>
-	       </div>
+            </div>
         </md-toolbar>
     </md-content>
 </div>

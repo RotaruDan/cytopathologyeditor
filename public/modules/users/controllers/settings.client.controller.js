@@ -37,7 +37,6 @@ angular.module('users').controller('SettingsController', ['$scope', '$window', '
         $scope.$watchCollection('updateUser', function(newValue) {
             if (newValue!==undefined) {
                 $scope.selectedRow = newValue[0];
-                console.log($scope.selectedRow);
             }
         });
         
