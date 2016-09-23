@@ -8,24 +8,15 @@
                 <input ng-model="challenge.name">
             </md-input-container>
             <md-button ng-disabled="true" class="md-primary">Highlight Image Area</md-button>
-            <span flex></span>
             <md-button aria-label="Explanation" ng-click="showHint($event)" md-no-ink class="md-primary">Explanation
             </md-button>
-            <md-menu>
-                <md-button aria-label="Difficulty" class="md-raised md-primary"
-                           ng-click="$mdOpenMenu($event)">
-                    {{challenge.challengeFile.difficulty}}
-                    <md-tooltip>
-                        DIFFICULTY
-                    </md-tooltip>
-                </md-button>
-                <md-menu-content width="4">
-                    <md-menu-item ng-repeat="difficulty in ['EASY', 'MEDIUM', 'HARD']">
-                        <md-button ng-click="chooseDifficulty(difficulty)"> {{difficulty}}
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
+            <md-input-container>
+                <label>DIFFICULTY</label>
+                <md-select ng-model="challenge.challengeFile.difficulty">
+                    <md-option ng-repeat="difficulty in ['EASY', 'MEDIUM', 'HARD']" value="{{difficulty}}">{{difficulty}}</md-option>
+                </md-select>
+            </md-input-container>
+            <span flex></span>
             <md-button ng-click="showAdvanced($event)" md-no-ink class="md-primary">Preview</md-button>
 
         </md-whiteframe>

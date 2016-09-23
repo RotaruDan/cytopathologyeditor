@@ -9,13 +9,16 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 
 		$scope.signup = function() {
 			if(!$scope.credentials) {
-				return $scope.error = 'Please insert the required information.';
+				$scope.error = 'Please insert the required information.';
+				return;
 			}
 			if(!$scope.credentials.password || !$scope.credentials.password2) {
-				return $scope.error = 'Password field required.';
+				$scope.error = 'Password field required.';
+				return;
 			}
 			if($scope.credentials.password !== $scope.credentials.password2) {
-				return $scope.error = 'Passwords must coincide.';
+				$scope.error = 'Passwords must coincide.';
+				return;
 			}
 			$http.post('/auth/signup', $scope.credentials).success(function(response) {
 				// If successful we assign the response to the global user model

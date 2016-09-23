@@ -131,7 +131,6 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                                 $scope.mcqs[i] = [];
                                 var slices = text.split(/(\[\d+\])+/);
 
-                                console.log(slices);
                                 var j = 0;
                                 slices.forEach(function (slice) {
                                     if (slice) {
@@ -148,7 +147,8 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                                             });
                                             $scope.mcqs[i].push({
                                                 type: 'choice',
-                                                choices: choices
+                                                choices: choices,
+                                                tmp: (choices.length > 0 ? choices[0].string : null)
                                             });
                                             ++j;
                                         } else {
@@ -230,6 +230,7 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                 $scope.addChoices = function () {
                     if ($scope.shouldAdd()) {
                         opts.push(opt);
+                        opt.tmp = opt.choices[0].string;
                     }
                     $scope.closeDialog();
                 };

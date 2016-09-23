@@ -14,17 +14,12 @@
                 <label>Challenge name</label>
                 <input type="text" ng-model="challenge.name">
             </md-input-container>
-            <md-menu>
-                <md-button aria-label="Challenge type" class="md-raised md-primary" ng-click="openMenu($mdOpenMenu, $event)">
-                    Type:{{selectedReadType}}
-                </md-button>
-                <md-menu-content width="4">
-                    <md-menu-item ng-repeat="readType in readTypes">
-                        <md-button ng-click="chooseType($index)"> {{readType}}
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
+            <md-input-container>
+                <label>TYPE</label>
+                <md-select ng-model="selectedReadType">
+                    <md-option ng-repeat="readType in readTypes" value="{{readType}}" ng-click="chooseType($index)">{{readType}}</md-option>
+                </md-select>
+            </md-input-container>
         </md-dialog-content>
     </div>
     <div>
