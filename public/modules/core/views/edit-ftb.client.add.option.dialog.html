@@ -1,0 +1,44 @@
+<md-dialog aria-label="Challenge dialog">
+    <div layout>
+        <md-dialog-content>
+            <div flex layout="row">
+                <strong>Choices</strong>
+                <div flex></div>
+                <strong data-ng-show="opt.choices.length > 0">Correct / Delete</strong>
+            </div>
+            <div layout="column" flex>
+                <div ng-repeat="option in opt.choices">
+                    <div layout="row" layout-align="center" flex>
+                        <md-input-container flex>
+                            <label>Choice {{$index + 1}}</label>
+                            <input ng-model="option.string">
+                        </md-input-container>
+                        <md-checkbox ng-model="option.isCorrect" ng-change="checkCorrect(opt, option)"
+                                     aria-label="Is a correct option">
+                        </md-checkbox>
+                        <md-button aria-label="Remove" ng-click="removeChoice(option)" class="md-icon-button">
+                            <md-icon md-font-set="material-icons">delete</md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </div>
+            <div layout="row">
+                <span flex></span>
+                <md-button ng-click="addChoice()" class="md-icon-button" aria-label="Add choices">
+                    <md-icon md-font-set="material-icons">add</md-icon>
+                </md-button>
+            </div>
+        </md-dialog-content>
+    </div>
+    <div>
+        <div class="md-actions" layout="row">
+            <span flex></span>
+            <md-button ng-click="closeDialog()" class="md-primary">
+                Close
+            </md-button>
+            <md-button data-ng-show="shouldAdd()" ng-click="addChoices()" class="md-primary">
+                Add
+            </md-button>
+        </div>
+    </div>
+</md-dialog>'

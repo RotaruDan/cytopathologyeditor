@@ -7,7 +7,7 @@ angular.module('core').controller('CoursesController', ['$rootScope', '$scope', 
         // ChallengesController controller logic
         // ...
 
-        var go = go = function (course) {
+        var go = function (course) {
             sharedProperties.setCourse(course);
             $rootScope.course = course;
             $location.path('/challenges/' + course._id);

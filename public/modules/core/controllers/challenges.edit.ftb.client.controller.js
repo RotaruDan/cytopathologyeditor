@@ -2,7 +2,7 @@
 
 
 angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http',  '$mdToast',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast',
     function ($scope, Challenges, $location,
               $mdDialog, QueryParams, $http, $mdToast) {
 
@@ -61,8 +61,6 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                 });
                 $scope.challenge.challengeFile.textControl.statements.push(statement);
             });
-
-            console.log(JSON.stringify($scope.challenge, null, '  '));
 
             $scope.challenge.$update();
 
@@ -169,14 +167,14 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                     if (callback) {
                         callback();
                     }
-                    if(showToast) {
+                    if (showToast) {
                         $scope.showSimpleToast('Challenge updated successfully!');
                     }
                 }, function (error) {
                     if (callback) {
                         callback();
                     }
-                    if(showToast) {
+                    if (showToast) {
                         $scope.showSimpleToast('An error occurred, please try again!');
                     }
                 });
@@ -216,8 +214,23 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
 
             function DialogController($scope, $mdDialog, opts, opt) {
                 $scope.opt = opt;
+
+                $scope.shouldAdd = function () {
+                    if (opt.choices.length > 0) {
+                        for (var i = 0; i < opt.choices.length; ++i) {
+                            if (opt.choices[i].string.length === 0) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    return false;
+                };
+
                 $scope.addChoices = function () {
-                    opts.push(opt);
+                    if ($scope.shouldAdd()) {
+                        opts.push(opt);
+                    }
                     $scope.closeDialog();
                 };
                 $scope.closeDialog = function () {
@@ -249,39 +262,7 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
             $mdDialog.show({
                     parent: parentEl,
                     targetEvent: $event,
-                    template: '<md-dialog aria-label="Challenge dialog">' +
-                    '  <md-dialog-content>' +
-                    '<div flex>' +
-                    '<strong>Choices</strong>' +
-                    '<md-button ng-click="addChoice()" class="md-icon-button" aria-label="Add choices">' +
-                    '<md-icon md-font-set="material-icons">add</md-icon>' +
-                    '</md-button>' +
-                    '</div>' +
-                    '<div layout="column" flex>' +
-                    '<div ng-repeat="option in opt.choices">' +
-                    '    <div layout="row" layout-align="center" flex>' +
-                    '<md-input-container flex>' +
-                    '<label>Choice {{$index + 1}}</label>' +
-                    '<input ng-model="option.string">' +
-                    '    </md-input-container>' +
-                    '    <md-button aria-label="Remove" ng-click="removeChoice(option)" class="md-icon-button">' +
-                    '       <md-icon md-font-set="material-icons">delete</md-icon>' +
-                    '    </md-button>' +
-                    '<md-checkbox ng-model="option.isCorrect" ng-change="checkCorrect(opt, option)" aria-label="Is a correct option">' +
-                    '    </md-checkbox>' +
-                    '               </div>' +
-                    '              </div> ' +
-                    '             </div>' +
-                    '  </md-dialog-content>' +
-                    '  <md-dialog-actions>' +
-                    '    <md-button ng-click="closeDialog()" class="md-primary">' +
-                    '      Close Dialog' +
-                    '    </md-button>' +
-                    '    <md-button ng-click="addChoices()" class="md-primary">' +
-                    '     Add Choice' +
-                    '    </md-button>' +
-                    '  </md-dialog-actions>' +
-                    '</md-dialog>',
+                    templateUrl: 'modules/core/views/edit-ftb.client.add.option.dialog.html',
 
                     locals: {
                         opts: options,
@@ -293,7 +274,6 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
         }
 
         $scope.addOption = function (options, index, event) {
-            console.log(JSON.stringify(options, null, '  '));
             if (index === 0) {
                 options.push({
                     type: 'text',

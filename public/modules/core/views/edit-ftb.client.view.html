@@ -2,7 +2,6 @@
     <div layout="row" layout-align="center" layout-margin layout-fill layout-padding>
 
         <md-whiteframe class="md-whiteframe-z3" flex layout layout-align="left">
-
             <md-input-container>
                 <label>Challenge name</label>
                 <input ng-model="challenge.name">
@@ -27,71 +26,75 @@
                 </md-menu-content>
             </md-menu>
             <md-button ng-click="showAdvanced($event)" md-no-ink class="md-primary">Preview</md-button>
-
         </md-whiteframe>
     </div>
 
-    <md-whiteframe flex="66" class="md-whiteframe-z3" layout layout-align="center center">
-        <div layout="column" layout-align="center" layout-margin layout-fill layout-padding>
-
+    <div layout="row" layout-align="center" layout-margin layout-fill layout-padding>
+        <md-whiteframe flex class="md-whiteframe-z3" layout layout-align="center center">
             <div layout="column" layout-align="center" layout-margin layout-fill layout-padding>
-                <md-input-container>
-                    <label>Question</label>
-                    <textarea ng-model="challenge.challengeFile.textControl.text"></textarea>
-                </md-input-container>
-            </div>
 
-            <div flex>
-                <strong>Statements</strong>
-                <md-button ng-click="addOptions()" class="md-icon-button"
-                           aria-label="Add statements">
-                    <md-icon md-font-set="material-icons">add</md-icon>
-                </md-button>
-            </div>
-            <div ng-repeat="options in mcqs">
-                <div layout="row" layout-align="center" flex>
-                    <div ng-repeat="option in options">
+                <div layout="column" layout-align="center" layout-margin layout-fill layout-padding>
+                    <md-input-container>
+                        <label>Question</label>
+                        <textarea ng-model="challenge.challengeFile.textControl.text"></textarea>
+                    </md-input-container>
+                </div>
 
-                        <div ng-if="option.type == 'text' ">
-
-                            <md-input-container flex>
-                                <label>Text</label>
-                                <input ng-model="option.string">
-                            </md-input-container>
-                        </div>
-                        <div ng-if="option.type == 'choice' ">
-
-                            <md-input-container>
-                                <label>Choices</label>
-                                <md-select ng-model="choice">
-                                    <md-option ng-repeat="choice in option.choices" value="{{choice.string}}">
-                                        {{choice.string}}{{choice.isCorrect ? ' (correct)' : ''}}
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
-                        </div>
-                    </div>
-                    <md-menu md-offset="0 -7">
-                        <md-button aria-label="Open choices menu"
-                                   class="md-icon-button" ng-click="$mdOpenMenu($event)">
-                            <md-icon md-font-set="material-icons">add circle outline</md-icon>
-                        </md-button>
-                        <md-menu-content width="2">
-                            <md-menu-item ng-repeat="item in ['Text', 'Multiple Choice']">
-                                <md-button ng-click="addOption(options, $index, $event)"><span md-menu-align-target>{{item}}</span>
-                                </md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
-                    <md-button aria-label="Remove"
-                               ng-click="deleteFromList('mcqs', options)"
-                               class="md-icon-button">
-                        <md-icon md-font-set="material-icons">delete</md-icon>
+                <div flex>
+                    <strong>Statements</strong>
+                    <md-button ng-click="addOptions()" class="md-icon-button"
+                               aria-label="Add statements">
+                        <md-icon md-font-set="material-icons">add</md-icon>
                     </md-button>
                 </div>
-            </div>
+                <div ng-repeat="options in mcqs">
+                    <div layout="row" layout-align="center" flex>
+                        <div ng-repeat="option in options">
 
-            <md-button ng-click="onSubmit(null, true)" class="md-raised md-primary">Save</md-button>
-        </div>
-    </md-whiteframe>
+                            <div ng-if="option.type == 'text' ">
+
+                                <md-input-container flex>
+                                    <label>Text</label>
+                                    <input ng-model="option.string">
+                                </md-input-container>
+                            </div>
+                            <div ng-if="option.type == 'choice' ">
+
+                                <md-input-container>
+                                    <label>Choices</label>
+                                    <md-select ng-model="choice">
+                                        <md-option ng-repeat="choice in option.choices" value="{{choice.string}}">
+                                            {{choice.string}}{{choice.isCorrect ? ' (correct)' : ''}}
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <md-menu md-offset="0 -7">
+                            <md-button aria-label="Open choices menu"
+                                       class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                                <md-icon md-font-set="material-icons">add circle outline</md-icon>
+                            </md-button>
+                            <md-menu-content width="2">
+                                <md-menu-item ng-repeat="item in ['Text', 'Multiple Choice']">
+                                    <md-button ng-click="addOption(options, $index, $event)"><span md-menu-align-target>{{item}}</span>
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                        <md-button aria-label="Remove"
+                                   ng-click="deleteFromList('mcqs', options)"
+                                   class="md-icon-button">
+                            <md-icon md-font-set="material-icons">delete</md-icon>
+                        </md-button>
+                    </div>
+                </div>
+
+                <div layout=row">
+                    <div flex="80"></div>
+                    <md-button flex="20" ng-click="onSubmit(null, true)" class="md-raised md-primary">Save</md-button>
+                </div>
+            </div>
+        </md-whiteframe>
+    </div>
 </section>

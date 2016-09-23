@@ -45,9 +45,30 @@ angular.module(ApplicationConfiguration.applicationModuleName).config(['$locatio
 //Set up the color theme for the application https://material.angularjs.org/latest/#/Theming/01_introduction
 angular.module(ApplicationConfiguration.applicationModuleName)
     .config(["$mdThemingProvider", function ($mdThemingProvider) {
+        $mdThemingProvider.definePalette('amazingPaletteName', {
+            '50': 'ffffff',
+            '100': 'bbdefb',
+            '200': '90caf9',
+            '300': '64b5f6',
+            '400': '42a5f5',
+            '500': '2196f3',
+            '600': '1e88e5',
+            '700': '1976d2',
+            '800': '1565c0',
+            '900': '0d47a1',
+            'A100': '82b1ff',
+            'A200': '448aff',
+            'A400': '2979ff',
+            'A700': '2962ff',
+            'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
+                                                // on this palette should be dark or light
+            'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
+                '200', '300', '400', 'A100'],
+            'contrastLightColors': undefined    // could also specify this if default was 'dark'
+        });
         $mdThemingProvider.theme('default')
             //Custom background palette
-            .backgroundPalette('light-blue', {
+            .backgroundPalette('amazingPaletteName', {
                 'default': '50'
             })
             .primaryPalette('blue')
@@ -75,12 +96,10 @@ ApplicationConfiguration.registerModule('users');
 
 // Core module config
 angular.module('core').run(['Menus',
-	function(Menus) {
-		// Set top bar menu items
-		Menus.addMenuItem('topbar', 'Home', 'core', 'dropdown', '/', 'home');
-		Menus.addMenuItem('topbar', 'Courses', 'core', 'dropdown', '/courses', 'arrow_forward');
-		Menus.addMenuItem('topbar', 'Challenges', 'core', 'dropdown', '/challenges', 'arrow_forward');
-	}
+    function (Menus) {
+        // Set top bar menu items
+        Menus.addMenuItem('topbar', 'Courses', 'core', 'dropdown', '/courses', 'arrow_forward');
+    }
 ]);
 
 'use strict';
@@ -93,35 +112,43 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 
         // Home state routing
         $stateProvider.
-            state('home', {
+           state('home', {
+                toolbarName: 'Cytopathology Challenge',
                 url: '/',
                 templateUrl: 'modules/core/views/home.client.view.html'
             }).
             state('courses', {
+                toolbarName: 'Courses',
                 url: '/courses',
                 templateUrl: 'modules/core/views/courses.client.view.html'
             }).
             state('challenges', {
+                toolbarName: 'Challenges',
                 url: '/challenges/:courseId',
                 templateUrl: 'modules/core/views/challenges.client.view.html'
             }).
             state('editmcq', {
+                toolbarName: 'Challenge',
                 url: '/challenges/edit/:challengeId/mcq',
                 templateUrl: 'modules/core/views/edit-mcq.client.view.html'
             }).
             state('editdnd', {
+                toolbarName: 'Challenge',
                 url: '/challenges/edit/:challengeId/dnd',
                 templateUrl: 'modules/core/views/edit-dnd.client.view.html'
             }).
             state('editmicq', {
+                toolbarName: 'Challenge',
                 url: '/challenges/edit/:challengeId/micq',
                 templateUrl: 'modules/core/views/edit-micq.client.view.html'
             }).
             state('editftb', {
+                toolbarName: 'Challenge',
                 url: '/challenges/edit/:challengeId/ftb',
                 templateUrl: 'modules/core/views/edit-ftb.client.view.html'
             }).
             state('editpolygon', {
+                toolbarName: 'Challenge',
                 url: '/challenges/edit/:challengeId/polygon',
                 templateUrl: 'modules/core/views/edit-polygon.client.view.html'
             });
@@ -131,9 +158,9 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider',
 'use strict';
 
 
-angular.module('core').controller('ChallengesController', ['$scope', 'Challenges', '$location',
+angular.module('core').controller('ChallengesController', ['$rootScope', '$scope', 'Challenges', '$location',
     '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
-    function ($scope, Challenges, $location, $mdDialog, QueryParams, $http, sharedProperties) {
+    function ($rootScope, $scope, Challenges, $location, $mdDialog, QueryParams, $http, sharedProperties) {
         // ChallengesController controller logic
         // ...
 
@@ -146,6 +173,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             {
                 'class': 'es.eucm.cytochallenge.model.TextChallenge',   // Can be ignored (used by the client json parser)
                 'imagePath': '',
+                'difficulty': 'EASY',
                 'textControl': {
                     'class': 'es.eucm.cytochallenge.model.control.MultipleAnswerControl',   // Can be ignored (used by the client json parser)
                     'text': '',
@@ -156,6 +184,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             {
                 'class': 'es.eucm.cytochallenge.model.TextChallenge',
                 'imagePath': '',
+                'difficulty': 'EASY',
                 'textControl': {
                     'class': 'es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl',
                     'text': '',
@@ -166,6 +195,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             },
             {
                 class: 'es.eucm.cytochallenge.model.TextChallenge',
+                difficulty: 'EASY',
                 textControl: {
                     class: 'es.eucm.cytochallenge.model.control.MultipleImageAnswerControl',
                     text: '',
@@ -175,28 +205,35 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             },
             {
                 'class': 'es.eucm.cytochallenge.model.TextChallenge',
+                'difficulty': 'EASY',
                 'imagePath': '',
                 'textControl': {
                     'class': 'es.eucm.cytochallenge.model.control.filltheblank.FillTheBlankControl',
                     'text': '',
-                    'statements': [
-                    ]
+                    'statements': []
                 }
             },
             {
                 'class': 'es.eucm.cytochallenge.model.TextChallenge',
                 'imagePath': '',
+                'difficulty': 'EASY',
                 'textControl': {
                     'class': 'es.eucm.cytochallenge.model.control.InteractiveZoneControl',
                     'text': '',
                     'canvasWidth': 1024,
                     'canvasHeight': 552,
-                    'answers': [
-                    ],
+                    'answers': [],
                     'correctAnswers': []
                 }
             }
         ];
+
+
+        var go = function (challenge) {
+            $rootScope.challenge = challenge;
+            sharedProperties.setChallenge(challenge);
+            $location.path('/challenges/edit/' + challenge._id + '/' + challenge.type);
+        };
 
         function showDialog($event) {
             var parentEl = angular.element(document.body);
@@ -209,12 +246,13 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                 $scope.closeDialog = function () {
                     $mdDialog.hide();
                 };
+
                 $scope.addChallenge = function () {
-                    $scope.chooseType();
-                    console.log(JSON.stringify($scope.challenge, null, '  '));
-                    $scope.challenge.$save(function (err) {
+                    $scope.challenge._course = QueryParams.getCourseId();
+                    var challenge = $scope.challenge;
+                    $scope.challenge.$save(function (err, res) {
                         $scope.closeDialog();
-                        updateChallenges();
+                        go(challenge);
                     });
                 };
                 $scope.openMenu = function ($mdOpenMenu, ev) {
@@ -224,6 +262,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
                     if (!index) {
                         index = 0;
                     }
+
                     $scope.selectedReadType = readTypes[index];
                     $scope.challenge.type = types[index];
                     $scope.challenge.challengeFile =
@@ -234,33 +273,7 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
             $mdDialog.show({
                 parent: parentEl,
                 targetEvent: $event,
-                template: '<md-dialog aria-label="Challenge dialog">' +
-                '  <md-dialog-content>' +
-                '   <md-menu>' +
-                '       <md-button aria-label="Challenge type" class="md-raised md-primary" ng-click="openMenu($mdOpenMenu, $event)">' +
-                '           Type:{{selectedReadType}}' +
-                '       </md-button>' +
-                '       <md-menu-content width="4">' +
-                '           <md-menu-item ng-repeat="readType in readTypes">' +
-                '               <md-button ng-click="chooseType($index)"> {{readType}}' +
-                '              </md-button>' +
-                '           </md-menu-item>' +
-                '       </md-menu-content>' +
-                '   </md-menu>' +
-                '    <md-input-container>' +
-                '       <label>Challenge name</label>' +
-                '       <input type="text" ng-model="challenge.name">' +
-                '   </md-input-container>' +
-                '  </md-dialog-content>' +
-                '  <md-dialog-actions>' +
-                '    <md-button ng-click="closeDialog()" class="md-primary">' +
-                '      Close Dialog' +
-                '    </md-button>' +
-                '    <md-button ng-click="addChallenge()" class="md-primary">' +
-                '     Add Challenge' +
-                '    </md-button>' +
-                '  </md-dialog-actions>' +
-                '</md-dialog>',
+                templateUrl: 'modules/core/views/challenge.add.dialog.html',
 
                 locals: {
                     challenge: $scope.challenge,
@@ -277,27 +290,18 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
         function updateChallenges() {
             $http.get('/courses/' + QueryParams.getCourseId() + '/challenges')
                 .success(function (res) {
-                    console.log('success!!', res);
-                    $scope.challenges = [];
+                    $scope.challenges = res;
                 }).error(function (err) {
-                    console.log('error!!', err);
-
+                    console.log('Error updating challenges', err);
                 });
-            /*
-            $scope.challenges = Challenges.get(function () {
-                console.log($scope.challenges[0]);
-            });
-            */
         }
 
         updateChallenges();
 
         $scope.challenge = new Challenges();
         $scope.challenge.type = $scope.types[0];
-        $scope.go = function (challenge) {
-            sharedProperties.setChallenge(challenge);
-            $location.path('/challenges/edit/' + challenge._id + '/' + challenge.type);
-        };
+        $scope.challenge.challengeFile = challengesFiles[0];
+        $scope.go = go;
     }
 ]);
 
@@ -305,26 +309,49 @@ angular.module('core').controller('ChallengesController', ['$scope', 'Challenges
 
 
 angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http, sharedProperties) {
+              $mdDialog, QueryParams, $http, $mdToast) {
+        var toastPosition = {
+            bottom: true,
+            top: false,
+            left: true,
+            right: false
+        };
+        $scope.showSimpleToast = function (message) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .content(message)
+                    .position(Object.keys(toastPosition)
+                        .filter(function (pos) {
+                            return toastPosition[pos];
+                        })
+                        .join(' '))
+                    .hideDelay(3000)
+            );
+        };
 
+        var offsetX = 0, offsetY = 0;
+        var canvasW = 0, canvasH = 0;
 
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');
         var ctx = canv.getContext('2d');
         var textHeight = 20;
 
+        var imageObj = new Image();
         // This 'files' var stores the uploaded images from the widget
         $scope.files = [{
             lfDataUrl: '',
             lfFileName: ''
         }];
 
+        $scope.hintFiles = [];
+
         // Stores the 'Options' added by the user
         $scope.mcqs = [];
 
-        var updateCurrentChallengeModel = function () {
+        var updateCurrentChallengeModel = function (callback, showToast) {
 
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
@@ -339,11 +366,20 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             $scope.challenge.challengeFile.textControl.answers = [];
             $scope.mcqs.forEach(function (question) {
 
+                var canvasX = question.x - offsetX;
+                var canvasY = canv.height - (question.y + question.height) - offsetY;
+
+                var playW = imageObj.width;
+                var playH = imageObj.height;
+
+                var playX = (canvasX * playW ) / canvasW;
+                var playY = (canvasY * playH) / canvasH;
+
                 $scope.challenge.challengeFile.textControl.answers.
                     push({
                         text: question.string,
-                        x: question.x,
-                        y: canv.height - question.y,
+                        x: playX,
+                        y: playY,
                         width: question.width,
                         height: question.height
                     });
@@ -353,18 +389,43 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
             $scope.challenge.$update();
 
-            queryChallenge();
+            queryChallenge(callback, showToast);
         };
+
+        var addHintFiles = function (callback, showToast) {
+            var formData = new FormData();
+            if ($scope.hintFiles && $scope.hintFiles.length > 0) {
+                angular.forEach($scope.hintFiles, function (obj) {
+                    formData.append('files[]', obj.lfFile);
+                });
+            } else {
+                return updateCurrentChallengeModel(callback, showToast);
+            }
+            // Upload the selected Photo
+            $http.post('/hints/' + challengeId, formData, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined,
+                    enctype: 'multipart/form-data'
+                }
+            }).success(function (res) {
+                updateCurrentChallengeModel(callback, showToast);
+            }).error(function (err) {
+                console.error('Hints error!!', err);
+                updateCurrentChallengeModel(callback, showToast);
+            });
+        };
+
 
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
-        $scope.onSubmit = function () {
+        $scope.onSubmit = function (callback, showToast) {
             var formData = new FormData();
 
             if ($scope.files && $scope.files.length && $scope.files[0].lfFile) {
                 formData.append('files', $scope.files[0].lfFile);
             } else {
-                return updateCurrentChallengeModel();
+                return addHintFiles(callback, showToast);
             }
 
             // Upload the selected Photo
@@ -375,11 +436,10 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('success!!', res);
-                updateCurrentChallengeModel();
+                addHintFiles(callback, showToast);
             }).error(function (err) {
-                console.log('error!!', err);
-                updateCurrentChallengeModel();
+                console.error('Upload error!', err);
+                addHintFiles(callback, showToast);
             });
         };
 
@@ -388,13 +448,9 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
 
         var thisFiles = $scope.files;
-        var imageObj = new Image();
-        console.log('before query', $scope.files);
-        var queryChallenge = function () {
+        var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
-                    console.log(JSON.stringify(res.challengeFile));
-
                     $scope.challenge = res;
 
                     if (!$scope.challenge.challengeFile ||
@@ -405,6 +461,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                         $scope.challenge.challengeFile = {
                             'class': 'es.eucm.cytochallenge.model.TextChallenge',
                             'imagePath': '',
+                            'difficulty': 'EASY',
                             'textControl': {
                                 'class': 'es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl',
                                 'text': '',
@@ -415,33 +472,75 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                         }
                         ;
                     }
-                    var i = 0;
                     if (res.challengeFile.imagePath) {
+                        imageObj.isLoaded = false;
+                        imageObj.computePositions = true;
                         imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
-                        console.log(thisFiles);
                         thisFiles[0].lfFileName = res.challengeFile.imagePath;
                     }
 
-                    $scope.mcqs[i] = [];
+                    $scope.mcqs = [];
+                    var i = 0;
                     $scope.challenge.challengeFile.textControl.answers.
                         forEach(function (answer) {
+
                             $scope.mcqs[i] = {
                                 string: answer.text,
-                                x: answer.x,
-                                y: canv.height - answer.y,
+                                x: -500,
+                                y: -500,
                                 width: answer.width,
                                 height: answer.height
                             };
+
+                            console.log(JSON.stringify($scope.mcqs[i], null, '  '));
                             ++i;
                         });
                     draw();
-                }, function
-                    (error) {
-                    console.log('error retrieving challenge', error);
 
+                    if (callback) {
+                        callback();
+                    }
+                    if(showToast) {
+                        $scope.showSimpleToast('Challenge updated successfully!');
+                    }
+                }, function (error) {
+
+                    if (callback) {
+                        callback();
+                    }
+                    if(showToast) {
+                        $scope.showSimpleToast('An error occurred, please try again!');
+                    }
                 }
-            )
-            ;
+            );
+        };
+
+        var computePositions = function () {
+            var i = 0;
+            $scope.challenge.challengeFile.textControl.answers.
+                forEach(function (answer) {
+
+                    var playY = answer.y;
+                    var playX = answer.x;
+
+                    var playW = imageObj.width;
+                    var playH = imageObj.height;
+
+                    var canvasX = ((playX * canvasW) / playW) + offsetX;
+                    var canvasY = (playY * canvasH) / playH;
+                    canvasY = canvasH - (canvasY + answer.height) + offsetY;
+
+                    $scope.mcqs[i] = {
+                        string: answer.text,
+                        x: canvasX,
+                        y: canvasY,
+                        width: answer.width,
+                        height: answer.height
+                    };
+
+                    console.log(JSON.stringify($scope.mcqs[i], null, '  '));
+                    ++i;
+                });
         };
 
         queryChallenge();
@@ -461,11 +560,16 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
             var width = sourceWidth * scale;
             var height = sourceHeight * scale;
-            ctx.drawImage(imageObj, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
 
+            offsetX = (targetWidth - width) * 0.5;
+            offsetY = (targetHeight - height) * 0.5;
+
+            canvasW = width;
+            canvasH = height;
+            ctx.drawImage(imageObj, offsetX, offsetY, width, height);
         };
 
-// ----canvas
+        // ----canvas
         var draw, mousedown, stopdrag, move, activeText;
 
         $scope.$watchCollection('files', function (newValue, oldValue) {
@@ -489,18 +593,15 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             var textObj = $scope.mcqs[activeText];
             textObj.x = Math.round(e.offsetX) - textObj.width / 2;
             textObj.y = Math.round(e.offsetY) - textObj.height / 2;
-            console.log('move', JSON.stringify(textObj, null, '  '));
             draw();
         };
 
         stopdrag = function () {
-            console.log('stopdrag');
             canv.onmousemove = null;
             activeText = null;
         };
 
         var contains = function (obj, x, y) {
-            console.log('contains', JSON.stringify(obj, null, '  '), x, y);
             return x >= obj.x &&
                 x < obj.x + obj.width &&
                 y >= obj.y &&
@@ -509,7 +610,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
         var i;
         mousedown = function (e) {
-            console.log('mousedown');
             var x, y;
 
             if (e.which === 3) {
@@ -525,9 +625,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
             y = e.offsetY;
 
             for (i = 0; i < $scope.mcqs.length; i++) {
-                console.log('looping', i);
                 if (contains($scope.mcqs[i], x, y)) {
-                    console.log('contains');
                     activeText = i;
                     canv.onmousemove = move;
                     return false;
@@ -541,6 +639,10 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
             ctx.clearRect(0, 0, canv.width, canv.height);
             drawImageObj();
+            if (imageObj.isLoaded && imageObj.computePositions) {
+                imageObj.computePositions = false;
+                computePositions();
+            }
             drawText();
         };
 
@@ -601,32 +703,216 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
         $scope.textChanged = function (option) {
             option.width = ctx.measureText(option.string).width + textHeight;
-            console.log(option.width);
             draw();
         };
+
+        $scope.chooseDifficulty = function (difficulty) {
+            $scope.challenge.challengeFile.difficulty = difficulty;
+        };
+
+
+        // Preview Dialog Controller
+        function DialogController($scope, $mdDialog, challenge) {
+
+            $scope.challenge = challenge;
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+                $mdDialog.hide(answer);
+            };
+            $scope.getPreviewSrc = function () {
+                return '/preview/preview.html?challenge=' + challenge._id;
+            };
+        }
+
+        $scope.showAdvanced = function (ev) {
+            $scope.onSubmit(function () {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge
+                    },
+                    controller: DialogController,
+                    templateUrl: 'modules/core/views/challenge.preview.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
+        };
+
+
+        // HINT Management
+
+        function HintDialogController($scope, $mdDialog,
+                                      challenge,
+                                      hintFiles,
+                                      onSubmit) {
+
+            $scope.challenge = challenge;
+            $scope.hints = [];
+
+            var hint = challenge.challengeFile.hint;
+            if (hint) {
+                var infos = hint.infos;
+
+                if (infos && infos.length > 0) {
+                    var i = 0;
+                    infos.forEach(function (info) {
+                        if (info.text) {
+                            $scope.hints.push({
+                                type: 'text',
+                                string: info.text
+                            });
+                        } else if (info.imagePath) {
+                            $scope.hints.push({
+                                type: 'image',
+                                src: info.imagePath,
+                                index: i
+                            });
+                        }
+                        ++i;
+                    });
+                }
+            }
+
+            var toChallengeModel = function () {
+                challenge.challengeFile.hint = {
+                    infos: []
+                };
+                $scope.hints.forEach(function (hint) {
+                    if (hint.string) {
+                        challenge.challengeFile.hint.infos.push({
+                            'class': 'es.eucm.cytochallenge.model.hint.TextInfo',
+                            'text': hint.string
+                        });
+                    } else if (hint.type === 'image') {
+                        var i = hint.index;
+                        console.log('toChallengeModel', i, $scope.files[i]);
+                        if ($scope.files[i] &&
+                            $scope.files[i].length === 1 &&
+                            $scope.files[i][0].lfFileName) {
+                            challenge.challengeFile.hint.infos.push({
+                                'class': 'es.eucm.cytochallenge.model.hint.ImageInfo',
+                                'imagePath': 'hints/' + $scope.files[i][0].lfFileName
+                            });
+                        } else {
+                            challenge.challengeFile.hint.infos.push({
+                                'class': 'es.eucm.cytochallenge.model.hint.ImageInfo',
+                                'imagePath': hint.src
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+
+            $scope.files = {};
+
+            $scope.save = function () {
+                toChallengeModel();
+                if ($scope.files) {
+                    for (var fileKey in $scope.files) {
+                        var file = $scope.files[fileKey];
+                        if (file.length === 1) {
+                            hintFiles.push(file[0]);
+                        }
+                    }
+                }
+                onSubmit(function () {
+                    $mdDialog.hide();
+                });
+            };
+
+            $scope.getHintImageSrc = function (option) {
+                return 'uploads/' + challenge._id + '/' + option.src;
+            };
+
+            $scope.addHint = function (index) {
+
+                var hint = {};
+                if (index === 0) {
+                    hint.type = 'text';
+                    hint.string = '';
+                } else {
+                    hint.type = 'image';
+                    hint.src = '';
+                    hint.index = $scope.hints.length;
+                }
+                $scope.hints.push(hint);
+            };
+
+            $scope.delete = function (option) {
+                var index = $scope.hints.indexOf(option);
+                if (index > -1) {
+                    $scope.hints.splice(index, 1);
+                }
+            };
+        }
+
+        $scope.showHint = function (ev) {
+            $scope.hintFiles = [];
+            $scope.onSubmit(function () {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge,
+                        hintFiles: $scope.hintFiles,
+                        onSubmit: $scope.onSubmit
+                    },
+                    controller: HintDialogController,
+                    templateUrl: 'modules/core/views/challenge.hint.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
+        };
     }
-])
-;
+]);
 
 'use strict';
 
 
 angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http, sharedProperties) {
+              $mdDialog, QueryParams, $http, $mdToast) {
 
-
+        var toastPosition = {
+            bottom: true,
+            top: false,
+            left: true,
+            right: false
+        };
+        $scope.showSimpleToast = function (message) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .content(message)
+                    .position(Object.keys(toastPosition)
+                        .filter(function (pos) {
+                            return toastPosition[pos];
+                        })
+                        .join(' '))
+                    .hideDelay(3000)
+            );
+        };
 
         // Stores the 'Options' added by the user
         $scope.mcqs = [];
 
-        var updateCurrentChallengeModel = function () {
+        $scope.hintFiles = [];
+        var updateCurrentChallengeModel = function (callback, showToast) {
 
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
             $scope.challenge.challengeFile.textControl.statements = [];
-            console.log(JSON.stringify($scope.mcqs, null, '  '));
             $scope.mcqs.forEach(function (statements) {
                 var statement = {
                     text: '',
@@ -655,28 +941,49 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                 $scope.challenge.challengeFile.textControl.statements.push(statement);
             });
 
-            console.log(JSON.stringify($scope.challenge, null, '  '));
-
             $scope.challenge.$update();
 
-            queryChallenge();
+            queryChallenge(callback, showToast);
+        };
+
+
+        var addHintFiles = function (callback, showToast) {
+            var formData = new FormData();
+            if ($scope.hintFiles && $scope.hintFiles.length > 0) {
+                angular.forEach($scope.hintFiles, function (obj) {
+                    formData.append('files[]', obj.lfFile);
+                });
+            } else {
+                return updateCurrentChallengeModel(callback, showToast);
+            }
+            // Upload the selected Photo
+            $http.post('/hints/' + challengeId, formData, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined,
+                    enctype: 'multipart/form-data'
+                }
+            }).success(function (res) {
+                updateCurrentChallengeModel(callback, showToast);
+            }).error(function (err) {
+                console.log('Hints error!', err);
+                updateCurrentChallengeModel(callback, showToast);
+            });
         };
 
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
-        $scope.onSubmit = function () {
+        $scope.onSubmit = function (callback, showToast) {
 
-            updateCurrentChallengeModel();
+            addHintFiles(callback, showToast);
         };
 
 
         //-----------------------------
 
-        var queryChallenge = function () {
+        var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
-                    console.log(JSON.stringify(res.challengeFile));
-
                     $scope.challenge = res;
 
                     if (!$scope.challenge.challengeFile ||
@@ -687,6 +994,7 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                         $scope.challenge.challengeFile = {
                             'class': 'es.eucm.cytochallenge.model.TextChallenge',
                             'imagePath': '',
+                            'difficulty': 'EASY',
                             'textControl': {
                                 'class': 'es.eucm.cytochallenge.model.control.filltheblank.FillTheBlankControl',
                                 'text': '',
@@ -735,10 +1043,19 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                             }
                             ++i;
                         });
-                    console.log('query', JSON.stringify($scope.mcqs, null, '  '));
+                    if (callback) {
+                        callback();
+                    }
+                    if (showToast) {
+                        $scope.showSimpleToast('Challenge updated successfully!');
+                    }
                 }, function (error) {
-                    console.log('error retrieving challenge', error);
-
+                    if (callback) {
+                        callback();
+                    }
+                    if (showToast) {
+                        $scope.showSimpleToast('An error occurred, please try again!');
+                    }
                 });
         };
 
@@ -776,8 +1093,23 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
 
             function DialogController($scope, $mdDialog, opts, opt) {
                 $scope.opt = opt;
+
+                $scope.shouldAdd = function () {
+                    if (opt.choices.length > 0) {
+                        for (var i = 0; i < opt.choices.length; ++i) {
+                            if (opt.choices[i].string.length === 0) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    return false;
+                };
+
                 $scope.addChoices = function () {
-                    opts.push(opt);
+                    if ($scope.shouldAdd()) {
+                        opts.push(opt);
+                    }
                     $scope.closeDialog();
                 };
                 $scope.closeDialog = function () {
@@ -809,39 +1141,7 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
             $mdDialog.show({
                     parent: parentEl,
                     targetEvent: $event,
-                    template: '<md-dialog aria-label="Challenge dialog">' +
-                    '  <md-dialog-content>' +
-                    '<div flex>' +
-                    '<strong>Choices</strong>' +
-                    '<md-button ng-click="addChoice()" class="md-icon-button" aria-label="Add choices">' +
-                    '<md-icon md-font-set="material-icons">add</md-icon>' +
-                    '</md-button>' +
-                    '</div>' +
-                    '<div layout="column" flex>' +
-                    '<div ng-repeat="option in opt.choices">' +
-                    '    <div layout="row" layout-align="center" flex>' +
-                    '<md-input-container flex>' +
-                    '<label>Choice {{$index + 1}}</label>' +
-                    '<input ng-model="option.string">' +
-                    '    </md-input-container>' +
-                    '    <md-button aria-label="Remove" ng-click="removeChoice(option)" class="md-icon-button">' +
-                    '       <md-icon md-font-set="material-icons">delete</md-icon>' +
-                    '    </md-button>' +
-                    '<md-checkbox ng-model="option.isCorrect" ng-change="checkCorrect(opt, option)" aria-label="Is a correct option">' +
-                    '    </md-checkbox>' +
-                    '               </div>' +
-                    '              </div> ' +
-                    '             </div>' +
-                    '  </md-dialog-content>' +
-                    '  <md-dialog-actions>' +
-                    '    <md-button ng-click="closeDialog()" class="md-primary">' +
-                    '      Close Dialog' +
-                    '    </md-button>' +
-                    '    <md-button ng-click="addChoices()" class="md-primary">' +
-                    '     Add Choice' +
-                    '    </md-button>' +
-                    '  </md-dialog-actions>' +
-                    '</md-dialog>',
+                    templateUrl: 'modules/core/views/edit-ftb.client.add.option.dialog.html',
 
                     locals: {
                         opts: options,
@@ -853,7 +1153,6 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
         }
 
         $scope.addOption = function (options, index, event) {
-            console.log(JSON.stringify(options, null, '  '));
             if (index === 0) {
                 options.push({
                     type: 'text',
@@ -868,18 +1167,203 @@ angular.module('core').controller('ChallengesEditFtbController', ['$scope', 'Cha
                 showDialog(event, options, option);
             }
         };
+
+        $scope.chooseDifficulty = function (difficulty) {
+            $scope.challenge.challengeFile.difficulty = difficulty;
+        };
+
+
+        // Preview Dialog Controller
+        function DialogController($scope, $mdDialog, challenge) {
+
+            $scope.challenge = challenge;
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+                $mdDialog.hide(answer);
+            };
+            $scope.getPreviewSrc = function () {
+                return '/preview/preview.html?challenge=' + challenge._id;
+            };
+        }
+
+        $scope.showAdvanced = function (ev) {
+            $scope.onSubmit(function () {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge
+                    },
+                    controller: DialogController,
+                    templateUrl: 'modules/core/views/challenge.preview.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
+        };
+
+
+        // HINT Management
+
+        function HintDialogController($scope, $mdDialog,
+                                      challenge,
+                                      hintFiles,
+                                      onSubmit) {
+
+            $scope.challenge = challenge;
+            $scope.hints = [];
+
+            var hint = challenge.challengeFile.hint;
+            if (hint) {
+                var infos = hint.infos;
+
+                if (infos && infos.length > 0) {
+                    var i = 0;
+                    infos.forEach(function (info) {
+                        if (info.text) {
+                            $scope.hints.push({
+                                type: 'text',
+                                string: info.text
+                            });
+                        } else if (info.imagePath) {
+                            $scope.hints.push({
+                                type: 'image',
+                                src: info.imagePath,
+                                index: i
+                            });
+                        }
+                        ++i;
+                    });
+                }
+            }
+
+            var toChallengeModel = function () {
+                challenge.challengeFile.hint = {
+                    infos: []
+                };
+                $scope.hints.forEach(function (hint) {
+                    if (hint.string) {
+                        challenge.challengeFile.hint.infos.push({
+                            'class': 'es.eucm.cytochallenge.model.hint.TextInfo',
+                            'text': hint.string
+                        });
+                    } else if (hint.type === 'image') {
+                        var i = hint.index;
+                        if ($scope.files[i] &&
+                            $scope.files[i].length === 1 &&
+                            $scope.files[i][0].lfFileName) {
+                            challenge.challengeFile.hint.infos.push({
+                                'class': 'es.eucm.cytochallenge.model.hint.ImageInfo',
+                                'imagePath': 'hints/' + $scope.files[i][0].lfFileName
+                            });
+                        } else {
+                            challenge.challengeFile.hint.infos.push({
+                                'class': 'es.eucm.cytochallenge.model.hint.ImageInfo',
+                                'imagePath': hint.src
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+
+            $scope.files = {};
+
+            $scope.save = function () {
+                toChallengeModel();
+                if ($scope.files) {
+                    for (var fileKey in $scope.files) {
+                        var file = $scope.files[fileKey];
+                        if (file.length === 1) {
+                            hintFiles.push(file[0]);
+                        }
+                    }
+                }
+                onSubmit(function () {
+                    $mdDialog.hide();
+                });
+            };
+
+            $scope.getHintImageSrc = function (option) {
+                return 'uploads/' + challenge._id + '/' + option.src;
+            };
+
+            $scope.addHint = function (index) {
+
+                var hint = {};
+                if (index === 0) {
+                    hint.type = 'text';
+                    hint.string = '';
+                } else {
+                    hint.type = 'image';
+                    hint.src = '';
+                    hint.index = $scope.hints.length;
+                }
+                $scope.hints.push(hint);
+            };
+
+            $scope.delete = function (option) {
+                var index = $scope.hints.indexOf(option);
+                if (index > -1) {
+                    $scope.hints.splice(index, 1);
+                }
+            };
+        }
+
+        $scope.showHint = function (ev) {
+            $scope.hintFiles = [];
+            $scope.onSubmit(function () {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge,
+                        hintFiles: $scope.hintFiles,
+                        onSubmit: $scope.onSubmit
+                    },
+                    controller: HintDialogController,
+                    templateUrl: 'modules/core/views/challenge.hint.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
+        };
     }
-])
-;
+]);
 
 'use strict';
 
 
-angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
+angular.module('core').controller('ChallengesEditMcqController', [
+    '$scope', 'Challenges', '$location',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http, sharedProperties) {
-
+              $mdDialog, QueryParams, $http, $mdToast) {
+        var toastPosition = {
+            bottom: true,
+            top: false,
+            left: true,
+            right: false
+        };
+        $scope.showSimpleToast = function (message) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .content(message)
+                    .position(Object.keys(toastPosition)
+                        .filter(function (pos) {
+                            return toastPosition[pos];
+                        })
+                        .join(' '))
+                    .hideDelay(3000)
+            );
+        };
         // This 'files' var stores the uploaded images from the widget
         $scope.files = [{
             lfDataUrl: '',
@@ -888,8 +1372,9 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
 
         // Stores the 'Options' added by the user
         $scope.mcqs = [];
+        $scope.hintFiles = [];
 
-        var updateCurrentChallengeModel = function () {
+        var updateCurrentChallengeModel = function (callback, showToast) {
 
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
@@ -914,18 +1399,43 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
 
             $scope.challenge.$update();
 
-            queryChallenge();
+            queryChallenge(callback, showToast);
+        };
+
+
+        var addHintFiles = function (callback, showToast) {
+            var formData = new FormData();
+            if ($scope.hintFiles && $scope.hintFiles.length > 0) {
+                angular.forEach($scope.hintFiles, function (obj) {
+                    formData.append('files[]', obj.lfFile);
+                });
+            } else {
+                return updateCurrentChallengeModel(callback, showToast);
+            }
+            // Upload the selected Photo
+            $http.post('/hints/' + challengeId, formData, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined,
+                    enctype: 'multipart/form-data'
+                }
+            }).success(function (res) {
+                updateCurrentChallengeModel(callback, showToast);
+            }).error(function (err) {
+                console.log('Hints error!', err);
+                updateCurrentChallengeModel(callback, showToast);
+            });
         };
 
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
-        $scope.onSubmit = function () {
+        $scope.onSubmit = function (callback, showToast) {
             var formData = new FormData();
 
             if ($scope.files && $scope.files.length && $scope.files[0].lfFile) {
                 formData.append('files', $scope.files[0].lfFile);
             } else {
-                return updateCurrentChallengeModel();
+                return addHintFiles(callback, showToast);
             }
 
             // Upload the selected Photo
@@ -936,22 +1446,18 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('success!!', res);
-                updateCurrentChallengeModel();
+                addHintFiles(callback, showToast);
             }).error(function (err) {
-                console.log('error!!', err);
-                updateCurrentChallengeModel();
+                console.log('Uplaod error!', err);
+                addHintFiles(callback, showToast);
             });
         };
 
-
         //-----------------------------
-
 
         var thisFiles = $scope.files;
         var imageObj = new Image();
-        console.log('before query', $scope.files);
-        var queryChallenge = function () {
+        var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
                     console.log(JSON.stringify(res.challengeFile));
@@ -966,6 +1472,7 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
                         $scope.challenge.challengeFile = {
                             'class': 'es.eucm.cytochallenge.model.TextChallenge',   // Can be ignored (used by the client json parser)
                             'imagePath': '',
+                            'difficulty': 'EASY',
                             'textControl': {
                                 'class': 'es.eucm.cytochallenge.model.control.MultipleAnswerControl',   // Can be ignored (used by the client json parser)
                                 'text': '',
@@ -976,7 +1483,6 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
                     }
                     var i = 0;
                     imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
-                    console.log(thisFiles);
                     thisFiles[0].lfFileName = res.challengeFile.imagePath;
 
 
@@ -988,9 +1494,20 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
                             };
                             ++i;
                         });
+                    if (callback) {
+                        callback();
+                    }
+                    if(showToast) {
+                        $scope.showSimpleToast('Challenge updated successfully!');
+                    }
                 }, function (error) {
                     console.log('error retrieving challenge', error);
-
+                    if (callback) {
+                        callback();
+                    }
+                    if(showToast) {
+                        $scope.showSimpleToast('An error occurred, please try again!');
+                    }
                 });
         };
 
@@ -1019,13 +1536,12 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
                     var width = sourceWidth * scale;
                     var height = sourceHeight * scale;
                     ctx.clearRect(0, 0, targetWidth, targetHeight);
-                    ctx.drawImage(this, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
+                    ctx.drawImage(imageObj, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
                 };
             }
         });
 
         //------------------
-
 
         // Simple helper method to add to a given list
         $scope.addToList = function (list, object) {
@@ -1053,6 +1569,184 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
                 isCorrect: false
             });
         };
+
+        $scope.checkCorrect = function (option) {
+            if (option.isCorrect) {
+                $scope.mcqs.forEach(function (question) {
+                    if (question !== option) {
+                        question.isCorrect = false;
+                    }
+                });
+            }
+        };
+
+        $scope.chooseDifficulty = function (difficulty) {
+            $scope.challenge.challengeFile.difficulty = difficulty;
+        };
+
+        // Preview Dialog Controller
+        function DialogController($scope, $mdDialog, challenge) {
+
+            $scope.challenge = challenge;
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+                $mdDialog.hide(answer);
+            };
+            $scope.getPreviewSrc = function () {
+                return '/preview/preview.html?challenge=' + challenge._id;
+            };
+        }
+
+        $scope.showAdvanced = function (ev) {
+            $scope.onSubmit(function () {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge
+                    },
+                    controller: DialogController,
+                    templateUrl: 'modules/core/views/challenge.preview.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
+        };
+
+
+        // HINT Management
+
+        function HintDialogController($scope, $mdDialog,
+                                      challenge,
+                                      hintFiles,
+                                      onSubmit) {
+
+            $scope.challenge = challenge;
+            $scope.hints = [];
+
+            var hint = challenge.challengeFile.hint;
+            if (hint) {
+                var infos = hint.infos;
+
+                if (infos && infos.length > 0) {
+                    var i = 0;
+                    infos.forEach(function (info) {
+                        if (info.text) {
+                            $scope.hints.push({
+                                type: 'text',
+                                string: info.text
+                            });
+                        } else if (info.imagePath) {
+                            $scope.hints.push({
+                                type: 'image',
+                                src: info.imagePath,
+                                index: i
+                            });
+                        }
+                        ++i;
+                    });
+                }
+            }
+
+            var toChallengeModel = function () {
+                challenge.challengeFile.hint = {
+                    infos: []
+                };
+                $scope.hints.forEach(function (hint) {
+                    if (hint.string) {
+                        challenge.challengeFile.hint.infos.push({
+                            'class': 'es.eucm.cytochallenge.model.hint.TextInfo',
+                            'text': hint.string
+                        });
+                    } else if (hint.type === 'image') {
+                        var i = hint.index;
+                        console.log('toChallengeModel', i, $scope.files[i]);
+                        if ($scope.files[i] &&
+                            $scope.files[i].length === 1 &&
+                            $scope.files[i][0].lfFileName) {
+                            challenge.challengeFile.hint.infos.push({
+                                'class': 'es.eucm.cytochallenge.model.hint.ImageInfo',
+                                'imagePath': 'hints/' + $scope.files[i][0].lfFileName
+                            });
+                        } else {
+                            challenge.challengeFile.hint.infos.push({
+                                'class': 'es.eucm.cytochallenge.model.hint.ImageInfo',
+                                'imagePath': hint.src
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+
+            $scope.files = {};
+
+            $scope.save = function () {
+                toChallengeModel();
+                if ($scope.files) {
+                    for (var fileKey in $scope.files) {
+                        var file = $scope.files[fileKey];
+                        if (file.length === 1) {
+                            hintFiles.push(file[0]);
+                        }
+                    }
+                }
+                onSubmit(function () {
+                    $mdDialog.hide();
+                });
+            };
+
+            $scope.getHintImageSrc = function (option) {
+                return 'uploads/' + challenge._id + '/' + option.src;
+            };
+
+            $scope.addHint = function (index) {
+
+                var hint = {};
+                if (index === 0) {
+                    hint.type = 'text';
+                    hint.string = '';
+                } else {
+                    hint.type = 'image';
+                    hint.src = '';
+                    hint.index = $scope.hints.length;
+                }
+                $scope.hints.push(hint);
+            };
+
+            $scope.delete = function (option) {
+                var index = $scope.hints.indexOf(option);
+                if (index > -1) {
+                    $scope.hints.splice(index, 1);
+                }
+            };
+        }
+
+        $scope.showHint = function (ev) {
+            $scope.hintFiles = [];
+            $scope.onSubmit(function () {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge,
+                        hintFiles: $scope.hintFiles,
+                        onSubmit: $scope.onSubmit
+                    },
+                    controller: HintDialogController,
+                    templateUrl: 'modules/core/views/challenge.hint.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
+        };
     }
 ]);
 
@@ -1060,10 +1754,29 @@ angular.module('core').controller('ChallengesEditMcqController', ['$scope', 'Cha
 
 
 angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http, sharedProperties) {
+              $mdDialog, QueryParams, $http, $mdToast) {
 
+        var toastPosition = {
+            bottom: true,
+            top: false,
+            left: true,
+            right: false
+        };
+
+        $scope.showSimpleToast = function (message) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .content(message)
+                    .position(Object.keys(toastPosition)
+                        .filter(function (pos) {
+                            return toastPosition[pos];
+                        })
+                        .join(' '))
+                    .hideDelay(3000)
+            );
+        };
 
         // This 'files' var stores the uploaded images from the widget
         $scope.files = [{
@@ -1080,6 +1793,8 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
             lfFileName: ''
         }];
 
+        $scope.hintFiles = [];
+
         // Stores the 'Options' added by the user
         $scope.mcqs = [{
             isCorrect: false
@@ -1091,7 +1806,7 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
             isCorrect: false
         }];
 
-        var updateCurrentChallengeModel = function () {
+        var updateCurrentChallengeModel = function (callback, showToast) {
 
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
@@ -1120,12 +1835,37 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
             });
 
             $scope.challenge.$update();
-            queryChallenge();
+            queryChallenge(callback, showToast);
         };
 
         var challengeId = QueryParams.getChallengeId();
+
+        var addHintFiles = function (callback, showToast) {
+            var formData = new FormData();
+            if ($scope.hintFiles && $scope.hintFiles.length > 0) {
+                angular.forEach($scope.hintFiles, function (obj) {
+                    formData.append('files[]', obj.lfFile);
+                });
+            } else {
+                return updateCurrentChallengeModel(callback, showToast);
+            }
+            // Upload the selected Photo
+            $http.post('/hints/' + challengeId, formData, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined,
+                    enctype: 'multipart/form-data'
+                }
+            }).success(function (res) {
+                updateCurrentChallengeModel(callback, showToast);
+            }).error(function (err) {
+                console.log('Hints error!', err);
+                updateCurrentChallengeModel(callback, showToast);
+            });
+        };
+
         // Method invoked when the 'Save' button was pressed
-        $scope.onSubmit = function () {
+        $scope.onSubmit = function (callback, showToast) {
             var formData = new FormData();
 
             if ($scope.files &&
@@ -1138,7 +1878,7 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                     formData.append('files[]', obj[0].lfFile);
                 });
             } else {
-                return updateCurrentChallengeModel();
+                return addHintFiles(callback, showToast);
             }
 
             // Upload the selected Photo
@@ -1149,11 +1889,10 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('success!!', res);
-                updateCurrentChallengeModel();
+                addHintFiles(callback, showToast);
             }).error(function (err) {
-                console.log('error!!', err);
-                updateCurrentChallengeModel();
+                console.log('Uploads error!', err);
+                addHintFiles(callback, showToast);
             });
         };
 
@@ -1161,12 +1900,10 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
         //-----------------------------
 
 
-        var thisFiles = $scope.files;
         var imageObj = new Image();
-        var queryChallenge = function() {
+        var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
-                    console.log(JSON.stringify(res.challengeFile));
 
                     $scope.challenge = res;
 
@@ -1177,6 +1914,7 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                         // Multiple Choice Question challenge
                         $scope.challenge.challengeFile = {
                             class: 'es.eucm.cytochallenge.model.TextChallenge',
+                            difficulty: 'EASY',
                             textControl: {
                                 class: 'es.eucm.cytochallenge.model.control.MultipleImageAnswerControl',
                                 text: '',
@@ -1206,9 +1944,22 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                             ++i;
                         });
                     }
+
+                    if (callback) {
+                        callback();
+                    }
+                    if (showToast) {
+                        $scope.showSimpleToast('Challenge updated successfully!');
+                    }
                 }, function (error) {
                     console.log('error retrieving challenge', error);
 
+                    if (callback) {
+                        callback();
+                    }
+                    if (showToast) {
+                        $scope.showSimpleToast('An error occurred, please try again!');
+                    }
                 });
         };
 
@@ -1254,6 +2005,8 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
 
                 ctx.clearRect(x, y, targetWidth, targetHeight);
                 ctx.drawImage(image, x + (targetWidth - width) * 0.5, y + (targetHeight - height) * 0.5, width, height);
+                ctx.rect(x, y, targetWidth, targetHeight);
+                ctx.stroke();
 
             };
         };
@@ -1296,6 +2049,177 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
                 isCorrect: false
             });
         };
+
+        $scope.chooseDifficulty = function (difficulty) {
+            $scope.challenge.challengeFile.difficulty = difficulty;
+        };
+
+
+        // Preview Dialog Controller
+        function DialogController($scope, $mdDialog, challenge) {
+
+            $scope.challenge = challenge;
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+                $mdDialog.hide(answer);
+            };
+            $scope.getPreviewSrc = function () {
+                return '/preview/preview.html?challenge=' + challenge._id;
+            };
+        }
+
+        $scope.showAdvanced = function (ev) {
+            $scope.onSubmit(function () {
+                if($scope.challenge.challengeFile.textControl.answers.length === 4) {
+                    $mdDialog.show({
+                        locals: {
+                            challenge: $scope.challenge
+                        },
+                        controller: DialogController,
+                        templateUrl: 'modules/core/views/challenge.preview.dialog.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose: true
+                    });
+                } else {
+                    $scope.showSimpleToast('Please select 4 images first.');
+                }
+            });
+        };
+
+        // HINT Management
+
+        function HintDialogController($scope, $mdDialog,
+                                      challenge,
+                                      hintFiles,
+                                      onSubmit) {
+
+            $scope.challenge = challenge;
+            $scope.hints = [];
+
+            var hint = challenge.challengeFile.hint;
+            if (hint) {
+                var infos = hint.infos;
+
+                if (infos && infos.length > 0) {
+                    var i = 0;
+                    infos.forEach(function (info) {
+                        if (info.text) {
+                            $scope.hints.push({
+                                type: 'text',
+                                string: info.text
+                            });
+                        } else if (info.imagePath) {
+                            $scope.hints.push({
+                                type: 'image',
+                                src: info.imagePath,
+                                index: i
+                            });
+                        }
+                        ++i;
+                    });
+                }
+            }
+
+            var toChallengeModel = function () {
+                challenge.challengeFile.hint = {
+                    infos: []
+                };
+                $scope.hints.forEach(function (hint) {
+                    if (hint.string) {
+                        challenge.challengeFile.hint.infos.push({
+                            'class': 'es.eucm.cytochallenge.model.hint.TextInfo',
+                            'text': hint.string
+                        });
+                    } else if (hint.type === 'image') {
+                        var i = hint.index;
+                        if ($scope.files[i] &&
+                            $scope.files[i].length === 1 &&
+                            $scope.files[i][0].lfFileName) {
+                            challenge.challengeFile.hint.infos.push({
+                                'class': 'es.eucm.cytochallenge.model.hint.ImageInfo',
+                                'imagePath': 'hints/' + $scope.files[i][0].lfFileName
+                            });
+                        } else {
+                            challenge.challengeFile.hint.infos.push({
+                                'class': 'es.eucm.cytochallenge.model.hint.ImageInfo',
+                                'imagePath': hint.src
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+
+            $scope.files = {};
+
+            $scope.save = function () {
+                toChallengeModel();
+                if ($scope.files) {
+                    for (var fileKey in $scope.files) {
+                        var file = $scope.files[fileKey];
+                        if (file.length === 1) {
+                            hintFiles.push(file[0]);
+                        }
+                    }
+                }
+                onSubmit(function () {
+                    $mdDialog.hide();
+                });
+            };
+
+            $scope.getHintImageSrc = function (option) {
+                return 'uploads/' + challenge._id + '/' + option.src;
+            };
+
+            $scope.addHint = function (index) {
+
+                var hint = {};
+                if (index === 0) {
+                    hint.type = 'text';
+                    hint.string = '';
+                } else {
+                    hint.type = 'image';
+                    hint.src = '';
+                    hint.index = $scope.hints.length;
+                }
+                $scope.hints.push(hint);
+            };
+
+            $scope.delete = function (option) {
+                var index = $scope.hints.indexOf(option);
+                if (index > -1) {
+                    $scope.hints.splice(index, 1);
+                }
+            };
+        }
+
+        $scope.showHint = function (ev) {
+            $scope.hintFiles = [];
+            $scope.onSubmit(function () {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge,
+                        hintFiles: $scope.hintFiles,
+                        onSubmit: $scope.onSubmit
+                    },
+                    controller: HintDialogController,
+                    templateUrl: 'modules/core/views/challenge.hint.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
+        };
     }
 ]);
 
@@ -1303,9 +2227,30 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
 
 
 angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http, sharedProperties) {
+              $mdDialog, QueryParams, $http, $mdToast) {
+        var toastPosition = {
+            bottom: true,
+            top: false,
+            left: true,
+            right: false
+        };
+        $scope.showSimpleToast = function (message) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .content(message)
+                    .position(Object.keys(toastPosition)
+                        .filter(function (pos) {
+                            return toastPosition[pos];
+                        })
+                        .join(' '))
+                    .hideDelay(3000)
+            );
+        };
+
+        var offsetX = 0, offsetY = 0;
+        var canvasW = 0, canvasH = 0;
 
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');
@@ -1320,7 +2265,9 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
         // Stores the 'Options' added by the user
         $scope.mcqs = [];
 
-        var updateCurrentChallengeModel = function () {
+        $scope.hintFiles = [];
+
+        var updateCurrentChallengeModel = function (callback, showToast) {
 
             // If the photo was correctly uploaded
             // Upload the challenge JSON Data Model
@@ -1338,11 +2285,21 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 if (question.points.length > 5) {
                     var polygon = [];
                     for (var i = 0; i < question.points.length; i += 2) {
-                        polygon.push(question.points[i]);
-                        polygon.push(canv.height - question.points[i + 1]);
+
+                        var canvasX = question.points[i] - offsetX;
+                        var canvasY = canv.height - question.points[i + 1] - offsetY;
+
+                        var playW = imageObj.width;
+                        var playH = imageObj.height;
+
+                        var playX = (canvasX * playW ) / canvasW;
+                        var playY = (canvasY * playH) / canvasH;
+
+                        polygon.push(playX);
+                        polygon.push(playY);
                     }
                     $scope.challenge.challengeFile.textControl.answers.push(polygon);
-                    // TODO polygons
+
                     if (question.isCorrect) {
                         $scope.challenge.challengeFile.textControl.correctAnswers.push(j);
                     }
@@ -1353,18 +2310,42 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
             $scope.challenge.$update();
 
-            queryChallenge();
+            queryChallenge(callback, showToast);
+        };
+
+        var addHintFiles = function (callback, showToast) {
+            var formData = new FormData();
+            if ($scope.hintFiles && $scope.hintFiles.length > 0) {
+                angular.forEach($scope.hintFiles, function (obj) {
+                    formData.append('files[]', obj.lfFile);
+                });
+            } else {
+                return updateCurrentChallengeModel(callback, showToast);
+            }
+            // Upload the selected Photo
+            $http.post('/hints/' + challengeId, formData, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined,
+                    enctype: 'multipart/form-data'
+                }
+            }).success(function (res) {
+                updateCurrentChallengeModel(callback, showToast);
+            }).error(function (err) {
+                console.log('Hints error!', err);
+                updateCurrentChallengeModel(callback, showToast);
+            });
         };
 
         var challengeId = QueryParams.getChallengeId();
         // Method invoked when the 'Save' button was pressed
-        $scope.onSubmit = function () {
+        $scope.onSubmit = function (callback, showToast) {
             var formData = new FormData();
 
             if ($scope.files && $scope.files.length && $scope.files[0].lfFile) {
                 formData.append('files', $scope.files[0].lfFile);
             } else {
-                return updateCurrentChallengeModel();
+                return addHintFiles(callback, showToast);
             }
 
             // Upload the selected Photo
@@ -1375,11 +2356,10 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                     enctype: 'multipart/form-data'
                 }
             }).success(function (res) {
-                console.log('success!!', res);
-                updateCurrentChallengeModel();
+                addHintFiles(callback, showToast);
             }).error(function (err) {
-                console.log('error!!', err);
-                updateCurrentChallengeModel();
+                console.log('Uploads error!', err);
+                addHintFiles(callback, showToast);
             });
         };
 
@@ -1389,11 +2369,9 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
         var thisFiles = $scope.files;
         var imageObj = new Image();
-        console.log('before query', $scope.files);
-        var queryChallenge = function () {
+        var queryChallenge = function (callback, showToast) {
             Challenges.query({id: challengeId}).
                 $promise.then(function (res) {
-                    console.log(JSON.stringify(res.challengeFile));
 
                     $scope.challenge = res;
 
@@ -1405,6 +2383,7 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                         $scope.challenge.challengeFile = {
                             'class': 'es.eucm.cytochallenge.model.TextChallenge',
                             'imagePath': '',
+                            'difficulty': 'EASY',
                             'textControl': {
                                 'class': 'es.eucm.cytochallenge.model.control.InteractiveZoneControl',
                                 'text': '',
@@ -1415,37 +2394,70 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                             }
                         };
                     }
-                    var i = 0;
                     if (res.challengeFile.imagePath) {
                         imageObj.src = 'uploads/' + res._id + '/' + res.challengeFile.imagePath;
-                        console.log(thisFiles);
+                        imageObj.computePositions = true;
                         thisFiles[0].lfFileName = res.challengeFile.imagePath;
                     }
-
+                    var i = 0;
                     $scope.challenge.challengeFile.textControl.answers.
                         forEach(function (answer) {
-                            var pointsPoly = [];
-
-                            for (var j = 0; j < answer.length; j += 2) {
-                                pointsPoly.push(answer[j]);
-                                pointsPoly.push(canv.height - answer[j + 1]);
-                            }
-
                             $scope.mcqs[i] = {
-                                points: pointsPoly,
+                                points: [-100, -100, -100, -100, -100, -100],
                                 isCorrect: $scope.challenge.challengeFile.textControl.correctAnswers.indexOf(i) !== -1
                             };
                             ++i;
                         });
                     draw();
+                    if (callback) {
+                        callback();
+                    }
+                    if(showToast) {
+                        $scope.showSimpleToast('Challenge updated successfully!');
+                    }
                 }, function (error) {
-                    console.log('error retrieving challenge', error);
+                    console.log('Error retrieving challenge', error);
 
+                    if (callback) {
+                        callback();
+                    }
+                    if(showToast) {
+                        $scope.showSimpleToast('An error occurred, please try again!');
+                    }
+                });
+        };
+
+        var computePositions = function () {
+            var i = 0;
+            $scope.challenge.challengeFile.textControl.answers.
+                forEach(function (answer) {
+                    var pointsPoly = [];
+
+                    for (var j = 0; j < answer.length; j += 2) {
+
+                        var playX = answer[j];
+                        var playY = answer[j + 1];
+
+                        var playW = imageObj.width;
+                        var playH = imageObj.height;
+
+                        var canvasX = ((playX * canvasW) / playW) + offsetX;
+                        var canvasY = (playY * canvasH) / playH;
+                        canvasY = canvasH - (canvasY) + offsetY;
+
+                        pointsPoly.push(canvasX);
+                        pointsPoly.push(canvasY);
+                    }
+
+                    $scope.mcqs[i] = {
+                        points: pointsPoly,
+                        isCorrect: $scope.challenge.challengeFile.textControl.correctAnswers.indexOf(i) !== -1
+                    };
+                    ++i;
                 });
         };
 
         queryChallenge();
-
 
         var drawImageObj = function () {
             if (!imageObj.isLoaded) {
@@ -1462,7 +2474,14 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
             var width = sourceWidth * scale;
             var height = sourceHeight * scale;
-            ctx.drawImage(imageObj, (targetWidth - width) * 0.5, (targetHeight - height) * 0.5, width, height);
+
+            offsetX = (targetWidth - width) * 0.5;
+            offsetY = (targetHeight - height) * 0.5;
+
+            canvasW = width;
+            canvasH = height;
+
+            ctx.drawImage(imageObj, offsetX, offsetY, width, height);
 
         };
 
@@ -1482,7 +2501,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
         //-----------------
         // CANVAS LOGIC
-
 
         var activePoint;
 
@@ -1508,7 +2526,11 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 e.offsetX = (e.pageX - $(e.target).offset().left);
                 e.offsetY = (e.pageY - $(e.target).offset().top);
             }
-            var points = $scope.mcqs[$scope.mcqs.length - 1].points;
+            var pointsObj = $scope.mcqs[$scope.mcqs.length - 1];
+            if (!pointsObj) {
+                return false;
+            }
+            var points = pointsObj.points;
             var x = e.offsetX, y = e.offsetY;
             for (var i = 0; i < points.length; i += 2) {
                 var dis = Math.sqrt(Math.pow(x - points[i], 2) + Math.pow(y - points[i + 1], 2));
@@ -1523,7 +2545,11 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
         var i;
         mousedown = function (e) {
-            var points = $scope.mcqs[$scope.mcqs.length - 1].points;
+            var pointsObj = $scope.mcqs[$scope.mcqs.length - 1];
+            if (!pointsObj) {
+                return false;
+            }
+            var points = pointsObj.points;
             var x, y, dis, lineDis, insertAt = points.length;
 
             if (e.which === 3) {
@@ -1571,16 +2597,26 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
         };
 
         draw = function () {
-            ctx.canvas.width = ctx.canvas.width;
 
-            var points = $scope.mcqs[$scope.mcqs.length - 1].points;
-            if (points.length < 2) {
+            ctx.clearRect(0, 0, canv.width, canv.height);
+            drawImageObj();
+
+            if (imageObj.isLoaded && imageObj.computePositions) {
+                imageObj.computePositions = false;
+                computePositions();
+            }
+
+            if (!$scope.mcqs) {
+                return false;
+            }
+
+            var pointsOpt = $scope.mcqs[$scope.mcqs.length - 1];
+            if (!pointsOpt) {
                 return false;
             }
 
             $scope.mcqs.forEach(function (polygon) {
                 var points = polygon.points;
-                ctx.globalCompositeOperation = 'destination-over';
                 ctx.fillStyle = 'rgb(255,255,255)';
                 ctx.strokeStyle = polygon.isCorrect ? 'rgb(20, 255, 20)' : 'rgb(255,20,20)';
                 ctx.lineWidth = 1;
@@ -1598,11 +2634,6 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 ctx.fill();
                 ctx.stroke();
             });
-
-
-            drawImageObj();
-
-            console.log(JSON.stringify(points, null, '   '));
         };
 
         canv.onmousedown = mousedown;
@@ -1671,17 +2702,191 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 });
             }
         };
+
+        $scope.chooseDifficulty = function (difficulty) {
+            $scope.challenge.challengeFile.difficulty = difficulty;
+        };
+
+
+        // Preview Dialog Controller
+        function DialogController($scope, $mdDialog, challenge) {
+
+            $scope.challenge = challenge;
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+            $scope.cancel = function () {
+                $mdDialog.cancel();
+            };
+            $scope.answer = function (answer) {
+                $mdDialog.hide(answer);
+            };
+            $scope.getPreviewSrc = function () {
+                return '/preview/preview.html?challenge=' + challenge._id;
+            };
+        }
+
+        $scope.showAdvanced = function (ev) {
+            $scope.onSubmit(function () {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge
+                    },
+                    controller: DialogController,
+                    templateUrl: 'modules/core/views/challenge.preview.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
+        };
+
+
+        // HINT Management
+
+        function HintDialogController($scope, $mdDialog,
+                                      challenge,
+                                      hintFiles,
+                                      onSubmit) {
+
+            $scope.challenge = challenge;
+            $scope.hints = [];
+
+            var hint = challenge.challengeFile.hint;
+            if (hint) {
+                var infos = hint.infos;
+
+                if (infos && infos.length > 0) {
+                    var i = 0;
+                    infos.forEach(function (info) {
+                        if (info.text) {
+                            $scope.hints.push({
+                                type: 'text',
+                                string: info.text
+                            });
+                        } else if (info.imagePath) {
+                            $scope.hints.push({
+                                type: 'image',
+                                src: info.imagePath,
+                                index: i
+                            });
+                        }
+                        ++i;
+                    });
+                }
+            }
+
+            var toChallengeModel = function () {
+                challenge.challengeFile.hint = {
+                    infos: []
+                };
+                $scope.hints.forEach(function (hint) {
+                    if (hint.string) {
+                        challenge.challengeFile.hint.infos.push({
+                            'class': 'es.eucm.cytochallenge.model.hint.TextInfo',
+                            'text': hint.string
+                        });
+                    } else if (hint.type === 'image') {
+                        var i = hint.index;
+                        if ($scope.files[i] &&
+                            $scope.files[i].length === 1 &&
+                            $scope.files[i][0].lfFileName) {
+                            challenge.challengeFile.hint.infos.push({
+                                'class': 'es.eucm.cytochallenge.model.hint.ImageInfo',
+                                'imagePath': 'hints/' + $scope.files[i][0].lfFileName
+                            });
+                        } else {
+                            challenge.challengeFile.hint.infos.push({
+                                'class': 'es.eucm.cytochallenge.model.hint.ImageInfo',
+                                'imagePath': hint.src
+                            });
+                        }
+                    }
+                });
+            };
+
+            $scope.hide = function () {
+                $mdDialog.hide();
+            };
+
+            $scope.files = {};
+
+            $scope.save = function () {
+                toChallengeModel();
+                if ($scope.files) {
+                    for (var fileKey in $scope.files) {
+                        var file = $scope.files[fileKey];
+                        if (file.length === 1) {
+                            hintFiles.push(file[0]);
+                        }
+                    }
+                }
+                onSubmit(function () {
+                    $mdDialog.hide();
+                });
+            };
+
+            $scope.getHintImageSrc = function (option) {
+                return 'uploads/' + challenge._id + '/' + option.src;
+            };
+
+            $scope.addHint = function (index) {
+
+                var hint = {};
+                if (index === 0) {
+                    hint.type = 'text';
+                    hint.string = '';
+                } else {
+                    hint.type = 'image';
+                    hint.src = '';
+                    hint.index = $scope.hints.length;
+                }
+                $scope.hints.push(hint);
+            };
+
+            $scope.delete = function (option) {
+                var index = $scope.hints.indexOf(option);
+                if (index > -1) {
+                    $scope.hints.splice(index, 1);
+                }
+            };
+        }
+
+        $scope.showHint = function (ev) {
+            $scope.hintFiles = [];
+            $scope.onSubmit(function () {
+                $mdDialog.show({
+                    locals: {
+                        challenge: $scope.challenge,
+                        hintFiles: $scope.hintFiles,
+                        onSubmit: $scope.onSubmit
+                    },
+                    controller: HintDialogController,
+                    templateUrl: 'modules/core/views/challenge.hint.dialog.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true
+                });
+            });
+        };
     }
 ]);
 
 'use strict';
 
 
-angular.module('core').controller('CoursesController', ['$scope', 'Courses', '$location',
+angular.module('core').controller('CoursesController', ['$rootScope', '$scope', 'Courses', '$location',
     '$mdDialog', 'QueryParams', '$http', 'sharedProperties',
-    function ($scope, Courses, $location, $mdDialog, QueryParams, $http, sharedProperties) {
+    function ($rootScope, $scope, Courses, $location, $mdDialog, QueryParams, $http, sharedProperties) {
         // ChallengesController controller logic
         // ...
+
+        var go = function (course) {
+            sharedProperties.setCourse(course);
+            $rootScope.course = course;
+            $location.path('/challenges/' + course._id);
+        };
 
         function showDialog($event) {
             var parentEl = angular.element(document.body);
@@ -1693,11 +2898,9 @@ angular.module('core').controller('CoursesController', ['$scope', 'Courses', '$l
                     $mdDialog.hide();
                 };
                 $scope.addCourse = function () {
-                    $scope.chooseType();
-                    console.log(JSON.stringify($scope.course, null, '  '));
                     $scope.course.$save(function (err) {
                         $scope.closeDialog();
-                        updateCourses();
+                        go($scope.course);
                     });
                 };
             }
@@ -1705,22 +2908,7 @@ angular.module('core').controller('CoursesController', ['$scope', 'Courses', '$l
             $mdDialog.show({
                 parent: parentEl,
                 targetEvent: $event,
-                template: '<md-dialog aria-label="Course dialog">' +
-                '  <md-dialog-content>' +
-                '    <md-input-container>' +
-                '       <label>Course name</label>' +
-                '       <input type="text" ng-model="course.name">' +
-                '   </md-input-container>' +
-                '  </md-dialog-content>' +
-                '  <md-dialog-actions>' +
-                '    <md-button ng-click="closeDialog()" class="md-primary">' +
-                '      Close Dialog' +
-                '    </md-button>' +
-                '    <md-button ng-click="addCourse()" class="md-primary">' +
-                '     Add Challenge' +
-                '    </md-button>' +
-                '  </md-dialog-actions>' +
-                '</md-dialog>',
+                templateUrl: 'modules/core/views/course.add.dialog.html',
 
                 locals: {
                     course: $scope.course,
@@ -1734,84 +2922,144 @@ angular.module('core').controller('CoursesController', ['$scope', 'Courses', '$l
 
         function updateCourses() {
             $scope.courses = Courses.get(function () {
-                console.log($scope.courses);
             });
         }
 
         updateCourses();
 
-        $scope.course = new Course();
-        $scope.go = function (course) {
-            sharedProperties.setChallenge(course);
-            $location.path('/challenges/' + course._id);
-        };
+        $scope.course = new Courses();
+        $scope.course.difficulty = 'EASY';
+        $scope.go = go;
     }
 ]);
 
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', '$location', 'Authentication', 'Menus', '$timeout', '$mdSidenav', '$mdUtil', '$log',
-	function($scope, $location, Authentication, Menus, $timeout, $mdSidenav, $mdUtil, $log) {
-		$scope.authentication = Authentication;
-		$scope.isCollapsed = false;
-		$scope.menu = Menus.getMenu('topbar');
+angular.module('core').controller('HeaderController', ['$rootScope', '$scope', '$location', 'Authentication',
+    'Menus', '$timeout', '$mdSidenav', '$mdUtil', '$log', 'Courses', 'Challenges',
+    function ($rootScope, $scope, $location, Authentication, Menus, $timeout, $mdSidenav, $mdUtil, $log, Courses, Challenges) {
+        $scope.authentication = Authentication;
+        $scope.isCollapsed = false;
+        $scope.menu = Menus.getMenu('topbar');
 
-		$scope.toggleCollapsibleMenu = function() {
-			$scope.isCollapsed = !$scope.isCollapsed;
-		};
+        $scope.value = 'Cytopathology Challenge';
 
-		// Collapsing the menu after navigation
-		$scope.$on('$stateChangeSuccess', function() {
-			$scope.isCollapsed = false;
-		});
-        
+        var setupChallenge = function(challengeId, callback) {
+            Challenges.query({id: challengeId}).
+                $promise.then(function (res) {
+                    $scope.challenge = res;
+                    if(callback) {
+                        callback();
+                    }
+                }, function (error) {
+                    console.error('Error retrieving challenge', error);
+                }
+            );
+        };
+
+        var setupCourse = function(courseId, callback) {
+            Courses.query({id: courseId}).
+                $promise.then(function (res) {
+                    $scope.course = res;
+                    if(callback) {
+                        callback();
+                    }
+                }, function (error) {
+                    console.error('Error retrieving course', error);
+                }
+            );
+        };
+
+        $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+            if (!toParams) {
+                $scope.challenge = null;
+                $scope.course = null;
+                return;
+            }
+            if (toParams.courseId) {
+                $scope.challenge = null;
+                setupCourse(toParams.courseId);
+            } else if (toParams.challengeId) {
+                setupChallenge(toParams.challengeId, function() {
+                    setupCourse($scope.challenge._course);
+                });
+            } else {
+                $scope.challenge = null;
+                $scope.course = null;
+            }
+        });
+
+        $scope.goCourse = function () {
+            $location.path('/challenges/' + $scope.course._id);
+        };
+
+        $scope.goChallenge = function () {
+            var challenge = $scope.challenge;
+            $location.path('/challenges/edit/' + challenge._id + '/' + challenge.type);
+        };
+
+        $scope.toggleCollapsibleMenu = function () {
+            $scope.isCollapsed = !$scope.isCollapsed;
+        };
+
+        // Collapsing the menu after navigation
+        $scope.$on('$stateChangeSuccess', function () {
+            $scope.isCollapsed = false;
+        });
+
         $scope.go = function (path) {
             $location.path(path);
         };
-	   /**
+        /**
          * Build handler to open/close a SideNav; when animation finishes
          * report completion in console
          */
         function buildToggler(navID) {
-          var debounceFn =  $mdUtil.debounce(function(){
+            var debounceFn = $mdUtil.debounce(function () {
                 $mdSidenav(navID)
-                  .toggle()
-                  .then(function () {
-                    $log.debug('toggle ' + navID + ' is done');
-                  });
-              },300);
-          return debounceFn;
+                    .toggle()
+                    .then(function () {
+                        $log.debug('toggle ' + navID + ' is done');
+                    });
+            }, 300);
+            return debounceFn;
         }
-        
+
         $scope.toggleLeft = buildToggler('left');
         $scope.toggleRight = buildToggler('right');
-	}
+    }
 ])
-.controller('LeftCtrl', ["$scope", "$timeout", "$mdSidenav", "$log", function ($scope, $timeout, $mdSidenav, $log) {
-    $scope.close = function () {
-        $mdSidenav('left').close()
-        .then(function () {
-            $log.debug('close LEFT is done');
-        });
-    };
-}])
-.controller('RightCtrl', ["$scope", "$timeout", "$mdSidenav", "$log", function ($scope, $timeout, $mdSidenav, $log) {
-    $scope.close = function () {
-        $mdSidenav('right').close()
-        .then(function () {
-            $log.debug('close RIGHT is done');
-        });
-    };
-}]);
+    .controller('LeftCtrl', ["$scope", "$timeout", "$mdSidenav", "$log", function ($scope, $timeout, $mdSidenav, $log) {
+        $scope.close = function () {
+            $mdSidenav('left').close()
+                .then(function () {
+                    $log.debug('close LEFT is done');
+                });
+        };
+    }])
+    .controller('RightCtrl', ["$scope", "$timeout", "$mdSidenav", "$log", function ($scope, $timeout, $mdSidenav, $log) {
+        $scope.close = function () {
+            $mdSidenav('right').close()
+                .then(function () {
+                    $log.debug('close RIGHT is done');
+                });
+        };
+    }]);
+
 'use strict';
 
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication',
-	function($scope, Authentication) {
+angular.module('core').controller('HomeController', ['$scope', 'Authentication', '$location',
+	function($scope, Authentication, $location) {
 		// This provides Authentication context.
 		$scope.authentication = Authentication;
+
+		$scope.go = function (path) {
+			$location.path(path);
+		};
 	}                                              
 ]);
+
 'use strict';
 
 angular.module('core')
@@ -1823,6 +3071,12 @@ angular.module('core')
                 return currentChallenge;
             },
             setChallenge: function (value) {
+                currentChallenge = value;
+            },
+            getCourse: function () {
+                return currentChallenge;
+            },
+            setCourse: function (value) {
                 currentChallenge = value;
             }
         };
@@ -1862,7 +3116,7 @@ angular.module('core')
                     return result;
                 },
                 getCourseId: function () {
-                    var result = window.location.hash.substr(11, 24);
+                    var result = window.location.hash.substr(14, 24);
 
                     return result;
                 }
@@ -2144,6 +3398,15 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 		if ($scope.authentication.user) $location.path('/');
 
 		$scope.signup = function() {
+			if(!$scope.credentials) {
+				return $scope.error = 'Please insert the required information.';
+			}
+			if(!$scope.credentials.password || !$scope.credentials.password2) {
+				return $scope.error = 'Password field required.';
+			}
+			if($scope.credentials.password !== $scope.credentials.password2) {
+				return $scope.error = 'Passwords must coincide.';
+			}
 			$http.post('/auth/signup', $scope.credentials).success(function(response) {
 				// If successful we assign the response to the global user model
 				$scope.authentication.user = response;
@@ -2161,13 +3424,14 @@ angular.module('users').controller('AuthenticationController', ['$scope', '$http
 				$scope.authentication.user = response;
 
 				// And redirect to the index page
-				$location.path('/');
+				$location.path('/courses');
 			}).error(function(response) {
 				$scope.error = response.message;
 			});
 		};
 	}
 ]);
+
 'use strict';
 
 angular.module('users').controller('PasswordController', ['$scope', '$stateParams', '$http', '$location', 'Authentication',
@@ -2251,7 +3515,6 @@ angular.module('users').controller('SettingsController', ['$scope', '$window', '
         $scope.$watchCollection('updateUser', function(newValue) {
             if (newValue!==undefined) {
                 $scope.selectedRow = newValue[0];
-                console.log($scope.selectedRow);
             }
         });
         
@@ -2370,6 +3633,7 @@ angular.module('users').controller('SettingsController', ['$scope', '$window', '
 		};
 	}
 ]);
+
 'use strict';
 
 // Authentication service for user variables

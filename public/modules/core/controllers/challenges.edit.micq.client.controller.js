@@ -324,16 +324,20 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
 
         $scope.showAdvanced = function (ev) {
             $scope.onSubmit(function () {
-                $mdDialog.show({
-                    locals: {
-                        challenge: $scope.challenge
-                    },
-                    controller: DialogController,
-                    templateUrl: 'modules/core/views/challenge.preview.dialog.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true
-                });
+                if($scope.challenge.challengeFile.textControl.answers.length === 4) {
+                    $mdDialog.show({
+                        locals: {
+                            challenge: $scope.challenge
+                        },
+                        controller: DialogController,
+                        templateUrl: 'modules/core/views/challenge.preview.dialog.html',
+                        parent: angular.element(document.body),
+                        targetEvent: ev,
+                        clickOutsideToClose: true
+                    });
+                } else {
+                    $scope.showSimpleToast('Please select 4 images first.');
+                }
             });
         };
 
