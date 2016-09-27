@@ -4,18 +4,32 @@
             md-row-height-gt-md="1:1" md-row-height="2:2"
             md-gutter="12px" md-gutter-gt-sm="8px">
         <md-grid-tile ng-repeat="challenge in challenges"
-                      class="blue" md-rowspan="1" md-colspan="2" ng-click="go(challenge)">
-            <md-grid-tile-footer>
-                <div layout="row">
-                    <h3>{{challenge.name}}</h3>
-                    <span flex></span>
+                      class="{{getChallengeColor(challenge)}}" md-rowspan="1" md-colspan="2" ng-click="go(challenge)">
+            <img class="md-card-image" data-ng-show="!challenge.thumbnailError" alt="Challenge Thumbnail"
+                 ng-src="{{getChallengeThumbnail(challenge)}}"
+                 onerror="angular.element(this).scope().thumbnailError(angular.element(this).scope().challenge)"/>
+
+            <md-icon data-ng-show="challenge.thumbnailError" md-font-set="material-icons">
+                {{getChallengeIcon(challenge)}}
+            </md-icon>
+
+            <md-grid-tile-footer class="whitefooter">
+                <div layout="row" layout-align="space-between center">
+                    <div layout="row" layout-margin layout-align="start center">
+                        <md-icon md-font-set="material-icons"> {{getChallengeIcon(challenge)}}</md-icon>
+
+                        <h3>{{challenge.name}}</h3>
+                    </div>
+                    <md-button aria-label="Delete challenge"
+                               ng-click="remove(challenge, $event)">
+                        <md-icon md-font-set="material-icons">delete
+                        </md-icon>
+                    </md-button>
                 </div>
             </md-grid-tile-footer>
         </md-grid-tile>
-
     </md-grid-list>
-
-    <md-button class="md-fab md-primary" aria-label="Add challenge"
+    <md-button class="md-fab md-primary floating" aria-label="Add challenge"
                ng-click="showDialog($event)">
         <md-icon md-font-set="material-icons" style="width: 2.7rem; height: 1.15rem">add</md-icon>
 

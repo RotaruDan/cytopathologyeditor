@@ -17,7 +17,18 @@
             <md-input-container>
                 <label>TYPE</label>
                 <md-select ng-model="selectedReadType">
-                    <md-option ng-repeat="readType in readTypes" value="{{readType}}" ng-click="chooseType($index)">{{readType}}</md-option>
+                    <md-option ng-repeat="readType in readTypes" value="{{readType}}" ng-click="chooseType($index)">
+                        <div layout="row" layout-align="start center" layout-margin>
+                            <!--
+                            <md-icon md-font-set="material-icons">
+                                {{challengeIcons[$index]}}
+                            </md-icon>
+                            <span flex></span>
+                            -->
+                            <span>{{readType}}</span>
+                        </div>
+                    </md-option>
+
                 </md-select>
             </md-input-container>
         </md-dialog-content>
