@@ -66,13 +66,41 @@ var multerHintsMiddleware = multer({ //multer hints settings
 var uploadHintFiles = multerHintsMiddleware.array('files[]');
 
 
+// Thumbnails challenge icon
+var thumbnailStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        var pathDir = uploadsPath + '/thumbnails/' + req.params.challengeId;
+        mkdirp(pathDir, function (err) {
+            if (!err) {
+                cb(null, pathDir);
+            } else {
+                //debug
+                console.log(err);
+                cb(err);
+            }
+        });
+    },
+    filename: function (req, file, cb) {
+        cb(null, 'thumbnail.png');
+    }
+});
+
+
+var multerThumbnailMiddleware = multer({ //multer hints settings
+    storage: thumbnailStorage
+});
+var uploadThumbnailImage = multerThumbnailMiddleware.single('files');
+
 /**
  * Removes a folder recursively
  * @param location
  * @param next
  */
-function removeFolder(location, next) {
+function removeFolder(location, next, removeFolder) {
     fs.readdir(location, function (err, files) {
+        if (err) {
+            return next();
+        }
         async.each(files, function (file, cb) {
             file = location + '/' + file;
             fs.stat(file, function (err, stat) {
@@ -94,7 +122,13 @@ function removeFolder(location, next) {
             if (err) {
                 return next(err);
             }
-            return next();
+            if (removeFolder) {
+                fs.rmdir(location, function (err) {
+                    return next(err);
+                });
+            } else {
+                return next();
+            }
         });
     });
 }
@@ -124,7 +158,7 @@ function challengeHasHintImage(challenge, image) {
 function removeUnusedHintImages(challenge, next) {
     var pathDir = uploadsPath + challenge._id + '/hints/';
     fs.readdir(pathDir, function (err, files) {
-        if(err || !files) {
+        if (err || !files) {
             return next();
         }
         async.each(files, function (file, cb) {
@@ -193,6 +227,17 @@ exports.uploadImages = function (req, res) {
 
 exports.uploadHintImages = function (req, res) {
     uploadHintFiles(req, res, function (err) {
+        if (err) {
+            res.status(400).json({error_code: 1, err_desc: err});
+            return;
+        }
+        res.json({error_code: 100, err_desc: null});
+    });
+};
+
+
+exports.uploadThumbnailImage = function (req, res) {
+    uploadThumbnailImage(req, res, function (err) {
         if (err) {
             res.status(400).json({error_code: 1, err_desc: err});
             return;
@@ -430,18 +475,22 @@ exports.update = function (req, res, next) {
  * Delete User account.
  */
 exports.delete = function (req, res) {
-    var challengeToDelete = req.challenge; //challenge is the value that was passed.
-
-    challengeToDelete.remove(function (err) {
+    var id = req.params.challengeId;
+    Challenge.remove({
+        _id: id
+    }, function (err) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
-        } else {
-            var location = uploadsPath + challengeToDelete._id + '/';
+        }
+        else {
+            var location = uploadsPath + id + '/';
             removeFolder(location, function (err) {
-                res.send({message: 'Challenge Deleted.'});
-            });
+                removeFolder(uploadsPath + 'thumbnails/' + id + '/', function (err) {
+                    res.send({message: 'Challenge Deleted.'});
+                }, true);
+            }, true);
         }
     });
 };

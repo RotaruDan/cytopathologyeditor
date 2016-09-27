@@ -14,6 +14,9 @@ module.exports = function (app) {
 
     app.post('/hints/:challengeId', auth.requiresLogin, challenges.uploadHintImages);
 
+    // Uploads a thumbnail.jpg image
+    app.post('/thumbnail/:challengeId', auth.requiresLogin, challenges.uploadThumbnailImage);
+
     //List challenges
     app.route('/challenges')
         .get(auth.requiresLogin, challenges.list);
