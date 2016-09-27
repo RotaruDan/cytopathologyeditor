@@ -2,10 +2,11 @@
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: local('Material Icons'), 
-       local('MaterialIcons-Regular'),
-       url('https://fonts.gstatic.com/s/materialicons/v7/2fcrYFNaTjcS6g4U3t-Y5bbKic1PW3nceB3q24YFOMg.ttf?#iefix') format('truetype');
+  src: local('Material Icons'),
+  local('MaterialIcons-Regular'),
+  url('https://fonts.gstatic.com/s/materialicons/v7/2fcrYFNaTjcS6g4U3t-Y5bbKic1PW3nceB3q24YFOMg.ttf?#iefix') format('truetype');
 }
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
@@ -20,82 +21,185 @@
   -webkit-font-smoothing: antialiased;
 }
 
-/*Rules for sizing the icon.*/
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
-
-/*Rules for using icons as black on a light background.*/
-.material-icons.md-dark { color: rgb(0, 0, 0); color: rgba(0, 0, 0, 0.54); }
-.material-icons.md-dark.md-inactive { color: rgb(0, 0, 0); color: rgba(0, 0, 0, 0.26); }
-
-/*Rules for using icons as white on a dark background.*/
-.material-icons.md-light { color: rgb(255, 255, 255); }
-.material-icons.md-light.md-inactive { color: rgb(255, 255, 255); color: rgba(255, 255, 255, 0.3); }
-
-/*Push <i> down inside material buttons for nice fit.*/
-.md-toolbar-tools > .md-icon-button > i { margin-top: 6px;}
-
-/*Push <i> down inside material buttons in md-menu for nice fit.*/
-.md-menu > .md-icon-button > i { margin-top: 6px;}
-
-a { 
-    text-decoration: none;
-    color: #000;
+.whitefooter {
+  background-color: rgba(255, 255, 255, 0.85);
+  color: black;
 }
 
-a:hover { 
-    text-decoration: none;
-    color: #000;
+.whitefooter h3 {
+  font-size: large;
+}
+
+md-grid-tile {
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+md-grid-tile:hover {
+  cursor: pointer;
+}
+
+md-input-container {
+  padding-bottom: 8px;
+}
+
+md-grid-tile-footer figcaption {
+  width: 100%;
+}
+
+body {
+  background-color: #e1f5fe;
+  min-width: 1280px;
+}
+
+canvas {
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.14), 0px 6px 10px 0px rgba(0, 0, 0, 0.098), 0px 1px 18px 0px rgba(0, 0, 0, 0.084);
+}
+
+.lf-ng-md-file-input-drag-text {
+  text-align: center;
+}
+
+.no-hover:hover {
+  cursor: default;
+}
+
+.floating {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+}
+
+md-grid-tile {
+  overflow: hidden;
+}
+
+md-grid-tile img {
+  width: 100%;
+  opacity: 0.7;
+}
+
+.md-whiteframe-z3 {
+  background-color: white;
+}
+
+/*Rules for sizing the icon.*/
+.material-icons.md-18 {
+  font-size: 18px;
+}
+
+.material-icons.md-24 {
+  font-size: 24px;
+}
+
+.material-icons.md-36 {
+  font-size: 36px;
+}
+
+.material-icons.md-48 {
+  font-size: 48px;
+}
+
+/*Rules for using icons as black on a light background.*/
+.material-icons.md-dark {
+  color: rgb(0, 0, 0);
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.material-icons.md-dark.md-inactive {
+  color: rgb(0, 0, 0);
+  color: rgba(0, 0, 0, 0.26);
+}
+
+/*Rules for using icons as white on a dark background.*/
+.material-icons.md-light {
+  color: rgb(255, 255, 255);
+}
+
+.material-icons.md-light.md-inactive {
+  color: rgb(255, 255, 255);
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/*Push <i> down inside material buttons for nice fit.*/
+.md-toolbar-tools > .md-icon-button > i {
+  margin-top: 6px;
+}
+
+/*Push <i> down inside material buttons in md-menu for nice fit.*/
+.md-menu > .md-icon-button > i {
+  margin-top: 6px;
+}
+
+a {
+  text-decoration: none;
+  color: #fff;
+}
+
+a:hover {
+  color: lightgray;
 }
 
 p > a, li > a {
-    color:#8bc34a;
+  color: #8bc34a;
 }
 
 form > fieldset > div > a {
-    color:#8bc34a;
+  color: #8bc34a;
 }
 
-fieldset { border: 0; }
+fieldset {
+  border: 0;
+}
 
 .md-button.md-fab md-icon {
-    margin-right: 8px;
-    margin-bottom: 10px;
+  margin-right: 8px;
+  margin-bottom: 10px;
 }
 
 .md-list-item-custom {
-    border-top: 1px solid #EEE;
+  border-top: 1px solid #EEE;
 }
 
-
-
 .md-custom-menu {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .md-icon-padding-left {
-    margin-left: 5px;
+  margin-left: 5px;
 }
 
 .md-whiteframe-background {
-    background: #F6F6F6;
+  background: #F6F6F6;
 }
 
 .md-grid-list {
-  margin: 8px; }
+  margin: 8px;
+}
+
 .gray {
-  background: #f5f5f5; }
+  background: #f5f5f5;
+}
+
 .green {
-  background: #b9f6ca; }
+  background: #b9f6ca;
+}
+
 .yellow {
-  background: #ffff8d; }
+  background: #ffff8d;
+}
+
 .blue {
-  background: #84ffff; }
+  background: #84ffff;
+}
+
 .purple {
-  background: #b388ff; }
+  background: #b388ff;
+}
+
 .red {
-  background: #ff8a80; }
+  background: #ff8a80;
+}
+
 md-grid-tile {
-  transition: all 400ms ease-out 50ms; }
+  transition: all 400ms ease-out 50ms;
+}

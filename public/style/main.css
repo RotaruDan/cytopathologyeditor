@@ -16,6 +16,53 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased; }
 
+.whitefooter {
+  background-color: rgba(255, 255, 255, 0.85);
+  color: black; }
+
+.whitefooter h3 {
+  font-size: large; }
+
+md-grid-tile {
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.1); }
+
+md-grid-tile:hover {
+  cursor: pointer; }
+
+md-input-container {
+  padding-bottom: 8px; }
+
+md-grid-tile-footer figcaption {
+  width: 100%; }
+
+body {
+  background-color: #e1f5fe;
+  min-width: 1280px; }
+
+canvas {
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.14), 0px 6px 10px 0px rgba(0, 0, 0, 0.098), 0px 1px 18px 0px rgba(0, 0, 0, 0.084); }
+
+.lf-ng-md-file-input-drag-text {
+  text-align: center; }
+
+.no-hover:hover {
+  cursor: default; }
+
+.floating {
+  position: fixed;
+  bottom: 15px;
+  right: 15px; }
+
+md-grid-tile {
+  overflow: hidden; }
+
+md-grid-tile img {
+  width: 100%;
+  opacity: 0.7; }
+
+.md-whiteframe-z3 {
+  background-color: white; }
+
 /*Rules for sizing the icon.*/
 .material-icons.md-18 {
   font-size: 18px; }
@@ -56,11 +103,10 @@
 
 a {
   text-decoration: none;
-  color: #000; }
+  color: #fff; }
 
 a:hover {
-  text-decoration: none;
-  color: #000; }
+  color: lightgray; }
 
 p > a, li > a {
   color: #8bc34a; }
@@ -112,7 +158,8 @@ md-grid-tile {
   transition: all 400ms ease-out 50ms; }
 
 .content {
-  margin-top: 50px; }
+  margin-top: 50px;
+  min-width: 1024px; }
 
 .undecorated-link:hover {
   text-decoration: none; }

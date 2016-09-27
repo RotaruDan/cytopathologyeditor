@@ -7,19 +7,19 @@
                     <i class="material-icons md-36">menu</i>
                 </md-button>
                 <a href="" ng-click="go('/home')" data-ng-show="!authentication.user">
-                    <span> Cytopathology Challenge</span>
+                    Cytopathology Challenge
                 </a>
 
                 <a href="" ng-click="go('/courses')" data-ng-show="authentication.user">
-                    <span> Cytopathology Challenge </span>
+                    Cytopathology Challenge
                 </a>
 
                 <a href="" ng-click="goCourse()" data-ng-show="authentication.user && course">
-                    <span>{{'&nbsp;>&nbsp;' + course.name}}</span>
+                    {{'&nbsp;>&nbsp;' + course.name}}
                 </a>
 
                 <a href="" ng-click="goChallenge()" data-ng-show="authentication.user && course && challenge">
-                    <span>{{'&nbsp;>&nbsp;' + challenge.name}}</span>
+                    {{'&nbsp;>&nbsp;' + challenge.name}}
                 </a>
 
                 <span flex></span>
