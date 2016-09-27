@@ -7,7 +7,7 @@
                 <label>Challenge name</label>
                 <input ng-model="challenge.name">
             </md-input-container>
-            <md-button ng-disabled="true" class="md-primary">Highlight Image Area</md-button>
+            <md-button ng-disabled="true" class="md-primary no-hover">Highlight Image Area</md-button>
             <md-button aria-label="Explanation" ng-click="showHint($event)" md-no-ink class="md-primary">Explanation
             </md-button>
             <md-input-container>
@@ -42,7 +42,7 @@
                 </div>
                 <div layout="column" flex>
                     <div ng-repeat="option in mcqs">
-                        <div layout="row" layout-align="center" flex>
+                        <div layout="row" layout-align="center center" flex>
                             <label flex>Polygon {{$index + 1}}</label>
                             <md-checkbox ng-model="option.isCorrect" ng-change="draw()"
                                          aria-label="Is a correct option">
