@@ -2,9 +2,9 @@
 
 
 angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http', '$mdToast',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast','thumbnails',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http, $mdToast) {
+              $mdDialog, QueryParams, $http, $mdToast, thumbnails) {
         var toastPosition = {
             bottom: true,
             top: false,
@@ -85,7 +85,17 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
             $scope.challenge.$update();
 
-            queryChallenge(callback, showToast);
+            uploadThumbnailImage(callback, showToast);
+        };
+
+        var uploadThumbnailImage = function (callback, showToast) {
+            thumbnails.uploadThumbnail(canv, challengeId, function(err) {
+                if(err) {
+                    console.error('Error uploading thumbnail of challenge!');
+                }
+
+                queryChallenge(callback, showToast);
+            });
         };
 
         var addHintFiles = function (callback, showToast) {

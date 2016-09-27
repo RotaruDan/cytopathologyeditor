@@ -2,9 +2,9 @@
 
 
 angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http', '$mdToast',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast', 'thumbnails',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http, $mdToast) {
+              $mdDialog, QueryParams, $http, $mdToast, thumbnails) {
 
         var toastPosition = {
             bottom: true,
@@ -83,9 +83,18 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
             });
 
             $scope.challenge.$update();
-            queryChallenge(callback, showToast);
+            uploadThumbnailImage(callback, showToast);
         };
 
+        var uploadThumbnailImage = function (callback, showToast) {
+            thumbnails.uploadThumbnail(canv, challengeId, function(err) {
+                if(err) {
+                    console.error('Error uploading thumbnail of challenge!');
+                }
+
+                queryChallenge(callback, showToast);
+            });
+        };
         var challengeId = QueryParams.getChallengeId();
 
         var addHintFiles = function (callback, showToast) {
@@ -324,7 +333,7 @@ angular.module('core').controller('ChallengesEditMicqController', ['$scope', 'Ch
 
         $scope.showAdvanced = function (ev) {
             $scope.onSubmit(function () {
-                if($scope.challenge.challengeFile.textControl.answers.length === 4) {
+                if ($scope.challenge.challengeFile.textControl.answers.length === 4) {
                     $mdDialog.show({
                         locals: {
                             challenge: $scope.challenge

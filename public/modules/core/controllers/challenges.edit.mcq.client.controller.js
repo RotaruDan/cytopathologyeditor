@@ -3,9 +3,9 @@
 
 angular.module('core').controller('ChallengesEditMcqController', [
     '$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http', '$mdToast',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast', 'thumbnails',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http, $mdToast) {
+              $mdDialog, QueryParams, $http, $mdToast, thumbnails) {
         var toastPosition = {
             bottom: true,
             top: false,
@@ -59,7 +59,21 @@ angular.module('core').controller('ChallengesEditMcqController', [
 
             $scope.challenge.$update();
 
-            queryChallenge(callback, showToast);
+            uploadThumbnailImage(callback, showToast);
+        };
+
+        // Canvas for image manipulation (draw polygons or multiple images)
+        var canv = document.getElementById('board');
+        var ctx = canv.getContext('2d');
+
+        var uploadThumbnailImage = function (callback, showToast) {
+            thumbnails.uploadThumbnail(canv, challengeId, function(err) {
+               if(err) {
+                   console.error('Error uploading thumbnail of challenge!');
+               }
+
+                queryChallenge(callback, showToast);
+            });
         };
 
 
@@ -108,7 +122,7 @@ angular.module('core').controller('ChallengesEditMcqController', [
             }).success(function (res) {
                 addHintFiles(callback, showToast);
             }).error(function (err) {
-                console.log('Uplaod error!', err);
+                console.log('Upload error!', err);
                 addHintFiles(callback, showToast);
             });
         };
@@ -157,7 +171,7 @@ angular.module('core').controller('ChallengesEditMcqController', [
                     if (callback) {
                         callback();
                     }
-                    if(showToast) {
+                    if (showToast) {
                         $scope.showSimpleToast('Challenge updated successfully!');
                     }
                 }, function (error) {
@@ -165,17 +179,13 @@ angular.module('core').controller('ChallengesEditMcqController', [
                     if (callback) {
                         callback();
                     }
-                    if(showToast) {
+                    if (showToast) {
                         $scope.showSimpleToast('An error occurred, please try again!');
                     }
                 });
         };
 
         queryChallenge();
-
-        // Canvas for image manipulation (draw polygons or multiple images)
-        var canv = document.getElementById('board');
-        var ctx = canv.getContext('2d');
 
         $scope.$watchCollection('files', function (newValue, oldValue) {
             if (newValue && newValue.length === 1) {

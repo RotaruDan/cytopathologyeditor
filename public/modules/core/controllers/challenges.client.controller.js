@@ -9,6 +9,7 @@ angular.module('core').controller('ChallengesController', ['$rootScope', '$scope
 
 
         $scope.types = ['mcq', 'dnd', 'micq', 'ftb', 'polygon'];
+        var challengeIcons = ['list', 'system_update_all', 'border_all', 'subject', 'location_on'];
         $scope.readTypes = ['Multiple Choice Question', 'Drag And Drop',
             'Multiple Image Choice Question', 'Fill The Options',
             'Highlight Image Area'];
@@ -71,21 +72,68 @@ angular.module('core').controller('ChallengesController', ['$rootScope', '$scope
             }
         ];
 
-
         var go = function (challenge) {
             $rootScope.challenge = challenge;
             sharedProperties.setChallenge(challenge);
             $location.path('/challenges/edit/' + challenge._id + '/' + challenge.type);
         };
 
+        $scope.getChallengeColor = function (challenge) {
+            if (challenge.challengeFile.difficulty === 'MEDIUM') {
+                return 'yellow';
+            } else if (challenge.challengeFile.difficulty === 'HARD') {
+                return 'red';
+            }
+            return 'green';
+        };
+
+        $scope.getChallengeThumbnail = function (challenge) {
+            return '/uploads/thumbnails/' + challenge._id + '/thumbnail.png';
+        };
+
+        $scope.getChallengeIcon = function (challenge) {
+            var index = $scope.types.indexOf(challenge.type);
+            if (index === -1) {
+                return challengeIcons[0];
+            }
+            return challengeIcons[index];
+        };
+
+        $scope.thumbnailError = function (challenge) {
+            challenge.thumbnailError = true;
+            $scope.$apply();
+        };
+
+        $scope.remove = function (challenge, event) {
+            event.stopPropagation();
+
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Challenge ' + challenge.name)
+                .content('Would you like to delete the challenge?')
+                .ariaLabel('Challenge removal')
+                .ok('Accept')
+                .cancel('Cancel')
+                .targetEvent(event);
+            $mdDialog.show(confirm).then(function () {
+                // Remove the challenge
+                Challenges.delete({id:challenge._id}, function () {
+                    updateChallenges();
+                });
+            }, function () {
+                // Cancelled
+            });
+        };
+
         function showDialog($event) {
             var parentEl = angular.element(document.body);
 
-            function DialogController($scope, $mdDialog, challenge, types, readTypes) {
+            function DialogController($scope, $mdDialog, challenge, types, readTypes, challengeIcons) {
                 $scope.challenge = challenge;
                 $scope.types = types;
                 $scope.selectedReadType = readTypes[0];
                 $scope.readTypes = readTypes;
+                $scope.challengeIcons = challengeIcons;
                 $scope.closeDialog = function () {
                     $mdDialog.hide();
                 };
@@ -111,6 +159,13 @@ angular.module('core').controller('ChallengesController', ['$rootScope', '$scope
                     $scope.challenge.challengeFile =
                         challengesFiles[index];
                 };
+
+                $scope.cleanFirst = function(element) {
+                    console.log('asddsadasads', JSON.stringify(element, null, '    '));
+                    var spans = element.getElementsByTagName('span');
+
+                    spans[0].innerHTML = spans[0].innerHTML;
+                };
             }
 
             $mdDialog.show({
@@ -121,7 +176,8 @@ angular.module('core').controller('ChallengesController', ['$rootScope', '$scope
                 locals: {
                     challenge: $scope.challenge,
                     types: $scope.types,
-                    readTypes: $scope.readTypes
+                    readTypes: $scope.readTypes,
+                    challengeIcons: challengeIcons
                 },
                 controller: DialogController
             });

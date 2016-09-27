@@ -2,9 +2,9 @@
 
 
 angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Challenges', '$location',
-    '$mdDialog', 'QueryParams', '$http', '$mdToast',
+    '$mdDialog', 'QueryParams', '$http', '$mdToast', 'thumbnails',
     function ($scope, Challenges, $location,
-              $mdDialog, QueryParams, $http, $mdToast) {
+              $mdDialog, QueryParams, $http, $mdToast, thumbnails) {
         var toastPosition = {
             bottom: true,
             top: false,
@@ -30,7 +30,17 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
         // Canvas for image manipulation (draw polygons or multiple images)
         var canv = document.getElementById('board');
         var ctx = canv.getContext('2d');
-        var textHeight = 20;
+        var textHeight = 15;
+
+        var uploadThumbnailImage = function (callback, showToast) {
+            thumbnails.uploadThumbnail(canv, challengeId, function(err) {
+                if(err) {
+                    console.error('Error uploading thumbnail of challenge!');
+                }
+
+                queryChallenge(callback, showToast);
+            });
+        };
 
         var imageObj = new Image();
         // This 'files' var stores the uploaded images from the widget
@@ -82,7 +92,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
 
             $scope.challenge.$update();
 
-            queryChallenge(callback, showToast);
+            uploadThumbnailImage(callback, showToast);
         };
 
         var addHintFiles = function (callback, showToast) {
@@ -185,7 +195,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                                 height: answer.height
                             };
 
-                            console.log(JSON.stringify($scope.mcqs[i], null, '  '));
                             ++i;
                         });
                     draw();
@@ -193,7 +202,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                     if (callback) {
                         callback();
                     }
-                    if(showToast) {
+                    if (showToast) {
                         $scope.showSimpleToast('Challenge updated successfully!');
                     }
                 }, function (error) {
@@ -201,7 +210,7 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                     if (callback) {
                         callback();
                     }
-                    if(showToast) {
+                    if (showToast) {
                         $scope.showSimpleToast('An error occurred, please try again!');
                     }
                 }
@@ -231,7 +240,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                         height: answer.height
                     };
 
-                    console.log(JSON.stringify($scope.mcqs[i], null, '  '));
                     ++i;
                 });
         };
@@ -485,7 +493,6 @@ angular.module('core').controller('ChallengesEditDndController', ['$scope', 'Cha
                         });
                     } else if (hint.type === 'image') {
                         var i = hint.index;
-                        console.log('toChallengeModel', i, $scope.files[i]);
                         if ($scope.files[i] &&
                             $scope.files[i].length === 1 &&
                             $scope.files[i][0].lfFileName) {
