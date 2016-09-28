@@ -54,6 +54,7 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                     $scope.challenge.challengeFile.imagePath = $scope.files[0].lfFileName;
                 }
             }
+
             $scope.challenge.challengeFile.textControl.answers = [];
             $scope.challenge.challengeFile.textControl.correctAnswers = [];
             $scope.mcqs.forEach(function (question) {

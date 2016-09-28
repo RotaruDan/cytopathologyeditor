@@ -1,5 +1,7 @@
 'use strict';
 
+var passport = require('passport');
+
 /**
  * Module dependencies.
  */
@@ -26,9 +28,7 @@ exports.userByID = function(req, res, next, id) {
  */
 exports.requiresLogin = function(req, res, next) {
 	if (!req.isAuthenticated()) {
-		return res.status(401).send({
-			message: 'User is not logged in'
-		});
+		return passport.authenticate('basic', { session: false })(req, res, next);
 	}
 
 	next();

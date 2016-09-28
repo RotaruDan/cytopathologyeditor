@@ -1,0 +1,15 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "difficulty": "EASY",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.MultipleImageAnswerControl",
+        "text": "",
+        "answers": [
+            "tarzan.png",
+            "dg-IconDesign-july2016-pokemon.png",
+            "1470060872un0.png",
+            "1474473752113.png"
+        ],
+        "correctAnswers": []
+    }
+}

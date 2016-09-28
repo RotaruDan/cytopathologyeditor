@@ -21,28 +21,41 @@ angular.module('core')
     })
     .service('thumbnails', ['$http', function ($http) {
 
+        var uploadThumbnail = function (thumbnail, challengeId, callback) {
+
+            var formData = new FormData();
+            formData.append('files', thumbnail);
+
+            // Upload the selected Photo
+            $http.post('/thumbnail/' + challengeId, formData, {
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined,
+                    enctype: 'multipart/form-data'
+                }
+            }).success(function (res) {
+                callback();
+            }).error(function (err) {
+                console.log('Thumbnail upload error!', err);
+                callback(err);
+            });
+        };
+
         return {
             uploadThumbnail: function (canvas, challengeId, callback) {
                 // Get thumbnail file
-                canvas.toBlob(function (thumbnail) {
-
-                    var formData = new FormData();
-                    formData.append('files', thumbnail);
-
-                    // Upload the selected Photo
-                    $http.post('/thumbnail/' + challengeId, formData, {
-                        transformRequest: angular.identity,
-                        headers: {
-                            'Content-Type': undefined,
-                            enctype: 'multipart/form-data'
-                        }
-                    }).success(function (res) {
-                        callback();
-                    }).error(function (err) {
-                        console.log('Thumbnail upload error!', err);
-                        callback(err);
+                if (canvas.msToBlob) {
+                    // Internet Explorer error correction
+                    var thumbnail = canvas.msToBlob();
+                    return uploadThumbnail(thumbnail, challengeId, callback);
+                } else if (canvas.toBlob) {
+                    canvas.toBlob(function (thumbnail) {
+                        uploadThumbnail(thumbnail, challengeId, callback);
                     });
-                });
+                } else {
+                    callback(new Error('Cannot retrieve thumbnail, ' +
+                        'probably the browser doesn\'t support it.'));
+                }
             }
         };
     }]).factory('Challenges', ['$resource',

@@ -1,0 +1,34 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "get_the_cake.png",
+    "difficulty": "MEDIUM",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl",
+        "text": "Where is de Cake",
+        "canvasWidth": 1024,
+        "canvasHeight": 552,
+        "answers": [
+            {
+                "text": "You",
+                "x": 204.50410183616307,
+                "y": 698.0434782608696,
+                "width": 64.98872375488281,
+                "height": 40
+            },
+            {
+                "text": "Cake",
+                "x": 929.1464994679328,
+                "y": 681.2047101449275,
+                "width": 82.23699951171875,
+                "height": 40
+            },
+            {
+                "text": "Extremely dangerous deadly spikes",
+                "x": 305.6368350706239,
+                "y": 104.09420289855072,
+                "width": 440.85791015625,
+                "height": 40
+            }
+        ]
+    }
+}

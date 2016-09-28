@@ -1,0 +1,34 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "Penguins.jpg",
+    "difficulty": "EASY",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl",
+        "text": "Tag the different parts of a penguin.",
+        "canvasWidth": 1024,
+        "canvasHeight": 552,
+        "answers": [
+            {
+                "text": "Wing",
+                "x": 707.6591372282609,
+                "y": 272.69565217391306,
+                "width": 80.739990234375,
+                "height": 40
+            },
+            {
+                "text": "Beak",
+                "x": 334.7714737601902,
+                "y": 628.8695652173913,
+                "width": 80.76600646972656,
+                "height": 40
+            },
+            {
+                "text": "Belly",
+                "x": 245.0191491168478,
+                "y": 368.69565217391306,
+                "width": 77.78497314453125,
+                "height": 40
+            }
+        ]
+    }
+}

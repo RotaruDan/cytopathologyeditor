@@ -1,0 +1,16 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "BGC1 superficial sq cell 60x.jpg",
+    "difficulty": "EASY",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.MultipleAnswerControl",
+        "text": "What type of cell is the pink cell in the center of the image?",
+        "answers": [
+            "Endocervical cell",
+            "Intermediate squamous cell",
+            "Superficial squamous cell",
+            "Parabasal cell"
+        ],
+        "correctAnswer": 0
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "RAGE-logo-high-res.png",
+    "difficulty": "MEDIUM",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.MultipleAnswerControl",
+        "text": "q1?",
+        "answers": [
+            "o1",
+            "o2"
+        ],
+        "correctAnswer": 0
+    }
+}

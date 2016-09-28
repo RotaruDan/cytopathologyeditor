@@ -1,0 +1,15 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "cell.jpg",
+    "difficulty": "EASY",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.MultipleAnswerControl",
+        "text": "Cervical smear. 33 year old female. LMP: Day19. These findings are most consistent with:",
+        "answers": [
+            "RCC - repair",
+            "ASC-US",
+            "LGSIL,CIN I"
+        ],
+        "correctAnswer": 0
+    }
+}

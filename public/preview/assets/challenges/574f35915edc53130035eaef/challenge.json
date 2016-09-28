@@ -1,0 +1,18 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "difficulty": "EASY",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.MultipleImageAnswerControl",
+        "text": "Select the HSIL/CIN III/Severe dysplasia",
+        "answers": [
+            "asc_us.png",
+            "cin_lll.jpg",
+            "cin_lll_2.jpg",
+            "lsil.png"
+        ],
+        "correctAnswers": [
+            1,
+            2
+        ]
+    }
+}

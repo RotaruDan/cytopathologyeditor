@@ -1,0 +1,16 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "superficial sq cell 60x.jpg",
+    "difficulty": "EASY",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.MultipleAnswerControl",
+        "text": "What type of cell is the pink cell?",
+        "answers": [
+            "Intermediate squamous cell",
+            "Parabasal cell",
+            "Squamous metaplastic cell",
+            "Superficial squamous cell"
+        ],
+        "correctAnswer": 3
+    }
+}

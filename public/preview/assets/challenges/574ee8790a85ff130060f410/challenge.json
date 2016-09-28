@@ -1,0 +1,61 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "featuresOfEndocervix.png",
+    "difficulty": "EASY",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl",
+        "text": "Point out all the features of adenocarcinoma in situ of the endocervix",
+        "canvasWidth": 1024,
+        "canvasHeight": 552,
+        "answers": [
+            {
+                "text": "Apoptosis",
+                "x": 476.24184670655626,
+                "y": 567.3913043478261,
+                "width": 137.0800018310547,
+                "height": 40
+            },
+            {
+                "text": "Mitosis",
+                "x": 658.5236798162045,
+                "y": 225,
+                "width": 102.94793701171875,
+                "height": 40
+            },
+            {
+                "text": "Rosette",
+                "x": 485.5365452559098,
+                "y": 83.15217391304348,
+                "width": 111.87800598144531,
+                "height": 40
+            },
+            {
+                "text": "Feathering",
+                "x": 8.892992268437924,
+                "y": 234.7826086956522,
+                "width": 147.45501708984375,
+                "height": 40
+            }
+        ]
+    },
+    "hint": {
+        "infos": [
+            {
+                "class": "es.eucm.cytochallenge.model.hint.TextInfo",
+                "text": "Apoptosis: is a process of programmed cell death that occurs in multicellular organisms."
+            },
+            {
+                "class": "es.eucm.cytochallenge.model.hint.ImageInfo",
+                "imagePath": "hints/Apoptosis_DU145_cells_mosaic.jpg"
+            },
+            {
+                "class": "es.eucm.cytochallenge.model.hint.TextInfo",
+                "text": "Mitosis is a part of the cell cycle in which chromosomes in a cell nucleus are separated into two identical sets of chromosomes, and each set ends up in its own nucleus."
+            },
+            {
+                "class": "es.eucm.cytochallenge.model.hint.TextInfo",
+                "text": "Rosettes are little round groupings of cells found in tumors. They usually consist of cells in a spoke-wheel or halo arrangement surrounding a central, acellular region."
+            }
+        ]
+    }
+}

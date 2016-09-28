@@ -1,0 +1,17 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "difficulty": "EASY",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.MultipleImageAnswerControl",
+        "text": "Which picture depicts a mammal?",
+        "answers": [
+            "Chrysanthemum.jpg",
+            "Koala.jpg",
+            "Desert.jpg",
+            "Lighthouse.jpg"
+        ],
+        "correctAnswers": [
+            1
+        ]
+    }
+}

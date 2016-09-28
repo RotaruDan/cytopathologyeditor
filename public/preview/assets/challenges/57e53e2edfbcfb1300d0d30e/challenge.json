@@ -1,0 +1,22 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "tarzan.png",
+    "difficulty": "HARD",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.MultipleAnswerControl",
+        "text": "How to get the cake?",
+        "answers": [
+            "Use tarzan method",
+            "Just die"
+        ],
+        "correctAnswer": 0
+    },
+    "hint": {
+        "infos": [
+            {
+                "class": "es.eucm.cytochallenge.model.hint.ImageInfo",
+                "imagePath": "hints/Sin título.png"
+            }
+        ]
+    }
+}

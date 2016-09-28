@@ -7,7 +7,7 @@
     "npm": "1.4.x"
   },
   "scripts": {
-    "start": "grunt",
+    "start": "node ./server.js",
     "test": "grunt test",
     "postinstall": "bower install --config.interactive=false"
   },

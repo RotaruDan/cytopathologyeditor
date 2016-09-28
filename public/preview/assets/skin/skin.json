@@ -638,5 +638,31 @@
             "textStyle": "edition",
             "buttonStyle": "dialog"
         }
+    },
+    "es.eucm.cytochallenge.view.widgets.CourseInfoDialog$CourseInfoDialogStyle": {
+        "default": {
+            "background": "page_up",
+            "textStyle": "edition",
+            "buttonStyle": "dialog"
+        }
+    },
+    "es.eucm.cytochallenge.view.widgets.Tile$TileStyle": {
+        "default": {
+            "labelBackground": "semi_transparent_bg",
+            "labelStyle": "toast",
+            "background": "light_blue_semi_bg",
+            "pressed": "light_yellow_semi_bg"
+        }
+    },
+    "es.eucm.cytochallenge.view.widgets.Gallery$GalleryStyle": {
+        "default": {
+            "checked": "light_blue_semi_bg",
+            "pressed": "semi_transparent_bg"
+        },
+        "navigation": {
+            "background": "light_gray_bg",
+            "checked": "deep_orange_semi_bg",
+            "pressed": "light_blue_semi_bg"
+        }
     }
 }

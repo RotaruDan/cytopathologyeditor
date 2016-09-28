@@ -1,0 +1,16 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "Hydrangeas.jpg",
+    "difficulty": "MEDIUM",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.MultipleAnswerControl",
+        "text": "What does this image represent?",
+        "answers": [
+            "Tulip",
+            "Hydrangea",
+            "Rose",
+            "Daffodil"
+        ],
+        "correctAnswer": 1
+    }
+}

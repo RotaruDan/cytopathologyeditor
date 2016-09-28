@@ -1,0 +1,27 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "imagePath": "pok.png",
+    "difficulty": "EASY",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.draganddrop.DragAndDropControl",
+        "text": "",
+        "canvasWidth": 1024,
+        "canvasHeight": 552,
+        "answers": [
+            {
+                "text": "ghk,dg",
+                "x": 228,
+                "y": 219.7536231884058,
+                "width": 100.08333587646484,
+                "height": 40
+            },
+            {
+                "text": "kgdkgd",
+                "x": 228,
+                "y": 219.7536231884058,
+                "width": 106,
+                "height": 40
+            }
+        ]
+    }
+}

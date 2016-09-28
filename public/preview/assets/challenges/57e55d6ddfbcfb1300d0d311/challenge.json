@@ -1,0 +1,36 @@
+{
+    "class": "es.eucm.cytochallenge.model.TextChallenge",
+    "difficulty": "EASY",
+    "imagePath": "",
+    "textControl": {
+        "class": "es.eucm.cytochallenge.model.control.filltheblank.FillTheBlankControl",
+        "text": "",
+        "statements": [
+            {
+                "text": "Me gusta el Real Madrid BArÇa",
+                "options": [],
+                "correctAnswers": []
+            },
+            {
+                "text": "Complete the sentence:I love my[0]and my[1]",
+                "options": [
+                    [
+                        "Dog",
+                        "Cat",
+                        "Duck",
+                        "Tool"
+                    ],
+                    [
+                        "Puppy",
+                        "Pussy",
+                        "Monkey"
+                    ]
+                ],
+                "correctAnswers": [
+                    0,
+                    1
+                ]
+            }
+        ]
+    }
+}
