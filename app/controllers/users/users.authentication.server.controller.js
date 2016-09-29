@@ -90,8 +90,7 @@ exports.oauthCallback = function(strategy) {
 				if (err) {
 					return res.redirect('/#!/signin');
 				}
-
-				return res.redirect('/');
+				return res.redirect(typeof redirectURL == 'string' ? redirectURL : '/');
 			});
 		})(req, res, next);
 	};
@@ -133,10 +132,14 @@ exports.saveOAuthUserProfile = function(req, providerUserProfile, done) {
 							lastName: providerUserProfile.lastName,
 							username: availableUsername,
 							displayName: providerUserProfile.displayName,
-							email: providerUserProfile.email,
 							provider: providerUserProfile.provider,
 							providerData: providerUserProfile.providerData
 						});
+						// Email intentional
+						// ly added later to allow defaults (sparse settings) to be applid.
+						// Handles case where no email is supplied.
+						// See comment: https://github.com/meanjs/mean/pull/1495#issuecomment-246090193
+						user.email = providerUserProfile.email;
 
 						// And save the user
 						user.save(function(err) {
@@ -155,7 +158,9 @@ exports.saveOAuthUserProfile = function(req, providerUserProfile, done) {
 		// Check if user exists, is not signed in using this provider, and doesn't have that provider data already configured
 		if (user.provider !== providerUserProfile.provider && (!user.additionalProvidersData || !user.additionalProvidersData[providerUserProfile.provider])) {
 			// Add the provider data to the additional provider data field
-			if (!user.additionalProvidersData) user.additionalProvidersData = {};
+			if (!user.additionalProvidersData) {
+				user.additionalProvidersData = {};
+			}
 			user.additionalProvidersData[providerUserProfile.provider] = providerUserProfile.providerData;
 
 			// Then tell mongoose that we've updated the additionalProvidersData field
