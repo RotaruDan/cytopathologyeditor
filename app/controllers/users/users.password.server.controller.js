@@ -108,7 +108,7 @@ exports.validateResetToken = function(req, res) {
 /**
  * Reset password POST from email token
  */
-exports.reset = function(req, res, next) {
+exports.resetFromToken = function(req, res, next) {
 	// Init Variables
 	var passwordDetails = req.body;
 
