@@ -90,7 +90,7 @@ exports.oauthCallback = function(strategy) {
 				if (err) {
 					return res.redirect('/#!/signin');
 				}
-				return res.redirect(typeof redirectURL == 'string' ? redirectURL : '/');
+				return res.redirect(typeof redirectURL === 'string' ? redirectURL : '/');
 			});
 		})(req, res, next);
 	};

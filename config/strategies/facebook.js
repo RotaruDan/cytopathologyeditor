@@ -10,6 +10,18 @@ var passport = require('passport'),
     users = require('../../app/controllers/users.server.controller');
 
 module.exports = function () {
+
+    function generateUsername(profile) {
+        var username = '';
+
+        if (profile.emails) {
+            username = profile.emails[0].value.split('@')[0];
+        } else if (profile.name) {
+            username = profile.name.givenName[0] + profile.name.familyName;
+        }
+
+        return username.toLowerCase() || undefined;
+    }
     // Use facebook strategy
     passport.use(new FacebookStrategy({
             clientID: config.facebook.clientID,
@@ -19,6 +31,7 @@ module.exports = function () {
             passReqToCallback: true
         },
         function (req, accessToken, refreshToken, profile, done) {
+
             // Set the provider data and include tokens
             var providerData = profile._json;
             providerData.accessToken = accessToken;
@@ -39,18 +52,6 @@ module.exports = function () {
 
             // Save the user OAuth profile
             users.saveOAuthUserProfile(req, providerUserProfile, done);
-
-            function generateUsername(profile) {
-                var username = '';
-
-                if (profile.emails) {
-                    username = profile.emails[0].value.split('@')[0];
-                } else if (profile.name) {
-                    username = profile.name.givenName[0] + profile.name.familyName;
-                }
-
-                return username.toLowerCase() || undefined;
-            }
         }
     ));
 };
