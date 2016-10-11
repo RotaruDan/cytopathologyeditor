@@ -13,7 +13,9 @@
             <md-input-container>
                 <label>DIFFICULTY</label>
                 <md-select ng-model="challenge.challengeFile.difficulty">
-                    <md-option ng-repeat="difficulty in ['EASY', 'MEDIUM', 'HARD']" value="{{difficulty}}">{{difficulty}}</md-option>
+                    <md-option ng-repeat="difficulty in ['EASY', 'MEDIUM', 'HARD']" value="{{difficulty}}">
+                        {{difficulty}}
+                    </md-option>
                 </md-select>
             </md-input-container>
             <span flex></span>
@@ -41,20 +43,25 @@
                     <strong data-ng-show="mcqs.length > 0">Correct / Delete</strong>
                 </div>
                 <div layout="column" flex>
-                    <div ng-repeat="option in mcqs">
-                        <div layout="row" layout-align="center center" flex>
-                            <label flex>Polygon {{$index + 1}}</label>
-                            <md-checkbox ng-model="option.isCorrect" ng-change="draw()"
-                                         aria-label="Is a correct option">
-                            </md-checkbox>
-                            <md-button aria-label="Remove"
-                                       ng-click="deleteFromList('mcqs', option)"
-                                       class="md-icon-button">
-                                <md-icon md-font-set="material-icons">delete</md-icon>
-                            </md-button>
+                    <md-radio-group ng-model="buttonGroup">
+                        <div ng-repeat="option in mcqs">
+                            <div layout="row" layout-align="center center" flex>
+                                <md-radio-button flex ng-value="option.value"
+                                                 aria-label="Polygon {{$index + 1}}">
+                                    Polygon {{$index + 1}}
+                                </md-radio-button>
+                                <md-checkbox ng-model="option.isCorrect" ng-change="draw()"
+                                             aria-label="Is a correct option">
+                                </md-checkbox>
+                                <md-button aria-label="Remove"
+                                           ng-click="deleteFromList('mcqs', option)"
+                                           class="md-icon-button">
+                                    <md-icon md-font-set="material-icons">delete</md-icon>
+                                </md-button>
 
+                            </div>
                         </div>
-                    </div>
+                    </md-radio-group>
                 </div>
 
                 <div layout="row">

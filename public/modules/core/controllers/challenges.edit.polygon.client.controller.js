@@ -40,6 +40,8 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
         // Stores the 'Options' added by the user
         $scope.mcqs = [];
 
+        $scope.buttonGroup = 0;
+
         $scope.hintFiles = [];
 
         var updateCurrentChallengeModel = function (callback, showToast) {
@@ -190,7 +192,8 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                         forEach(function (answer) {
                             $scope.mcqs[i] = {
                                 points: [-100, -100, -100, -100, -100, -100],
-                                isCorrect: $scope.challenge.challengeFile.textControl.correctAnswers.indexOf(i) !== -1
+                                isCorrect: $scope.challenge.challengeFile.textControl.correctAnswers.indexOf(i) !== -1,
+                                value: i
                             };
                             ++i;
                         });
@@ -237,7 +240,8 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
                     $scope.mcqs[i] = {
                         points: pointsPoly,
-                        isCorrect: $scope.challenge.challengeFile.textControl.correctAnswers.indexOf(i) !== -1
+                        isCorrect: $scope.challenge.challengeFile.textControl.correctAnswers.indexOf(i) !== -1,
+                        value: i
                     };
                     ++i;
                 });
@@ -285,6 +289,10 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
             }
         });
 
+        $scope.$watch('buttonGroup', function (newValue, oldValue) {
+            draw();
+        });
+
         //-----------------
         // CANVAS LOGIC
 
@@ -295,7 +303,7 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 e.offsetX = (e.pageX - $(e.target).offset().left);
                 e.offsetY = (e.pageY - $(e.target).offset().top);
             }
-            var points = $scope.mcqs[$scope.mcqs.length - 1].points;
+            var points = $scope.mcqs[$scope.buttonGroup].points;
             points[activePoint] = Math.round(e.offsetX);
             points[activePoint + 1] = Math.round(e.offsetY);
             draw();
@@ -312,7 +320,7 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 e.offsetX = (e.pageX - $(e.target).offset().left);
                 e.offsetY = (e.pageY - $(e.target).offset().top);
             }
-            var pointsObj = $scope.mcqs[$scope.mcqs.length - 1];
+            var pointsObj = $scope.mcqs[$scope.buttonGroup];
             if (!pointsObj) {
                 return false;
             }
@@ -331,7 +339,7 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
 
         var i;
         mousedown = function (e) {
-            var pointsObj = $scope.mcqs[$scope.mcqs.length - 1];
+            var pointsObj = $scope.mcqs[$scope.buttonGroup];
             if (!pointsObj) {
                 return false;
             }
@@ -396,7 +404,7 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                 return false;
             }
 
-            var pointsOpt = $scope.mcqs[$scope.mcqs.length - 1];
+            var pointsOpt = $scope.mcqs[$scope.buttonGroup];
             if (!pointsOpt) {
                 return false;
             }
@@ -404,17 +412,33 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
             $scope.mcqs.forEach(function (polygon) {
                 var points = polygon.points;
                 ctx.fillStyle = 'rgb(255,255,255)';
-                ctx.strokeStyle = polygon.isCorrect ? 'rgb(20, 255, 20)' : 'rgb(255,20,20)';
-                ctx.lineWidth = 1;
+                var isSelected = polygon.value === $scope.buttonGroup;
+                if(isSelected) {
+                    ctx.strokeStyle = 'rgb(90, 200, 255)';
+                    ctx.lineWidth = 5;
+                } else {
+                    ctx.strokeStyle = polygon.isCorrect ? 'rgb(20, 255, 20)' : 'rgb(255,20,20)';
+                    ctx.lineWidth = 1;
+                }
                 ctx.beginPath();
                 ctx.moveTo(points[0], points[1]);
+                var minX, minY, maxX, maxY;
                 for (var i = 0; i < points.length; i += 2) {
-                    ctx.fillRect(points[i] - 2, points[i + 1] - 2, 4, 4);
-                    ctx.strokeRect(points[i] - 2, points[i + 1] - 2, 4, 4);
+                    var x = points[i];
+                    var y = points[i + 1];
+                    minX = minX < x ? minX : x;
+                    minY = minY < y ? minY : y;
+                    maxX = maxX > x ? maxX : x;
+                    maxY = maxY > y ? maxY : y;
+                    ctx.fillRect(x - 2, y - 2, 4, 4);
+                    ctx.strokeRect(x - 2, y - 2, 4, 4);
                     if (points.length > 2 && i > 1) {
-                        ctx.lineTo(points[i], points[i + 1]);
+                        ctx.lineTo(x, y);
                     }
                 }
+                ctx.font = "48px serif";
+                ctx.fillStyle = 'rgb(90, 200, 255)';
+                ctx.fillText(polygon.value + 1, (minX + maxX) / 2 - 24, (minY + maxY)  / 2 + 24);
                 ctx.closePath();
                 ctx.fillStyle = polygon.isCorrect ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)';
                 ctx.fill();
