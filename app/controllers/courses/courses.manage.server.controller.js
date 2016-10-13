@@ -6,8 +6,10 @@
 var _ = require('lodash'),
     mongoose = require('mongoose'),
     errorHandler = require('../errors.server.controller'),
+    challenges = require('../challenges.server.controller'),
     Course = mongoose.model('Course'),
-    Challenge = mongoose.model('Challenge');
+    Challenge = mongoose.model('Challenge'),
+    async = require('async');
 
 /**
  * Course middleware
@@ -21,7 +23,9 @@ exports.courseById = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
         } else {
-            if (!course) return res.status(404).json('No course found');
+            if (!course) {
+                return res.status(404).json('No course found');
+            }
 
             res.json(course);
         }
@@ -37,9 +41,9 @@ exports.list = function (req, res) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
-        } else {
-            res.json(courses);
         }
+        res.json(courses);
+
     });
 };
 
@@ -73,38 +77,9 @@ exports.create = function (req, res) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
-        } else {
-            res.json(course);
         }
-    });
-};
+        res.json(course);
 
-/**
- * Remove an
- */
-exports.update = function (req, res, next) {
-    var newCourse = req.body;
-
-    Course.findOne({
-        _id: req.params.courseId
-    }, function (err, course) {
-        if (!err && course) {
-            course.name = newCourse.name;
-
-            course.updated = Date.now();
-
-            course.save(function (err) {
-                if (err) {
-                    return res.status(400).send({
-                        message: errorHandler.getErrorMessage(err)
-                    });
-                } else {
-                    res.send({
-                        message: 'Course updated.'
-                    });
-                }
-            });
-        }
     });
 };
 
@@ -129,30 +104,47 @@ exports.update = function (req, res, next) {
                     return res.status(400).send({
                         message: errorHandler.getErrorMessage(err)
                     });
-                } else {
-                    res.send({
-                        message: 'Course updated.'
-                    });
                 }
+                res.send({
+                    message: 'Course updated.'
+                });
+
             });
         }
     });
 };
 
-
 /**
  * Delete Course.
  */
 exports.delete = function (req, res) {
-    var courseToDelete = req.challenge; //course is the value that was passed.
 
-    courseToDelete.remove(function (err) {
+    var id = req.params.courseId;
+    Course.remove({
+        _id: id
+    }, function (err) {
         if (err) {
             return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
             });
-        } else {
-            res.send({message: 'Course Deleted.'});
         }
+
+        Challenge.find({
+            '_course': id
+        }, function (err, challengesArray) {
+            if (err) {
+                return res.status(400).send({
+                    message: errorHandler.getErrorMessage(err)
+                });
+            }
+
+            async.each(challengesArray, function (challenge, callback) {
+                challenges.removeChallengeFiles(challenge._id, callback);
+            }, function (err) {
+                res.send({
+                    message: 'Course deleted.'
+                });
+            });
+        });
     });
 };

@@ -469,10 +469,19 @@ exports.update = function (req, res, next) {
         }
     });
 };
+var removeChallengeFiles = function(id, callback) {
+    var location = uploadsPath + id + '/';
+    removeFolder(location, function (err) {
+        removeFolder(uploadsPath + 'thumbnails/' + id + '/', function (err) {
+            callback(err);
+        }, true);
+    }, true);
+};
 
+exports.removeChallengeFiles = removeChallengeFiles;
 
 /**
- * Delete User account.
+ * Delete Challenge.
  */
 exports.delete = function (req, res) {
     var id = req.params.challengeId;
@@ -484,13 +493,9 @@ exports.delete = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
             });
         }
-        else {
-            var location = uploadsPath + id + '/';
-            removeFolder(location, function (err) {
-                removeFolder(uploadsPath + 'thumbnails/' + id + '/', function (err) {
-                    res.send({message: 'Challenge Deleted.'});
-                }, true);
-            }, true);
-        }
+
+        removeChallengeFiles(id, function() {
+            res.send({message: 'Challenge Deleted.'});
+        });
     });
 };

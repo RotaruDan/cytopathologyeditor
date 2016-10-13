@@ -45,6 +45,27 @@ angular.module('core').controller('CoursesController', ['$rootScope', '$scope', 
         $scope.showDialog = showDialog;
 
 
+        $scope.remove = function (course, event) {
+            event.stopPropagation();
+
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Course ' + course.name)
+                .content('Would you like to delete the course and all its challenges?')
+                .ariaLabel('Course removal')
+                .ok('Accept')
+                .cancel('Cancel')
+                .targetEvent(event);
+            $mdDialog.show(confirm).then(function () {
+                // Remove the challenge
+                Courses.delete({id:course._id}, function () {
+                    updateCourses();
+                });
+            }, function () {
+                // Cancelled
+            });
+        };
+
         function updateCourses() {
             $scope.courses = Courses.get(function () {
             });

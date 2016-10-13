@@ -7,7 +7,14 @@
         <md-grid-tile ng-repeat="course in courses"
                       class="blue" md-rowspan="1" md-colspan="2" ng-click="go(course)">
             <md-grid-tile-footer class="whitefooter">
-                <h3>{{course.name}}</h3>
+                <div layout="row" layout-align="space-between center">
+                    <h3>{{course.name}}</h3>
+                    <md-button aria-label="Delete challenge"
+                               ng-click="remove(course, $event)">
+                        <md-icon md-font-set="material-icons">delete
+                        </md-icon>
+                    </md-button>
+                </div>
             </md-grid-tile-footer>
         </md-grid-tile>
     </md-grid-list>
