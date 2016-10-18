@@ -2,8 +2,8 @@
 
 module.exports = function (app) {
 
-    var applications = require('../../app/controllers/application.server.controller');
-    var auth = require('../../app/controllers/users/users.authorization.server.controller');
+    var auth = require('../controllers/users/users.authorization.server.controller');
+    var applications = require('../controllers/applications.server.controller');
 
     app.route('/applications')
         .get(auth.requiresLogin, applications.list)
