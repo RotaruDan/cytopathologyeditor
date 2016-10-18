@@ -44,7 +44,8 @@
     "passport-local": "~1.0.0",
     "passport-http": "~0.3.0",
     "passport-twitter": "~1.0.4",
-    "swig": "~1.4.1"
+    "swig": "~1.4.1",
+    "shelljs": "~0.7.0"
   },
   "devDependencies": {
     "grunt": "*",
