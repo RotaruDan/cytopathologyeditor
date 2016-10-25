@@ -506,10 +506,13 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
         $scope.addOption = function () {
             if ($scope.mcqs.length === 0 ||
                 $scope.mcqs[$scope.mcqs.length - 1].points.length > 5) {
+                var value = $scope.mcqs.length;
                 $scope.addToList('mcqs', {
                     points: [],
-                    isCorrect: false
+                    isCorrect: false,
+                    value: value
                 });
+                $scope.buttonGroup = value;
             }
         };
 
