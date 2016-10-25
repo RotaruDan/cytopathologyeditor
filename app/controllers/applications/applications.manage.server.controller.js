@@ -53,6 +53,8 @@ exports.create = function (req, res) {
 
     // Init Variables
     var app = new Application(req.body);
+    app.apkFile = '_';
+    app.htmlFile = '_';
 
     // Then save the app
     app.save(function (err) {
@@ -74,6 +76,7 @@ exports.create = function (req, res) {
                     return;
                 }
                 app.status = 'SUCCESS';
+                app.apkFile = ''
                 app.save(function (err) {
 
                 });

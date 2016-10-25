@@ -51,6 +51,19 @@
   height: 60px; }
 
 .no-border-preview {
-  border: 0;
+  border: 0px;
+  padding: 0px;
 }
+
+.tablet{
+  background-image: url("/modules/core/img/tablet2.png");
+  background-size: 100% 100%;
+  padding: 60px 65px 55px 65px;
+  background-color: transparent;
+  border-radius: 70px;
+  min-height: 556px;
+  min-width: 1024px;
+}
+
+.tablet
 /*# sourceMappingURL=core.css.map */

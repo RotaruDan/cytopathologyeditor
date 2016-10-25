@@ -1,6 +1,5 @@
-<md-dialog aria-label="Preview {{challenge.name}} Challenge">
-    <form>
-        <md-toolbar>
+<md-dialog class="tablet" aria-label="Preview {{challenge.name}} Challenge">
+       <!-- <md-toolbar>
             <div class="md-toolbar-tools">
                 <h2>Preview {{challenge.name}} Challenge</h2>
                 <span flex></span>
@@ -8,13 +7,10 @@
                     <md-icon md-font-set="material-icons">close</md-icon>
                 </md-button>
             </div>
-        </md-toolbar>
-        <md-dialog-content>
-            <div>
+        </md-toolbar>-->
+        <md-dialog-content class="no-border-preview">
                 <iframe src='{{getPreviewSrc()}}'
                         width="1024" height="552" scrolling="no"
                         class="no-border-preview"></iframe>
-            </div>
         </md-dialog-content>
-    </form>
 </md-dialog>
