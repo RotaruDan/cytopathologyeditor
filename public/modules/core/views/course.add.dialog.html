@@ -14,6 +14,23 @@
                 <label>Course name</label>
                 <input type="text" ng-model="course.name">
             </md-input-container>
+            <md-input-container>
+                <label>Estimated Time Per Challenge</label>
+                <md-select ng-model="selectedTime">
+                    <md-option ng-repeat="time in times" value="{{time}}" ng-click="chooseTime($index)">
+                        <div layout="row" layout-align="start center" layout-margin>
+                            <!--
+                            <md-icon md-font-set="material-icons">
+                                {{challengeIcons[$index]}}
+                            </md-icon>
+                            <span flex></span>
+                            -->
+                            <span>{{time}}</span>
+                        </div>
+                    </md-option>
+
+                </md-select>
+            </md-input-container>
         </md-dialog-content>
     </div>
     <div>

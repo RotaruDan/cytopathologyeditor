@@ -6,6 +6,10 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+var validateTime = function (time) {
+    return time === 0 || time === 10000 || time === 20000 || time === 40000;
+};
+
 /**
  * Course Schema
  */
@@ -14,6 +18,11 @@ var CourseSchema = new Schema({
         type: String,
         trim: true,
         required: 'Please add a challenge name!'
+    },
+    timePerChallenge: {
+        type: Number,
+        default: -1,
+        validate: [validateTime, 'Invalid time per challenge value, allowed values: 0, 10000, 20000, 40000']
     },
     updated: {
         type: Date,

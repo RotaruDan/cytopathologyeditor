@@ -18,7 +18,9 @@ angular.module('core').controller('CoursesController', ['$rootScope', '$scope', 
 
             function DialogController($scope, $mdDialog, course) {
                 $scope.course = course;
-
+                $scope.times = ['Unlimited', '10 seconds', '20 seconds', '40 seconds'];
+                $scope.selectedTime = 'Unlimited';
+                var times = [0, 10000, 20000, 40000];
                 $scope.closeDialog = function () {
                     $mdDialog.hide();
                 };
@@ -27,6 +29,9 @@ angular.module('core').controller('CoursesController', ['$rootScope', '$scope', 
                         $scope.closeDialog();
                         go($scope.course);
                     });
+                };
+                $scope.chooseTime = function(index) {
+                    $scope.course.timePerChallenge = times[index];
                 };
             }
 
@@ -75,6 +80,7 @@ angular.module('core').controller('CoursesController', ['$rootScope', '$scope', 
 
         $scope.course = new Courses();
         $scope.course.difficulty = 'EASY';
+        $scope.course.timePerChallenge = 0;
         $scope.go = go;
     }
 ]);

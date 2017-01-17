@@ -436,7 +436,7 @@ angular.module('core').controller('ChallengesEditPolygonController', ['$scope', 
                         ctx.lineTo(x, y);
                     }
                 }
-                ctx.font = "48px serif";
+                ctx.font = '48px serif';
                 ctx.fillStyle = 'rgb(90, 200, 255)';
                 ctx.fillText(polygon.value + 1, (minX + maxX) / 2 - 24, (minY + maxY)  / 2 + 24);
                 ctx.closePath();
